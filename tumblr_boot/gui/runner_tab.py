@@ -10,7 +10,7 @@ import os
 import tkinter as tk
 from tkinter import ttk, messagebox, filedialog
 from tkinter.scrolledtext import ScrolledText
-from typing import Optional
+from typing import Optional, Callable
 
 from core.engine import BotEngine
 from config.settings import LOG_FILE
@@ -19,11 +19,14 @@ from config.settings import LOG_FILE
 class RunnerTab(ttk.Frame):
     """Tab for controlling bot execution and observing live operation logs."""
 
-    def __init__(self, parent, engine: BotEngine):
+    def __init__(self, parent, engine: BotEngine, on_timing_saved: Callable = None):
         super().__init__(parent, padding=16)
         self.engine = engine
+        self.on_timing_saved = on_timing_saved
+        self.timing_vars = {}
 
         self._build_ui()
+        self.load_timing_values()
 
     def _build_ui(self):
         # ── 1. Top Control Bar ──
@@ -38,6 +41,39 @@ class RunnerTab(ttk.Frame):
 
         self.stop_btn = ttk.Button(ctrl_frame, text="⏹ Stop Bot", command=self.on_stop, state="disabled")
         self.stop_btn.pack(side="left", padx=6)
+
+        timing_frame = ttk.LabelFrame(self, text="⏱ Quick Timing Controls (seconds)", padding=8)
+        timing_frame.pack(fill="x", pady=(0, 10))
+
+        timing_fields = (
+            ("action_delay", "Between actions", 0.1),
+            ("line_delay", "Between message parts", 0.5),
+            ("min_between_users", "Users min", 1.0),
+            ("max_between_users", "Users max", 1.0),
+        )
+        for key, label, increment in timing_fields:
+            ttk.Label(timing_frame, text=f"{label}:").pack(side="left", padx=(4, 3))
+            var = tk.StringVar()
+            ttk.Spinbox(
+                timing_frame,
+                from_=0,
+                to=3600,
+                increment=increment,
+                textvariable=var,
+                width=7,
+            ).pack(side="left", padx=(0, 8))
+            self.timing_vars[key] = var
+
+        ttk.Button(
+            timing_frame,
+            text="Apply Timing",
+            command=self.save_timing_values,
+        ).pack(side="left", padx=6)
+        ttk.Label(
+            timing_frame,
+            text="Applied on next Start",
+            foreground="#6c7086",
+        ).pack(side="left", padx=4)
 
         # ── 2. Live Dashboard Status Cards ──
         status_card = ttk.LabelFrame(self, text="📊 Live Operation Dashboard", padding=10)
@@ -121,6 +157,39 @@ class RunnerTab(ttk.Frame):
     def on_stop(self):
         if messagebox.askyesno("Confirm Stop", "Are you sure you want to stop the bot?"):
             self.engine.stop()
+
+    def load_timing_values(self):
+        settings = self.engine.settings_mgr.get_settings()
+        defaults = {
+            "action_delay": 0.5,
+            "line_delay": 7.55,
+            "min_between_users": 60,
+            "max_between_users": 130,
+        }
+        for key, var in self.timing_vars.items():
+            var.set(str(settings.get(key, defaults[key])))
+
+    def save_timing_values(self):
+        try:
+            updates = {key: float(var.get()) for key, var in self.timing_vars.items()}
+        except ValueError:
+            messagebox.showerror("Invalid Timing", "All timing values must be valid numbers.")
+            return
+
+        if any(value < 0 for value in updates.values()):
+            messagebox.showerror("Invalid Timing", "Timing values cannot be negative.")
+            return
+        if updates["min_between_users"] > updates["max_between_users"]:
+            messagebox.showerror("Invalid Timing", "Users min cannot be greater than users max.")
+            return
+
+        self.engine.settings_mgr.update_settings(updates)
+        if self.on_timing_saved:
+            self.on_timing_saved()
+        messagebox.showinfo(
+            "Timing Saved",
+            "Timing settings saved. They will be used the next time the bot starts.",
+        )
 
     def update_engine_state(self, running: bool, paused: bool):
         """Called by the main app when the engine updates its operational state."""

@@ -145,7 +145,11 @@ class TumblrBotApp(tk.Tk):
         self.notebook.pack(fill="both", expand=True, padx=10, pady=(10, 0))
 
         # Instantiate tabs
-        self.tab_runner = RunnerTab(self.notebook, engine=self.engine)
+        self.tab_runner = RunnerTab(
+            self.notebook,
+            engine=self.engine,
+            on_timing_saved=self._on_settings_saved,
+        )
         self.tab_accounts = AccountsTab(self.notebook, settings_mgr=self.settings_mgr)
         self.tab_settings = SettingsTab(
             self.notebook,
@@ -179,6 +183,8 @@ class TumblrBotApp(tk.Tk):
 
     def _on_settings_saved(self):
         """Callback when settings are modified."""
+        self.tab_runner.load_timing_values()
+        self.tab_settings.load_values()
         self.tab_accounts.refresh_accounts()
         self.tab_stats.refresh_stats()
 

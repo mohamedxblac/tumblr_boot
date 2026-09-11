@@ -13,3 +13,131 @@
 2026-09-12 00:03:13,135 [INFO] kazoulayacine012@gmail.com | ===SUMMARY=== | Sent:0 | Failed:0 | login_failed
 2026-09-12 00:03:14,683 [ERROR] [ENGINE] Unhandled exception in run loop: 'BotLogger' object has no attribute 'debug'
 2026-09-12 00:03:14,684 [INFO] [ENGINE] Bot engine stopped cleanly.
+2026-09-12 00:58:49,240 [INFO] [ENGINE] Bot engine started.
+2026-09-12 00:58:49,241 [INFO] [ENGINE] Starting round with 1 pending accounts...
+2026-09-12 00:58:57,631 [INFO] [BROWSER] Chrome launched | Profile: NATIVE | Res: 1280x900 | TZ: system
+2026-09-12 00:58:57,639 [INFO] [AUTH] Attempting login for kazoulayacine012@gmail.com (attempt 1/2)...
+2026-09-12 00:59:22,719 [INFO] [AUTH] Login SUCCESSFUL: kazoulayacine012@gmail.com (25.1s)
+2026-09-12 00:59:22,720 [INFO] [SCRAPER] Navigating to target post: https://www.tumblr.com/hazard-symbols-that-fuck-hard/827145486405337088/fuck-marry-kill-the-grinch-the-cat-in-the-hat?source=share
+2026-09-12 00:59:34,090 [INFO] [BROWSER] Chrome launched | Profile: NATIVE | Res: 1280x900 | TZ: system
+2026-09-12 00:59:34,091 [INFO] [AUTH] Attempting login for kazoulayacine012@gmail.com (attempt 1/2)...
+2026-09-12 01:00:06,565 [INFO] [AUTH] Login SUCCESSFUL: kazoulayacine012@gmail.com (32.5s)
+2026-09-12 01:00:36,668 [ERROR] [ENGINE] Session exception for kazoulayacine012@gmail.com: 'BotLogger' object has no attribute 'debug'
+2026-09-12 01:00:36,668 [INFO] kazoulayacine012@gmail.com | ===SUMMARY=== | Sent:0 | Failed:0 | session_exception: 'BotLogger' object has no attribute 'debug'
+2026-09-12 01:00:36,673 [WARNING] [SCREENSHOT] Failed to capture screenshot: Message: invalid session id
+Stacktrace:
+	undetected_chromedriver!GetHandleVerifier [0xfa1c33+4e33]
+	undetected_chromedriver!(No symbol) [0xebd154]
+	undetected_chromedriver!(No symbol) [0xcfbeee]
+	undetected_chromedriver!(No symbol) [0xd3b137]
+	undetected_chromedriver!(No symbol) [0xd69966]
+	undetected_chromedriver!(No symbol) [0xd64c63]
+	undetected_chromedriver!(No symbol) [0xd64630]
+	undetected_chromedriver!(No symbol) [0xcced01]
+	undetected_chromedriver!(No symbol) [0xccf2a3]
+	undetected_chromedriver!(No symbol) [0xccf7ed]
+	undetected_chromedriver!GetHandleVerifier [0x140797a+46ab7a]
+	undetected_chromedriver!GetHandleVerifier [0x142945b+48c65b]
+	undetected_chromedriver!GetHandleVerifier [0x10c4282+127482]
+	undetected_chromedriver!GetHandleVerifier [0x10caf93+12e193]
+	undetected_chromedriver!(No symbol) [0xecb278]
+	undetected_chromedriver!(No symbol) [0xcce480]
+	undetected_chromedriver!(No symbol) [0xccdb72]
+	undetected_chromedriver!GetHandleVerifier [0x1484201+4e7401]
+	KERNEL32!BaseThreadInitThunk [0x763afcc9+19]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x774482ae+11e]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x7744827e+ee]
+
+2026-09-12 01:00:40,531 [INFO] [ENGINE] Round finished. Sleeping 12.0 hours before next cycle...
+2026-09-12 01:01:02,485 [INFO] [ENGINE] Stop requested. Waiting for current action to wrap up...
+2026-09-12 01:01:02,569 [INFO] [ENGINE] Bot engine stopped cleanly.
+2026-09-12 01:01:07,036 [INFO] [ENGINE] Bot engine started.
+2026-09-12 01:01:07,036 [INFO] [ENGINE] Starting round with 1 pending accounts...
+2026-09-12 01:01:14,458 [INFO] [BROWSER] Chrome launched | Profile: NATIVE | Res: 1280x900 | TZ: system
+2026-09-12 01:01:14,462 [INFO] [AUTH] Attempting login for kazoulayacine012@gmail.com (attempt 1/2)...
+2026-09-12 01:01:33,497 [INFO] [AUTH] Login SUCCESSFUL: kazoulayacine012@gmail.com (19.0s)
+2026-09-12 01:01:33,498 [INFO] [SCRAPER] Navigating to target post: https://www.tumblr.com/hazard-symbols-that-fuck-hard/827145486405337088/fuck-marry-kill-the-grinch-the-cat-in-the-hat?source=share
+2026-09-12 01:01:40,314 [INFO] [SCRAPER] Clicked inline 'likes' tab on article.
+2026-09-12 01:01:41,815 [INFO] [SCRAPER] Starting top-to-bottom notes collection (Target max: 3000)...
+2026-09-12 01:01:41,832 [INFO] [SCRAPER] Scroll #1 | Found: 49 users (+49 new)
+2026-09-12 01:01:46,120 [INFO] [SCRAPER] Scroll #2 | Found: 50 users (+1 new)
+2026-09-12 01:01:50,537 [INFO] [SCRAPER] Scroll #3 | Found: 50 users (+0 new)
+2026-09-12 01:01:53,279 [INFO] [SCRAPER] Scroll #4 | Found: 51 users (+1 new)
+2026-09-12 01:02:22,577 [INFO] [SCRAPER] Scroll #5 | Found: 51 users (+0 new)
+2026-09-12 01:02:24,216 [INFO] [SCRAPER] Scroll #6 | Found: 52 users (+1 new)
+2026-09-12 01:02:25,750 [INFO] [SCRAPER] Scroll #7 | Found: 53 users (+1 new)
+2026-09-12 01:02:27,342 [INFO] [SCRAPER] Scroll #8 | Found: 54 users (+1 new)
+2026-09-12 01:02:28,919 [INFO] [SCRAPER] Scroll #9 | Found: 55 users (+1 new)
+2026-09-12 01:02:30,481 [INFO] [SCRAPER] Scroll #10 | Found: 56 users (+1 new)
+2026-09-12 01:02:32,018 [INFO] [SCRAPER] Scroll #11 | Found: 57 users (+1 new)
+2026-09-12 01:02:33,583 [INFO] [SCRAPER] Scroll #12 | Found: 58 users (+1 new)
+2026-09-12 01:02:35,143 [INFO] [SCRAPER] Scroll #13 | Found: 58 users (+0 new)
+2026-09-12 01:02:36,686 [INFO] [SCRAPER] Scroll #14 | Found: 59 users (+1 new)
+2026-09-12 01:02:38,216 [INFO] [SCRAPER] Scroll #15 | Found: 59 users (+0 new)
+2026-09-12 01:02:39,759 [INFO] [SCRAPER] Scroll #16 | Found: 60 users (+1 new)
+2026-09-12 01:02:41,321 [INFO] [SCRAPER] Scroll #17 | Found: 60 users (+0 new)
+2026-09-12 01:02:42,845 [INFO] [SCRAPER] Scroll #18 | Found: 61 users (+1 new)
+2026-09-12 01:02:44,378 [INFO] [SCRAPER] Scroll #19 | Found: 61 users (+0 new)
+2026-09-12 01:02:45,973 [INFO] [SCRAPER] Scroll #20 | Found: 62 users (+1 new)
+2026-09-12 01:02:47,526 [INFO] [SCRAPER] Scroll #21 | Found: 63 users (+1 new)
+2026-09-12 01:02:49,090 [INFO] [SCRAPER] Scroll #22 | Found: 64 users (+1 new)
+2026-09-12 01:02:50,625 [INFO] [SCRAPER] Scroll #23 | Found: 65 users (+1 new)
+2026-09-12 01:02:52,192 [INFO] [SCRAPER] Scroll #24 | Found: 65 users (+0 new)
+2026-09-12 01:02:53,716 [INFO] [SCRAPER] Scroll #25 | Found: 66 users (+1 new)
+2026-09-12 01:02:55,238 [INFO] [SCRAPER] Scroll #26 | Found: 67 users (+1 new)
+2026-09-12 01:02:56,760 [INFO] [SCRAPER] Scroll #27 | Found: 68 users (+1 new)
+2026-09-12 01:02:58,289 [INFO] [SCRAPER] Scroll #28 | Found: 68 users (+0 new)
+2026-09-12 01:02:59,835 [INFO] [SCRAPER] Scroll #29 | Found: 69 users (+1 new)
+2026-09-12 01:03:01,356 [INFO] [SCRAPER] Scroll #30 | Found: 69 users (+0 new)
+2026-09-12 01:03:02,951 [INFO] [SCRAPER] Scroll #31 | Found: 69 users (+0 new)
+2026-09-12 01:03:04,494 [INFO] [SCRAPER] Scroll #32 | Found: 70 users (+1 new)
+2026-09-12 01:03:06,239 [INFO] [SCRAPER] Scroll #33 | Found: 71 users (+1 new)
+2026-09-12 01:03:07,837 [INFO] [SCRAPER] Scroll #34 | Found: 71 users (+0 new)
+2026-09-12 01:03:09,393 [INFO] [SCRAPER] Scroll #35 | Found: 71 users (+0 new)
+2026-09-12 01:03:10,936 [INFO] [SCRAPER] Scroll #36 | Found: 72 users (+1 new)
+2026-09-12 01:03:12,505 [INFO] [SCRAPER] Scroll #37 | Found: 73 users (+1 new)
+2026-09-12 01:03:14,087 [INFO] [SCRAPER] Scroll #38 | Found: 74 users (+1 new)
+2026-09-12 01:03:15,634 [INFO] [SCRAPER] Scroll #39 | Found: 75 users (+1 new)
+2026-09-12 01:03:17,208 [INFO] [SCRAPER] Scroll #40 | Found: 75 users (+0 new)
+2026-09-12 01:03:18,735 [INFO] [SCRAPER] Scroll #41 | Found: 76 users (+1 new)
+2026-09-12 01:03:20,339 [INFO] [SCRAPER] Scroll #42 | Found: 77 users (+1 new)
+2026-09-12 01:03:21,874 [INFO] [SCRAPER] Scroll #43 | Found: 78 users (+1 new)
+2026-09-12 01:03:23,620 [INFO] [SCRAPER] Scroll #44 | Found: 78 users (+0 new)
+2026-09-12 01:03:25,158 [INFO] [SCRAPER] Scroll #45 | Found: 79 users (+1 new)
+2026-09-12 01:03:30,720 [INFO] [SCRAPER] Scroll #46 | Found: 79 users (+0 new)
+2026-09-12 01:03:32,337 [INFO] [SCRAPER] Scroll #47 | Found: 80 users (+1 new)
+2026-09-12 01:03:34,252 [INFO] [SCRAPER] Scroll #48 | Found: 80 users (+0 new)
+2026-09-12 01:03:35,848 [INFO] [SCRAPER] Scroll #49 | Found: 80 users (+0 new)
+2026-09-12 01:03:37,409 [INFO] [SCRAPER] Scroll #50 | Found: 80 users (+0 new)
+2026-09-12 01:03:38,935 [INFO] [SCRAPER] Scroll #51 | Found: 81 users (+1 new)
+2026-09-12 01:03:40,472 [INFO] [SCRAPER] Scroll #52 | Found: 82 users (+1 new)
+2026-09-12 01:03:41,992 [INFO] [SCRAPER] Scroll #53 | Found: 83 users (+1 new)
+2026-09-12 01:03:43,524 [INFO] [SCRAPER] Scroll #54 | Found: 83 users (+0 new)
+2026-09-12 01:03:45,100 [INFO] [SCRAPER] Scroll #55 | Found: 83 users (+0 new)
+2026-09-12 01:03:46,649 [INFO] [SCRAPER] Scroll #56 | Found: 83 users (+0 new)
+2026-09-12 01:03:48,223 [INFO] [SCRAPER] Scroll #57 | Found: 83 users (+0 new)
+2026-09-12 01:03:49,751 [INFO] [SCRAPER] Scroll #58 | Found: 83 users (+0 new)
+2026-09-12 01:03:51,269 [INFO] [SCRAPER] Scroll #59 | Found: 83 users (+0 new)
+2026-09-12 01:03:52,786 [INFO] [SCRAPER] Scroll #60 | Found: 83 users (+0 new)
+2026-09-12 01:03:54,312 [INFO] [SCRAPER] Scroll #61 | Found: 84 users (+1 new)
+2026-09-12 01:03:55,923 [INFO] [SCRAPER] Scroll #62 | Found: 85 users (+1 new)
+2026-09-12 01:03:57,485 [INFO] [SCRAPER] Scroll #63 | Found: 85 users (+0 new)
+2026-09-12 01:03:59,033 [INFO] [SCRAPER] Scroll #64 | Found: 86 users (+1 new)
+2026-09-12 01:04:00,566 [INFO] [SCRAPER] Scroll #65 | Found: 87 users (+1 new)
+2026-09-12 01:04:02,085 [INFO] [SCRAPER] Scroll #66 | Found: 88 users (+1 new)
+2026-09-12 01:04:03,644 [INFO] [SCRAPER] Scroll #67 | Found: 89 users (+1 new)
+2026-09-12 01:04:05,244 [INFO] [SCRAPER] Scroll #68 | Found: 90 users (+1 new)
+2026-09-12 01:04:06,797 [INFO] [SCRAPER] Scroll #69 | Found: 91 users (+1 new)
+2026-09-12 01:04:08,360 [INFO] [SCRAPER] Scroll #70 | Found: 91 users (+0 new)
+2026-09-12 01:04:09,904 [INFO] [SCRAPER] Scroll #71 | Found: 91 users (+0 new)
+2026-09-12 01:04:11,476 [INFO] [SCRAPER] Scroll #72 | Found: 91 users (+0 new)
+2026-09-12 01:04:12,989 [INFO] [SCRAPER] Reached time limit (151s), proceeding with 91 users.
+2026-09-12 01:04:12,990 [INFO] [SCRAPER] Finished gathering 91 users in 151s.
+2026-09-12 01:04:12,993 [INFO] [kazoulayacine012@gmail.com] Ready! Processing up to 15 users in this session...
+2026-09-12 01:04:48,069 [INFO] kazoulayacine012@gmail.com | Sent:1 | Failed:0 | sent_ok | user=knifelesbian69 | session=1/15 | total=1/30
+2026-09-12 01:07:24,850 [INFO] kazoulayacine012@gmail.com | Sent:2 | Failed:0 | sent_ok | user=heimalbahhh | session=2/15 | total=2/30
+2026-09-12 01:10:08,480 [INFO] kazoulayacine012@gmail.com | Sent:3 | Failed:0 | sent_ok | user=oranged-boy | session=3/15 | total=3/30
+2026-09-12 01:12:55,766 [INFO] [SCREENSHOT] Saved state capture to: C:\Users\mohamed\Desktop\project2\tumblr_boot\data\error_screenshots\could_not_send_emmelinemisix_20260912_011255.png
+2026-09-12 01:12:55,766 [INFO] kazoulayacine012@gmail.com | Sent:3 | Failed:0 | follow | user=emmelinemisix | ok=True
+2026-09-12 01:12:55,767 [INFO] kazoulayacine012@gmail.com | Sent:3 | Failed:0 | could_not_send
+2026-09-12 01:12:55,767 [INFO] kazoulayacine012@gmail.com | ===SUMMARY=== | Sent:3 | Failed:0 | could_not_send

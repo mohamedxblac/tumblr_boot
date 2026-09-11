@@ -7,6 +7,7 @@ import queue
 from typing import List, Dict, Optional, Any
 
 from config.settings import SettingsManager
+from config.fingerprints import generate_stealth_fingerprint
 from core.browser import BrowserFactory
 from core.auth import login, logout, dismiss_consent_screen_if_present
 from core.scraper import scrape_post_master_queue, parse_post_info
@@ -111,6 +112,7 @@ class BotEngine:
             max_per_account = int(settings.get("max_success_per_account", 30))
             session_cap = int(settings.get("session_success_cap", 15))
             no_msg_limit = int(settings.get("no_message_limit", 10))
+            action_delay = float(settings.get("action_delay", 0.5))
             line_delay = float(settings.get("line_delay", 7.55))
             after_send_delay = float(settings.get("after_send_delay", 2.2))
             after_success_delay = float(settings.get("after_success_delay", 2.2))
@@ -184,6 +186,7 @@ class BotEngine:
                         max_per_account=max_per_account,
                         session_cap=session_cap,
                         no_msg_limit=no_msg_limit,
+                        action_delay=action_delay,
                         line_delay=line_delay,
                         after_send_delay=after_send_delay,
                         after_success_delay=after_success_delay,
@@ -232,6 +235,7 @@ class BotEngine:
         max_per_account: int,
         session_cap: int,
         no_msg_limit: int,
+        action_delay: float,
         line_delay: float,
         after_send_delay: float,
         after_success_delay: float,
@@ -261,7 +265,7 @@ class BotEngine:
                 "detail": f"Initializing browser for {email}"
             })
 
-            fp = None if enable_fp_rotation else {"user_agent": "", "screen_width": 1920, "screen_height": 1080}
+            fp = generate_stealth_fingerprint() if enable_fp_rotation else None
             driver, profile_dir, used_fp = BrowserFactory.create_browser(fingerprint=fp)
 
             if not login(driver, email, password):
@@ -358,6 +362,7 @@ class BotEngine:
                     username=username,
                     messages=parts,
                     do_follow=do_follow,
+                    action_delay=action_delay,
                     line_delay=line_delay,
                     after_send_delay=after_send_delay,
                 )

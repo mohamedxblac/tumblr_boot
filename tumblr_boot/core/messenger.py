@@ -13,7 +13,7 @@ from utils.logger import logger
 
 
 # متابعة حساب المستخدم المستهدف إذا كان زر المتابعة متاحاً
-def follow_user(driver) -> bool:
+def follow_user(driver, action_delay: float = 0.5) -> bool:
     for sel in [
         "button[aria-label='Follow']",
         "button[aria-label='Follow @']",
@@ -22,7 +22,7 @@ def follow_user(driver) -> bool:
         try:
             btn = WebDriverWait(driver, 3).until(EC.element_to_be_clickable((By.CSS_SELECTOR, sel)))
             driver.execute_script("arguments[0].click();", btn)
-            time.sleep(0.5)
+            time.sleep(action_delay)
             return True
         except Exception:
             continue
@@ -32,21 +32,22 @@ def follow_user(driver) -> bool:
             EC.element_to_be_clickable((By.XPATH, "//button[contains(.,'Follow')]"))
         )
         driver.execute_script("arguments[0].click();", btn)
-        time.sleep(0.5)
+        time.sleep(action_delay)
         return True
     except Exception:
         return False
 
 
 # كتابة فقرات الرسالة بأمان باستخدام Shift+Enter للفصل بين الأسطر دون إرسال مبكر
-def type_message_safely(element, text: str):
+def type_message_safely(element, text: str, action_delay: float = 0.5):
     lines = text.split("\n")
     for i, line in enumerate(lines):
         if line:
             element.send_keys(line)
         if i < len(lines) - 1:
             element.send_keys(Keys.SHIFT, Keys.ENTER)
-        time.sleep(0.05)
+        if i < len(lines) - 1:
+            time.sleep(action_delay)
 
 
 # تجهيز أجزاء الرسالة الثلاثة: التحية البسيطة، التحية باسم المستخدم، ونص الرسالة
@@ -67,6 +68,7 @@ def send_message_to_user(
     username: str,
     messages: List[str],
     do_follow: bool = False,
+    action_delay: float = 0.5,
     line_delay: float = 7.55,
     after_send_delay: float = 2.2,
 ) -> Tuple[Union[bool, str], bool]:
@@ -78,7 +80,7 @@ def send_message_to_user(
 
         followed = False
         if do_follow:
-            followed = follow_user(driver)
+            followed = follow_user(driver, action_delay=action_delay)
 
         try:
             driver.execute_script("window.scrollBy(0, 250);")
@@ -125,8 +127,8 @@ def send_message_to_user(
 
         for msg in messages:
             input_box.click()
-            type_message_safely(input_box, msg)
-            time.sleep(0.3)
+            type_message_safely(input_box, msg, action_delay=action_delay)
+            time.sleep(action_delay)
             input_box.send_keys(Keys.ENTER)
 
             try:

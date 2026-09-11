@@ -13,6 +13,21 @@ from core.browser import BrowserFactory
 from utils.logger import logger
 
 
+LOGIN_ERROR_MARKERS = (
+    "your email or password were incorrect",
+    "your email or password is incorrect",
+    "incorrect email or password",
+    "invalid email or password",
+)
+
+CHALLENGE_MARKERS = (
+    "prove you're human",
+    "verify you're human",
+    "complete the captcha",
+    "suspicious activity",
+)
+
+
 # كتابة النص حرفاً بحرف مع تأخير زمني عشوائي لمحاكاة الكتابة البشرية
 def human_type(element, text: str, min_d: float = 0.03, max_d: float = 0.08):
     try:
@@ -29,6 +44,35 @@ def human_type(element, text: str, min_d: float = 0.03, max_d: float = 0.08):
     except Exception as e:
         logger.debug(f"[HUMAN_TYPE] Fallback typing due to: {e}")
         element.send_keys(text)
+
+
+def _type_and_verify(element, value: str) -> None:
+    """Enter a value and verify that the DOM received it without logging it."""
+    human_type(element, value)
+    if element.get_attribute("value") == value:
+        return
+
+    element.click()
+    element.send_keys(Keys.CONTROL + "a")
+    element.send_keys(value)
+    if element.get_attribute("value") != value:
+        raise RuntimeError("The login form did not retain the entered field value")
+
+
+def _login_page_outcome(driver):
+    """Return a terminal login state, or False while the page is still pending."""
+    current_url = driver.current_url.lower()
+    if "/dashboard" in current_url:
+        return "success"
+
+    page_text = driver.execute_script(
+        "return (document.body && document.body.innerText || '').toLowerCase();"
+    )
+    if any(marker in page_text for marker in LOGIN_ERROR_MARKERS):
+        return "credentials_rejected"
+    if any(marker in page_text for marker in CHALLENGE_MARKERS):
+        return "challenge"
+    return False
 
 
 # فحص وتخطي شاشات وإشعارات الموافقة وملفات تعريف الارتباط تلقائياً
@@ -119,31 +163,32 @@ def dismiss_consent_screen_if_present(driver) -> bool:
 # تسجيل الدخول إلى حساب تمبلر والتحقق من فتح لوحة التحكم بنجاح
 def login(driver, email: str, password: str, max_retries: int = 2) -> bool:
     for attempt in range(1, max_retries + 1):
+        started_at = time.monotonic()
         try:
             logger.info(f"[AUTH] Attempting login for {email} (attempt {attempt}/{max_retries})...")
             driver.get("https://www.tumblr.com/login")
-            time.sleep(3)
+            WebDriverWait(driver, 10).until(
+                lambda d: d.execute_script("return document.readyState") in ("interactive", "complete")
+            )
             dismiss_consent_screen_if_present(driver)
 
             email_el = WebDriverWait(driver, 15).until(
                 EC.element_to_be_clickable((By.NAME, "email"))
             )
-            human_type(email_el, email)
+            _type_and_verify(email_el, email)
 
             pwd_el = WebDriverWait(driver, 15).until(
                 EC.element_to_be_clickable((By.NAME, "password"))
             )
-            human_type(pwd_el, password)
+            _type_and_verify(pwd_el, password)
 
-            time.sleep(0.8)
             login_btn = None
             for sel in [
-                "//button[@type='submit' and contains(.,'Log in')]",
-                "//button[contains(.,'Log in')]",
-                "//button[@type='submit']",
+                "./ancestor::form[1]//button[@type='submit']",
+                "//button[@type='submit' and contains(translate(., 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'),'log in')]",
             ]:
                 try:
-                    b = driver.find_element(By.XPATH, sel)
+                    b = pwd_el.find_element(By.XPATH, sel) if sel.startswith(".") else driver.find_element(By.XPATH, sel)
                     if b.is_displayed():
                         login_btn = b
                         break
@@ -155,18 +200,32 @@ def login(driver, email: str, password: str, max_retries: int = 2) -> bool:
             else:
                 pwd_el.send_keys(Keys.ENTER)
 
-            WebDriverWait(driver, 20).until(
-                lambda d: "dashboard" in d.current_url
-                or bool(d.find_elements(By.CSS_SELECTOR, "[data-testid='dashboard-feed'], nav"))
-            )
-            logger.info(f"[AUTH] Login SUCCESSFUL: {email}")
-            return True
+            outcome = WebDriverWait(driver, 20).until(_login_page_outcome)
+            elapsed = time.monotonic() - started_at
+            if outcome == "success":
+                logger.info(f"[AUTH] Login SUCCESSFUL: {email} ({elapsed:.1f}s)")
+                return True
+
+            if outcome == "credentials_rejected":
+                logger.error(
+                    f"[AUTH] Tumblr rejected the submitted credentials for {email} "
+                    f"after the form values were verified ({elapsed:.1f}s)."
+                )
+                break
+
+            if outcome == "challenge":
+                logger.error(f"[AUTH] Tumblr presented a human-verification challenge for {email}.")
+                break
 
         except Exception as e:
-            logger.warning(f"[AUTH] Login attempt {attempt} failed for {email}: {e}")
+            elapsed = time.monotonic() - started_at
+            logger.warning(
+                f"[AUTH] Login attempt {attempt} failed for {email} after {elapsed:.1f}s: "
+                f"{type(e).__name__}: {e}"
+            )
             dismiss_consent_screen_if_present(driver)
             if attempt < max_retries:
-                time.sleep(4.0)
+                time.sleep(1.5)
 
     BrowserFactory.capture_screenshot(driver, prefix=f"login_fail_{email.split('@')[0]}")
     logger.error(f"[AUTH] All login attempts failed for {email}")

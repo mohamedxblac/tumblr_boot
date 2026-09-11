@@ -83,6 +83,7 @@ class SettingsTab(ttk.Frame):
         card3 = ttk.LabelFrame(scrollable_frame, text="⏱ Human Delays & Jitter (Seconds)", padding=12)
         card3.pack(fill="x", pady=6, padx=4)
 
+        self._add_row(card3, "action_delay", "Delay Between UI Actions (sec):", "0.5", is_float=True)
         self._add_row(card3, "min_between_users", "Min Delay Between Users (sec):", "60", is_float=True)
         self._add_row(card3, "max_between_users", "Max Delay Between Users (sec):", "130", is_float=True)
         self._add_row(card3, "line_delay", "Line Delay (Between message parts):", "7.55", is_float=True)
@@ -155,7 +156,7 @@ class SettingsTab(ttk.Frame):
                     updates[key] = int(val)
                 elif key == "start_account_index":
                     updates[key] = max(0, int(val) - 1)
-                elif key in ("min_between_users", "max_between_users", "line_delay", "after_send_delay", "after_success_delay", "sleep_between_rounds_hrs"):
+                elif key in ("action_delay", "min_between_users", "max_between_users", "line_delay", "after_send_delay", "after_success_delay", "sleep_between_rounds_hrs"):
                     updates[key] = float(val)
                 elif key == "enable_fingerprint_rotation":
                     updates[key] = bool(val)
@@ -164,6 +165,15 @@ class SettingsTab(ttk.Frame):
 
             if updates["min_between_users"] > updates["max_between_users"]:
                 messagebox.showerror("Validation Error", "Min delay cannot be greater than Max delay.")
+                return
+
+            delay_keys = (
+                "action_delay", "min_between_users", "max_between_users",
+                "line_delay", "after_send_delay", "after_success_delay",
+                "sleep_between_rounds_hrs",
+            )
+            if any(updates[key] < 0 for key in delay_keys):
+                messagebox.showerror("Validation Error", "Delay values cannot be negative.")
                 return
 
             self.settings_mgr.update_settings(updates)

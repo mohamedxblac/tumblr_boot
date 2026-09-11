@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import os
+import json
 import shutil
 import tempfile
 import time
@@ -72,21 +73,32 @@ class BrowserFactory:
         fingerprint: Optional[dict] = None,
         headless: bool = False
     ) -> Tuple[uc.Chrome, str, dict]:
+        # Native browser values are the reliable default.  A fabricated Mac/Linux
+        # user agent on a Windows Chrome build creates contradictory client hints
+        # and can make Tumblr reject an otherwise valid login.
+        use_rotated_fingerprint = fingerprint is not None
         if fingerprint is None:
-            fingerprint = generate_stealth_fingerprint()
+            fingerprint = {
+                "platform_type": "native",
+                "screen_width": 1280,
+                "screen_height": 900,
+                "timezone": "system",
+            }
 
         profile_dir = tempfile.mkdtemp(prefix="tumblr_bot_profile_")
 
         options = uc.ChromeOptions()
         options.user_data_dir = profile_dir
-        options.add_argument(f"--user-agent={fingerprint['user_agent']}")
         options.add_argument(f"--window-size={fingerprint['screen_width']},{fingerprint['screen_height']}")
         options.add_argument("--disable-blink-features=AutomationControlled")
         options.add_argument("--no-first-run")
         options.add_argument("--no-service-autorun")
         options.add_argument("--password-store=basic")
-        options.add_argument("--disable-features=IsolateOrigins,site-per-process")
         options.add_argument("--lang=en-US,en")
+        options.page_load_strategy = "eager"
+
+        if use_rotated_fingerprint:
+            options.add_argument(f"--user-agent={fingerprint['user_agent']}")
 
         if headless:
             options.add_argument("--headless=new")
@@ -107,22 +119,25 @@ class BrowserFactory:
                         pass
                 raise ex_fallback
 
-        driver.set_page_load_timeout(60)
-        driver.implicitly_wait(6)
+        driver.set_page_load_timeout(30)
+        # Explicit waits are used at the actual interaction points.  A global
+        # implicit wait multiplied every missing consent selector by six seconds.
+        driver.implicitly_wait(0)
 
-        try:
-            setup_script = f"window.__BOT_FP__ = {fingerprint};\n" + STEALTH_INJECTION_JS
-            driver.execute_cdp_cmd("Page.addScriptToEvaluateOnNewDocument", {"source": setup_script})
-        except Exception as e:
-            logger.warning(f"[BROWSER] Could not inject stealth script via CDP: {e}")
+        if use_rotated_fingerprint:
+            try:
+                setup_script = f"window.__BOT_FP__ = {json.dumps(fingerprint)};\n" + STEALTH_INJECTION_JS
+                driver.execute_cdp_cmd("Page.addScriptToEvaluateOnNewDocument", {"source": setup_script})
+            except Exception as e:
+                logger.warning(f"[BROWSER] Could not inject stealth script via CDP: {e}")
 
-        try:
-            driver.execute_cdp_cmd("Emulation.setTimezoneOverride", {"timezoneId": fingerprint["timezone"]})
-        except Exception as e:
-            logger.debug(f"[BROWSER] Timezone CDP override skipped: {e}")
+            try:
+                driver.execute_cdp_cmd("Emulation.setTimezoneOverride", {"timezoneId": fingerprint["timezone"]})
+            except Exception as e:
+                logger.debug(f"[BROWSER] Timezone CDP override skipped: {e}")
 
         logger.info(
-            f"[BROWSER] Chrome launched | OS: {fingerprint['platform_type'].upper()} | "
+            f"[BROWSER] Chrome launched | Profile: {fingerprint['platform_type'].upper()} | "
             f"Res: {fingerprint['screen_width']}x{fingerprint['screen_height']} | "
             f"TZ: {fingerprint['timezone']}"
         )

@@ -64,6 +64,9 @@ class BotLogger:
     def info(self, msg: str):
         self.logger.info(msg)
 
+    def debug(self, msg: str):
+        self.logger.debug(msg)
+
     def warning(self, msg: str):
         self.logger.warning(msg)
 
