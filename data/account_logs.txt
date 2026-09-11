@@ -1,0 +1,69 @@
+2026-09-11 23:38:58,432 [INFO] [ENGINE] Bot engine started.
+2026-09-11 23:38:58,434 [INFO] [ENGINE] Starting round with 1 pending accounts...
+2026-09-11 23:39:07,112 [INFO] [BROWSER] Chrome launched | OS: WINDOWS | Res: 1920x1080 | TZ: Europe/Berlin
+2026-09-11 23:39:07,112 [INFO] [AUTH] Attempting login for kazoulayacine012@gmail.com (attempt 1/2)...
+2026-09-11 23:40:16,531 [INFO] [ENGINE] Stop requested. Waiting for current action to wrap up...
+2026-09-11 23:40:21,819 [WARNING] [AUTH] Login attempt 1 failed for kazoulayacine012@gmail.com: 'BotLogger' object has no attribute 'debug'
+2026-09-11 23:40:21,823 [ERROR] [ENGINE] Session exception for kazoulayacine012@gmail.com: 'BotLogger' object has no attribute 'debug'
+2026-09-11 23:40:21,823 [INFO] kazoulayacine012@gmail.com | ===SUMMARY=== | Sent:1 | Failed:0 | session_exception: 'BotLogger' object has no attribute 'debug'
+2026-09-11 23:40:21,830 [WARNING] [SCREENSHOT] Failed to capture screenshot: Message: invalid session id
+Stacktrace:
+	undetected_chromedriver!GetHandleVerifier [0x931c33+4e33]
+	undetected_chromedriver!(No symbol) [0x84d154]
+	undetected_chromedriver!(No symbol) [0x68beee]
+	undetected_chromedriver!(No symbol) [0x6cb137]
+	undetected_chromedriver!(No symbol) [0x6f9966]
+	undetected_chromedriver!(No symbol) [0x6f4c63]
+	undetected_chromedriver!(No symbol) [0x6f4630]
+	undetected_chromedriver!(No symbol) [0x65ed01]
+	undetected_chromedriver!(No symbol) [0x65f2a3]
+	undetected_chromedriver!(No symbol) [0x65f7ed]
+	undetected_chromedriver!GetHandleVerifier [0xd9797a+46ab7a]
+	undetected_chromedriver!GetHandleVerifier [0xdb945b+48c65b]
+	undetected_chromedriver!GetHandleVerifier [0xa54282+127482]
+	undetected_chromedriver!GetHandleVerifier [0xa5af93+12e193]
+	undetected_chromedriver!(No symbol) [0x85b278]
+	undetected_chromedriver!(No symbol) [0x65e480]
+	undetected_chromedriver!(No symbol) [0x65db72]
+	undetected_chromedriver!GetHandleVerifier [0xe14201+4e7401]
+	KERNEL32!BaseThreadInitThunk [0x763afcc9+19]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x774482ae+11e]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x7744827e+ee]
+
+2026-09-11 23:40:23,244 [ERROR] [ENGINE] Unhandled exception in run loop: 'BotLogger' object has no attribute 'debug'
+2026-09-11 23:40:23,244 [INFO] [ENGINE] Bot engine stopped cleanly.
+2026-09-11 23:40:29,026 [INFO] [ENGINE] Bot engine started.
+2026-09-11 23:40:29,028 [INFO] [ENGINE] Starting round with 1 pending accounts...
+2026-09-11 23:40:38,647 [INFO] [BROWSER] Chrome launched | OS: WINDOWS | Res: 1366x768 | TZ: Australia/Sydney
+2026-09-11 23:40:38,649 [INFO] [AUTH] Attempting login for kazoulayacine012@gmail.com (attempt 1/2)...
+2026-09-11 23:43:36,683 [INFO] [AUTH] Login SUCCESSFUL: kazoulayacine012@gmail.com
+2026-09-11 23:43:36,684 [INFO] [SCRAPER] Navigating to target post: https://www.tumblr.com/hazard-symbols-that-fuck-hard/827145486405337088/fuck-marry-kill-the-grinch-the-cat-in-the-hat?source=share
+2026-09-11 23:46:58,361 [INFO] [ENGINE] Stop requested. Waiting for current action to wrap up...
+2026-09-11 23:47:00,617 [ERROR] [ENGINE] Session exception for kazoulayacine012@gmail.com: 'BotLogger' object has no attribute 'debug'
+2026-09-11 23:47:00,618 [INFO] kazoulayacine012@gmail.com | ===SUMMARY=== | Sent:1 | Failed:0 | session_exception: 'BotLogger' object has no attribute 'debug'
+2026-09-11 23:47:00,623 [WARNING] [SCREENSHOT] Failed to capture screenshot: Message: invalid session id
+Stacktrace:
+	undetected_chromedriver!GetHandleVerifier [0x1161c33+4e33]
+	undetected_chromedriver!(No symbol) [0x107d154]
+	undetected_chromedriver!(No symbol) [0xebbeee]
+	undetected_chromedriver!(No symbol) [0xefb137]
+	undetected_chromedriver!(No symbol) [0xf29966]
+	undetected_chromedriver!(No symbol) [0xf24c63]
+	undetected_chromedriver!(No symbol) [0xf24630]
+	undetected_chromedriver!(No symbol) [0xe8ed01]
+	undetected_chromedriver!(No symbol) [0xe8f2a3]
+	undetected_chromedriver!(No symbol) [0xe8f7ed]
+	undetected_chromedriver!GetHandleVerifier [0x15c797a+46ab7a]
+	undetected_chromedriver!GetHandleVerifier [0x15e945b+48c65b]
+	undetected_chromedriver!GetHandleVerifier [0x1284282+127482]
+	undetected_chromedriver!GetHandleVerifier [0x128af93+12e193]
+	undetected_chromedriver!(No symbol) [0x108b278]
+	undetected_chromedriver!(No symbol) [0xe8e480]
+	undetected_chromedriver!(No symbol) [0xe8db72]
+	undetected_chromedriver!GetHandleVerifier [0x1644201+4e7401]
+	KERNEL32!BaseThreadInitThunk [0x763afcc9+19]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x774482ae+11e]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x7744827e+ee]
+
+2026-09-11 23:47:02,120 [ERROR] [ENGINE] Unhandled exception in run loop: 'BotLogger' object has no attribute 'debug'
+2026-09-11 23:47:02,121 [INFO] [ENGINE] Bot engine stopped cleanly.

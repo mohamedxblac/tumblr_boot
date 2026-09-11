@@ -1,0 +1,148 @@
+2026-09-11 03:52:19,689 [INFO] Round start — 1 accounts remaining
+2026-09-11 03:52:19,689 [INFO] kazoulayacine012@gmail.com | Sent:0 | Failed:0 | --- SESSION START ---
+2026-09-11 03:52:24,105 [INFO] patching driver executable C:\Users\mohamed\appdata\roaming\undetected_chromedriver\undetected_chromedriver.exe
+2026-09-11 03:52:43,782 [INFO] [UC] Login OK: kazoulayacine012@gmail.com
+2026-09-11 03:52:43,783 [INFO] [QUEUE] Master queue is low. Scraping target post for fresh users...
+2026-09-11 03:52:43,783 [INFO] [SCRAPER] Navigating to post: https://www.tumblr.com/hazard-symbols-that-fuck-hard/827145486405337088/fuck-marry-kill-the-grinch-the-cat-in-the-hat?source=share
+2026-09-11 03:52:55,029 [INFO] [SCRAPER] Clicked notes tab on article.
+2026-09-11 03:52:56,530 [INFO] [SCRAPER] Starting scoped top-to-bottom pagination (max target: 3000 users)...
+2026-09-11 03:52:56,545 [INFO] [SCRAPER] Scroll #1 | Master Queue: 49 users (+49 new)
+2026-09-11 03:52:58,848 [INFO] [SCRAPER] Scroll #2 | Master Queue: 50 users (+1 new)
+2026-09-11 03:53:01,045 [INFO] [SCRAPER] Scroll #3 | Master Queue: 50 users (+0 new)
+2026-09-11 03:53:03,208 [INFO] [SCRAPER] Scroll #4 | Master Queue: 51 users (+1 new)
+2026-09-11 03:53:04,738 [INFO] [SCRAPER] Scroll #5 | Master Queue: 51 users (+0 new)
+2026-09-11 03:53:06,284 [INFO] [SCRAPER] Scroll #6 | Master Queue: 52 users (+1 new)
+2026-09-11 03:53:08,052 [INFO] [SCRAPER] Scroll #7 | Master Queue: 53 users (+1 new)
+2026-09-11 03:53:09,627 [INFO] [SCRAPER] Scroll #8 | Master Queue: 54 users (+1 new)
+2026-09-11 03:53:11,149 [INFO] [SCRAPER] Scroll #9 | Master Queue: 55 users (+1 new)
+2026-09-11 03:53:12,668 [INFO] [SCRAPER] Scroll #10 | Master Queue: 56 users (+1 new)
+2026-09-11 03:53:14,224 [INFO] [SCRAPER] Scroll #11 | Master Queue: 57 users (+1 new)
+2026-09-11 03:53:15,746 [INFO] [SCRAPER] Scroll #12 | Master Queue: 57 users (+0 new)
+2026-09-11 03:53:17,266 [INFO] [SCRAPER] Scroll #13 | Master Queue: 58 users (+1 new)
+2026-09-11 03:53:18,810 [INFO] [SCRAPER] Scroll #14 | Master Queue: 58 users (+0 new)
+2026-09-11 03:53:20,706 [INFO] [SCRAPER] Scroll #15 | Master Queue: 59 users (+1 new)
+2026-09-11 03:53:22,233 [INFO] [SCRAPER] Scroll #16 | Master Queue: 59 users (+0 new)
+2026-09-11 03:53:23,924 [INFO] [SCRAPER] Scroll #17 | Master Queue: 60 users (+1 new)
+2026-09-11 03:53:27,067 [INFO] [SCRAPER] Scroll #18 | Master Queue: 60 users (+0 new)
+2026-09-11 03:53:28,685 [INFO] [SCRAPER] Scroll #19 | Master Queue: 61 users (+1 new)
+2026-09-11 03:53:30,357 [INFO] [SCRAPER] Scroll #20 | Master Queue: 62 users (+1 new)
+2026-09-11 03:53:31,876 [INFO] [SCRAPER] Scroll #21 | Master Queue: 63 users (+1 new)
+2026-09-11 03:53:33,398 [INFO] [SCRAPER] Scroll #22 | Master Queue: 63 users (+0 new)
+2026-09-11 03:53:34,921 [INFO] [SCRAPER] Scroll #23 | Master Queue: 64 users (+1 new)
+2026-09-11 03:53:36,478 [INFO] [SCRAPER] Scroll #24 | Master Queue: 65 users (+1 new)
+2026-09-11 03:53:38,034 [INFO] [SCRAPER] Scroll #25 | Master Queue: 66 users (+1 new)
+2026-09-11 03:53:39,588 [INFO] [SCRAPER] Scroll #26 | Master Queue: 66 users (+0 new)
+2026-09-11 03:53:41,153 [INFO] [SCRAPER] Scroll #27 | Master Queue: 66 users (+0 new)
+2026-09-11 03:53:42,673 [INFO] [SCRAPER] Scroll #28 | Master Queue: 66 users (+0 new)
+2026-09-11 03:53:44,580 [INFO] [SCRAPER] Scroll #29 | Master Queue: 66 users (+0 new)
+2026-09-11 03:53:46,145 [INFO] [SCRAPER] Scroll #30 | Master Queue: 66 users (+0 new)
+2026-09-11 03:53:47,667 [INFO] [SCRAPER] Scroll #31 | Master Queue: 67 users (+1 new)
+2026-09-11 03:53:49,187 [INFO] [SCRAPER] Scroll #32 | Master Queue: 67 users (+0 new)
+2026-09-11 03:53:50,711 [INFO] [SCRAPER] Scroll #33 | Master Queue: 67 users (+0 new)
+2026-09-11 03:53:52,230 [INFO] [SCRAPER] Scroll #34 | Master Queue: 67 users (+0 new)
+2026-09-11 03:53:53,786 [INFO] [SCRAPER] Scroll #35 | Master Queue: 67 users (+0 new)
+2026-09-11 03:53:55,378 [INFO] [SCRAPER] Scroll #36 | Master Queue: 68 users (+1 new)
+2026-09-11 03:53:56,946 [INFO] [SCRAPER] Scroll #37 | Master Queue: 69 users (+1 new)
+2026-09-11 03:53:58,466 [INFO] [SCRAPER] Scroll #38 | Master Queue: 69 users (+0 new)
+2026-09-11 03:54:00,020 [INFO] [SCRAPER] Scroll #39 | Master Queue: 70 users (+1 new)
+2026-09-11 03:54:01,578 [INFO] [SCRAPER] Scroll #40 | Master Queue: 71 users (+1 new)
+2026-09-11 03:54:03,136 [INFO] [SCRAPER] Scroll #41 | Master Queue: 71 users (+0 new)
+2026-09-11 03:54:04,664 [INFO] [SCRAPER] Scroll #42 | Master Queue: 72 users (+1 new)
+2026-09-11 03:54:06,236 [INFO] [SCRAPER] Scroll #43 | Master Queue: 72 users (+0 new)
+2026-09-11 03:54:07,793 [INFO] [SCRAPER] Scroll #44 | Master Queue: 72 users (+0 new)
+2026-09-11 03:54:09,336 [INFO] [SCRAPER] Scroll #45 | Master Queue: 72 users (+0 new)
+2026-09-11 03:54:10,910 [INFO] [SCRAPER] Scroll #46 | Master Queue: 72 users (+0 new)
+2026-09-11 03:54:12,463 [INFO] [SCRAPER] Scroll #47 | Master Queue: 72 users (+0 new)
+2026-09-11 03:54:13,989 [INFO] [SCRAPER] Scroll #48 | Master Queue: 72 users (+0 new)
+2026-09-11 03:54:15,518 [INFO] [SCRAPER] Scroll #49 | Master Queue: 73 users (+1 new)
+2026-09-11 03:54:17,079 [INFO] [SCRAPER] Scroll #50 | Master Queue: 73 users (+0 new)
+2026-09-11 03:54:18,610 [INFO] [SCRAPER] Scroll #51 | Master Queue: 74 users (+1 new)
+2026-09-11 03:54:20,177 [INFO] [SCRAPER] Scroll #52 | Master Queue: 74 users (+0 new)
+2026-09-11 03:54:21,741 [INFO] [SCRAPER] Scroll #53 | Master Queue: 74 users (+0 new)
+2026-09-11 03:54:23,259 [INFO] [SCRAPER] Scroll #54 | Master Queue: 74 users (+0 new)
+2026-09-11 03:54:24,835 [INFO] [SCRAPER] Scroll #55 | Master Queue: 74 users (+0 new)
+2026-09-11 03:54:26,378 [INFO] [SCRAPER] Scroll #56 | Master Queue: 74 users (+0 new)
+2026-09-11 03:54:27,910 [INFO] [SCRAPER] Scroll #57 | Master Queue: 74 users (+0 new)
+2026-09-11 03:54:29,475 [INFO] [SCRAPER] Scroll #58 | Master Queue: 75 users (+1 new)
+2026-09-11 03:54:31,007 [INFO] [SCRAPER] Scroll #59 | Master Queue: 76 users (+1 new)
+2026-09-11 03:54:32,682 [INFO] [SCRAPER] Scroll #60 | Master Queue: 76 users (+0 new)
+2026-09-11 03:54:34,217 [INFO] [SCRAPER] Scroll #61 | Master Queue: 77 users (+1 new)
+2026-09-11 03:54:35,803 [INFO] [SCRAPER] Scroll #62 | Master Queue: 78 users (+1 new)
+2026-09-11 03:54:37,364 [INFO] [SCRAPER] Scroll #63 | Master Queue: 79 users (+1 new)
+2026-09-11 03:54:38,924 [INFO] [SCRAPER] Scroll #64 | Master Queue: 80 users (+1 new)
+2026-09-11 03:54:40,504 [INFO] [SCRAPER] Scroll #65 | Master Queue: 80 users (+0 new)
+2026-09-11 03:54:42,033 [INFO] [SCRAPER] Scroll #66 | Master Queue: 80 users (+0 new)
+2026-09-11 03:54:43,555 [INFO] [SCRAPER] Scroll #67 | Master Queue: 80 users (+0 new)
+2026-09-11 03:54:45,100 [INFO] [SCRAPER] Scroll #68 | Master Queue: 80 users (+0 new)
+2026-09-11 03:54:46,669 [INFO] [SCRAPER] Scroll #69 | Master Queue: 80 users (+0 new)
+2026-09-11 03:54:48,196 [INFO] [SCRAPER] Scroll #70 | Master Queue: 80 users (+0 new)
+2026-09-11 03:54:49,753 [INFO] [SCRAPER] Scroll #71 | Master Queue: 80 users (+0 new)
+2026-09-11 03:54:51,291 [INFO] [SCRAPER] Scroll #72 | Master Queue: 81 users (+1 new)
+2026-09-11 03:54:52,859 [INFO] [SCRAPER] Scroll #73 | Master Queue: 81 users (+0 new)
+2026-09-11 03:54:54,380 [INFO] [SCRAPER] Scroll #74 | Master Queue: 82 users (+1 new)
+2026-09-11 03:54:55,900 [INFO] [SCRAPER] Scroll #75 | Master Queue: 83 users (+1 new)
+2026-09-11 03:54:57,433 [INFO] [SCRAPER] Scroll #76 | Master Queue: 84 users (+1 new)
+2026-09-11 03:54:58,965 [INFO] [SCRAPER] Scroll #77 | Master Queue: 86 users (+2 new)
+2026-09-11 03:54:59,858 [INFO] Round start — 1 accounts remaining
+2026-09-11 03:54:59,859 [INFO] kazoulayacine012@gmail.com | Sent:0 | Failed:0 | --- SESSION START ---
+2026-09-11 03:55:00,536 [INFO] [SCRAPER] Scroll #78 | Master Queue: 87 users (+1 new)
+2026-09-11 03:55:02,118 [INFO] [SCRAPER] Scroll #79 | Master Queue: 88 users (+1 new)
+2026-09-11 03:55:03,688 [INFO] [SCRAPER] Scroll #80 | Master Queue: 89 users (+1 new)
+2026-09-11 03:55:05,323 [INFO] [SCRAPER] Scroll #81 | Master Queue: 90 users (+1 new)
+2026-09-11 03:55:06,844 [INFO] [SCRAPER] Scroll #82 | Master Queue: 91 users (+1 new)
+2026-09-11 03:55:08,377 [INFO] [SCRAPER] Scroll #83 | Master Queue: 92 users (+1 new)
+2026-09-11 03:55:09,899 [INFO] [SCRAPER] Scroll #84 | Master Queue: 92 users (+0 new)
+2026-09-11 03:55:11,438 [INFO] [SCRAPER] Scroll #85 | Master Queue: 93 users (+1 new)
+2026-09-11 03:55:12,957 [INFO] [SCRAPER] Scroll #86 | Master Queue: 93 users (+0 new)
+2026-09-11 03:55:14,962 [INFO] [SCRAPER] Scroll #87 | Master Queue: 93 users (+0 new)
+2026-09-11 03:55:16,629 [INFO] [SCRAPER] Scroll #88 | Master Queue: 93 users (+0 new)
+2026-09-11 03:55:18,193 [INFO] [SCRAPER] Scroll #89 | Master Queue: 93 users (+0 new)
+2026-09-11 03:55:19,799 [INFO] [SCRAPER] Scroll #90 | Master Queue: 93 users (+0 new)
+2026-09-11 03:55:21,324 [INFO] [SCRAPER] Scroll #91 | Master Queue: 93 users (+0 new)
+2026-09-11 03:55:22,853 [INFO] [SCRAPER] Scroll #92 | Master Queue: 93 users (+0 new)
+2026-09-11 03:55:24,412 [INFO] [SCRAPER] Scroll #93 | Master Queue: 93 users (+0 new)
+2026-09-11 03:55:26,041 [INFO] [SCRAPER] Master list gathered: 93 users in 149 seconds (top-to-bottom).
+2026-09-11 03:55:26,043 [INFO] [kazoulayacine012@gmail.com] Ready! Processing up to 15 users in this open browser session...
+2026-09-11 03:55:59,716 [INFO] [UC] Login OK: kazoulayacine012@gmail.com
+2026-09-11 03:55:59,716 [INFO] [QUEUE] Master queue is low. Scraping target post for fresh users...
+2026-09-11 03:55:59,716 [INFO] [SCRAPER] Navigating to post: https://www.tumblr.com/hazard-symbols-that-fuck-hard/827145486405337088/fuck-marry-kill-the-grinch-the-cat-in-the-hat?source=share
+2026-09-11 03:56:05,764 [INFO] kazoulayacine012@gmail.com | Sent:1 | Failed:0 | sent_ok | user=impala-tardisluver2024 | session=1/15 | total=1/30
+2026-09-11 03:56:07,965 [INFO] [WAIT] 116s in open browser before next user...
+2026-09-11 03:56:08,678 [INFO] [SCRAPER] Clicked notes tab on article.
+2026-09-11 03:56:10,179 [INFO] [SCRAPER] Starting scoped top-to-bottom pagination (max target: 3000 users)...
+2026-09-11 03:56:10,189 [INFO] [SCRAPER] Scroll #1 | Master Queue: 49 users (+49 new)
+2026-09-11 03:56:12,507 [INFO] [SCRAPER] Scroll #2 | Master Queue: 50 users (+1 new)
+2026-09-11 03:56:14,677 [INFO] [SCRAPER] Scroll #3 | Master Queue: 50 users (+0 new)
+2026-09-11 03:56:16,850 [INFO] [SCRAPER] Scroll #4 | Master Queue: 51 users (+1 new)
+2026-09-11 03:56:18,371 [INFO] [SCRAPER] Scroll #5 | Master Queue: 51 users (+0 new)
+2026-09-11 03:56:19,900 [INFO] [SCRAPER] Scroll #6 | Master Queue: 52 users (+1 new)
+2026-09-11 03:56:21,419 [INFO] [SCRAPER] Scroll #7 | Master Queue: 53 users (+1 new)
+2026-09-11 03:56:22,948 [INFO] [SCRAPER] Scroll #8 | Master Queue: 54 users (+1 new)
+2026-09-11 03:56:24,499 [INFO] [SCRAPER] Scroll #9 | Master Queue: 55 users (+1 new)
+2026-09-11 03:56:26,042 [INFO] [SCRAPER] Scroll #10 | Master Queue: 56 users (+1 new)
+2026-09-11 03:56:27,582 [INFO] [SCRAPER] Scroll #11 | Master Queue: 57 users (+1 new)
+2026-09-11 03:56:29,151 [INFO] [SCRAPER] Scroll #12 | Master Queue: 57 users (+0 new)
+2026-09-11 03:56:30,676 [INFO] [SCRAPER] Scroll #13 | Master Queue: 58 users (+1 new)
+2026-09-11 03:56:33,119 [INFO] [SCRAPER] Scroll #14 | Master Queue: 59 users (+1 new)
+2026-09-11 03:56:34,676 [INFO] [SCRAPER] Scroll #15 | Master Queue: 59 users (+0 new)
+2026-09-11 03:56:36,239 [INFO] [SCRAPER] Scroll #16 | Master Queue: 60 users (+1 new)
+2026-09-11 03:56:37,781 [INFO] [SCRAPER] Scroll #17 | Master Queue: 61 users (+1 new)
+2026-09-11 03:56:40,004 [INFO] [SCRAPER] Scroll #18 | Master Queue: 62 users (+1 new)
+2026-09-11 03:56:42,149 [INFO] [SCRAPER] Scroll #19 | Master Queue: 62 users (+0 new)
+2026-09-11 03:56:44,282 [INFO] [SCRAPER] Scroll #20 | Master Queue: 62 users (+0 new)
+2026-09-11 03:56:46,420 [INFO] [SCRAPER] Scroll #21 | Master Queue: 62 users (+0 new)
+2026-09-11 03:56:48,557 [INFO] [SCRAPER] Scroll #22 | Master Queue: 62 users (+0 new)
+2026-09-11 03:56:50,695 [INFO] [SCRAPER] Scroll #23 | Master Queue: 62 users (+0 new)
+2026-09-11 03:56:52,830 [INFO] [SCRAPER] Scroll #24 | Master Queue: 62 users (+0 new)
+2026-09-11 03:56:54,968 [INFO] [SCRAPER] Scroll #25 | Master Queue: 62 users (+0 new)
+2026-09-11 03:56:57,106 [INFO] [SCRAPER] Scroll #26 | Master Queue: 62 users (+0 new)
+2026-09-11 03:56:59,237 [INFO] [SCRAPER] Master list gathered: 62 users in 49 seconds (top-to-bottom).
+2026-09-11 03:56:59,238 [INFO] [kazoulayacine012@gmail.com] Ready! Processing up to 15 users in this open browser session...
+2026-09-11 03:57:39,944 [INFO] kazoulayacine012@gmail.com | Sent:1 | Failed:0 | sent_ok | user=i-maybe-exist | session=1/15 | total=1/30
+2026-09-11 03:57:42,145 [INFO] [WAIT] 90s in open browser before next user...
+2026-09-11 03:58:55,919 [INFO] kazoulayacine012@gmail.com | Sent:1 | Failed:0 | could_not_send
+2026-09-11 03:58:55,919 [INFO] kazoulayacine012@gmail.com | ===SUMMARY=== | Sent:1 | Failed:0 | could_not_send
+2026-09-11 03:59:08,865 [WARNING] [UC] Logout did not complete cleanly.
+2026-09-11 03:59:12,254 [INFO] Round complete. Sleeping 12h before next round...
+2026-09-11 03:59:38,823 [INFO] kazoulayacine012@gmail.com | Sent:1 | Failed:1 | no_msg_button streak=1/10 user=the-cat-queen-peasants
+2026-09-11 03:59:38,823 [INFO] [WAIT] 76s in open browser before next user...

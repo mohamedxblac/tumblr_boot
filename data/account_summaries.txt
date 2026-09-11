@@ -1,0 +1,2 @@
+2026-09-11 23:40:21 | kazoulayacine012@gmail.com | Sent:1 | Failed:0 | session_exception: 'BotLogger' object has no attribute 'debug'
+2026-09-11 23:47:00 | kazoulayacine012@gmail.com | Sent:1 | Failed:0 | session_exception: 'BotLogger' object has no attribute 'debug'
