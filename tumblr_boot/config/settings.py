@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 import os
 import json
+import logging
+
+_logger = logging.getLogger(__name__)
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA_DIR = os.path.join(BASE_DIR, "data")
@@ -68,6 +71,28 @@ DEFAULT_MESSAGES = [
         "Your kindness and support could give my family hope during this "
         "heartbreaking time. Thank you for reading my story."
     ),
+    (
+        "I am reaching out with a heavy heart to ask for support for my family. "
+        "My name is Wedad, and we are a family of 7 living under extremely harsh conditions. "
+        "Having lost our home, we currently shelter in a fragile tent with very little warmth or protection. "
+        "Access to basic food and clean water has become a daily struggle for all of us.\n\n"
+        "Both my sick mother and young sister Mira require ongoing medical attention and treatments "
+        "that are simply out of our reach right now. It is deeply painful seeing loved ones in pain without "
+        "the resources to ease their burden.\n\n"
+        "Any assistance or donation, no matter how modest, directly helps us secure food rations "
+        "and essential medical supplies. If contributing is not possible, sharing our message is equally meaningful. "
+        "Thank you from the bottom of my heart for your compassion and time."
+    ),
+    (
+        "Please take a moment to read our urgent plea. My name is Wedad, writing on behalf "
+        "of my displaced family of 7. Ever since our house was ruined, survival has been an ongoing challenge. "
+        "Food shortages are severe, and our living quarters offer almost no shield against the cold.\n\n"
+        "Compounding our crisis, my mother and my little sister Mira are ill and in desperate need "
+        "of pharmaceutical care and doctor visits. Without timely medical relief, their health continues to decline.\n\n"
+        "If you have the means to assist, your generosity will go directly towards meals and life-saving care. "
+        "Even simply forwarding or sharing this appeal brings us closer to safety and comfort. "
+        "We are truly grateful for any empathy and support you can offer."
+    ),
 ]
 
 DEFAULT_GREETINGS = [
@@ -131,9 +156,14 @@ class SettingsManager:
     def get_messages(self) -> list:
         return list(self._messages)
 
-    def update_messages(self, messages: list):
+    def update_messages(self, messages: list) -> bool:
         self._messages = list(messages)
-        self._save_messages()
+        return self._save_messages()
+
+    def update_messages_and_greetings(self, messages: list, greetings: list) -> bool:
+        self._messages = list(messages)
+        self._greetings = list(greetings)
+        return self._save_messages()
 
     @property
     def messages(self):
@@ -214,15 +244,19 @@ class SettingsManager:
                         self._messages = data["messages"]
                     if "greetings" in data and isinstance(data["greetings"], list):
                         self._greetings = data["greetings"]
-            except Exception:
-                pass
+            except Exception as e:
+                _logger.error("Failed to load messages from %s: %s", MESSAGES_FILE, e)
 
-    def _save_messages(self):
+    def _save_messages(self) -> bool:
+        """Save messages and greetings to disk. Returns True on success."""
         try:
+            os.makedirs(DATA_DIR, exist_ok=True)
             with open(MESSAGES_FILE, "w", encoding="utf-8") as f:
                 json.dump(
                     {"messages": self._messages, "greetings": self._greetings},
                     f, ensure_ascii=False, indent=2,
                 )
-        except Exception:
-            pass
+            return True
+        except Exception as e:
+            _logger.error("Failed to save messages to %s: %s", MESSAGES_FILE, e)
+            return False

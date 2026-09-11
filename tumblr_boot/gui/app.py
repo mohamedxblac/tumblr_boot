@@ -162,10 +162,12 @@ class TumblrBotApp(tk.Tk):
         self.notebook.pack(fill="both", expand=True, padx=10, pady=(10, 0))
 
         # Instantiate tabs
+        self.tab_messages = MessagesTab(self.notebook, settings_mgr=self.settings_mgr)
         self.tab_runner = RunnerTab(
             self.notebook,
             engine=self.engine,
             on_timing_saved=self._on_settings_saved,
+            on_pre_start=lambda: self.tab_messages.save_data(silent=True),
         )
         self.tab_accounts = AccountsTab(self.notebook, settings_mgr=self.settings_mgr)
         self.tab_settings = SettingsTab(
@@ -173,7 +175,6 @@ class TumblrBotApp(tk.Tk):
             settings_mgr=self.settings_mgr,
             on_save_callback=self._on_settings_saved
         )
-        self.tab_messages = MessagesTab(self.notebook, settings_mgr=self.settings_mgr)
         self.tab_stats = StatsTab(self.notebook, settings_mgr=self.settings_mgr)
 
         # Add tabs in preferred logical order
@@ -265,7 +266,12 @@ class TumblrBotApp(tk.Tk):
             self.after(100, self._poll_queue)
 
     def on_closing(self):
-        """Safely stops the engine before exiting."""
+        """Safely stops the engine and auto-saves message templates before exiting."""
+        try:
+            self.tab_messages.save_data(silent=True)
+        except Exception:
+            pass
+
         if self.engine.is_running:
             if messagebox.askyesno(
                 "Bot Running",

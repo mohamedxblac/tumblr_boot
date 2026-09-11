@@ -89,6 +89,12 @@ class MessagesTab(ttk.Frame):
         msg_canvas.pack(side="left", fill="both", expand=True)
         msg_scroll.pack(side="right", fill="y")
 
+        def _on_mousewheel(event):
+            msg_canvas.yview_scroll(int(-1 * (event.delta / 120)), "units")
+
+        msg_canvas.bind("<Enter>", lambda _: msg_canvas.bind_all("<MouseWheel>", _on_mousewheel))
+        msg_canvas.bind("<Leave>", lambda _: msg_canvas.unbind_all("<MouseWheel>"))
+
         for index in range(MESSAGE_SLOT_COUNT):
             row = ttk.Frame(msg_list)
             row.pack(fill="x", pady=(2, 7), padx=(0, 6))
@@ -183,7 +189,9 @@ class MessagesTab(ttk.Frame):
         for index, field in enumerate(self.message_texts):
             field.delete("1.0", "end")
             if index < len(messages):
-                field.insert("1.0", messages[index])
+                val = messages[index]
+                if val:
+                    field.insert("1.0", val)
             field.edit_modified(False)
 
         for i, var in enumerate(self.greeting_vars):
@@ -238,36 +246,61 @@ class MessagesTab(ttk.Frame):
         self.preview_text.insert("1.0", preview_content)
         self.preview_text.configure(state="disabled")
 
-    def save_data(self):
-        messages = [message for message in self._messages_by_slot() if message]
+    def save_data(self, silent: bool = False) -> bool:
+        """Saves all 15 message slots and greetings to disk.
 
-        if len(messages) < 2:
-            messagebox.showwarning(
-                "More Variations Required",
-                "Please enter at least two different message bodies before saving.",
-            )
-            return
+        Preserves slot positions and saves even if only 1 variation is entered
+        (with a clear warning that the bot engine requires at least 2 distinct
+        variations to run safely without trigger spam filters).
+        """
+        raw_slots = self._messages_by_slot()
+        filled_messages = [message for message in raw_slots if message]
+        distinct_messages = list(dict.fromkeys(filled_messages))
 
-        if len(set(messages)) != len(messages):
-            messagebox.showwarning(
-                "Duplicate Messages",
-                "Each filled message field must contain different text.",
-            )
-            return
+        if not filled_messages:
+            if not silent:
+                messagebox.showwarning(
+                    "Empty Messages",
+                    "Please enter at least one message body before saving.",
+                )
+            return False
 
         greetings = [v.get().strip() for v in self.greeting_vars if v.get().strip()]
         if not greetings:
-            messagebox.showwarning("Empty Greetings", "Please enter at least one greeting.")
-            return
+            if not silent:
+                messagebox.showwarning("Empty Greetings", "Please enter at least one greeting.")
+            return False
 
-        self.settings_mgr.update_messages(messages)
-        self.settings_mgr.update_greetings(greetings)
-        messagebox.showinfo("Saved", "Messages and greetings saved successfully!")
+        saved_ok = self.settings_mgr.update_messages_and_greetings(raw_slots, greetings)
+
+        if not saved_ok:
+            if not silent:
+                messagebox.showerror(
+                    "Save Failed",
+                    "Messages could NOT be written to disk.\n"
+                    "Check file permissions for the data/ folder.",
+                )
+            return False
+
+        if not silent:
+            if len(distinct_messages) < 2:
+                messagebox.showwarning(
+                    "Saved (Warning)",
+                    f"Saved {len(filled_messages)} message(s) and {len(greetings)} greeting(s) successfully.\n\n"
+                    "⚠️ Note: The Bot requires at least 2 DIFFERENT message variations before it can start sending.",
+                )
+            else:
+                messagebox.showinfo(
+                    "Saved Successfully",
+                    f"{len(filled_messages)} message(s) ({len(distinct_messages)} distinct) and "
+                    f"{len(greetings)} greeting(s) saved successfully!",
+                )
+
         self.update_preview()
+        return True
 
     def reset_defaults(self):
         if messagebox.askyesno("Reset", "Reset messages and greetings to original defaults?"):
-            self.settings_mgr.update_messages(DEFAULT_MESSAGES)
-            self.settings_mgr.update_greetings(DEFAULT_GREETINGS)
+            self.settings_mgr.update_messages_and_greetings(DEFAULT_MESSAGES, DEFAULT_GREETINGS)
             self.load_data()
             messagebox.showinfo("Reset", "Restored default messages and greetings.")

@@ -19,10 +19,11 @@ from config.settings import LOG_FILE
 class RunnerTab(ttk.Frame):
     """Tab for controlling bot execution and observing live operation logs."""
 
-    def __init__(self, parent, engine: BotEngine, on_timing_saved: Callable = None):
+    def __init__(self, parent, engine: BotEngine, on_timing_saved: Callable = None, on_pre_start: Callable = None):
         super().__init__(parent, padding=16)
         self.engine = engine
         self.on_timing_saved = on_timing_saved
+        self.on_pre_start = on_pre_start
         self.timing_vars = {}
         self.parallel_var = tk.StringVar(value="1")
 
@@ -163,6 +164,11 @@ class RunnerTab(ttk.Frame):
 
     # ── Button Handlers ──
     def on_start(self):
+        if callable(self.on_pre_start):
+            try:
+                self.on_pre_start()
+            except Exception:
+                pass
         try:
             parallel_accounts = int(self.parallel_var.get())
         except ValueError:

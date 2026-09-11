@@ -24,6 +24,9 @@ from config.settings import (
     TARGET_QUEUE_FILE,
     PROGRESS_FILE,
     DEFAULT_SETTINGS,
+    MESSAGES_FILE,
+    DEFAULT_MESSAGES,
+    DEFAULT_GREETINGS,
 )
 from gui.app import TumblrBotApp
 
@@ -64,6 +67,17 @@ def bootstrap_data():
         try:
             with open(SETTINGS_FILE, "w", encoding="utf-8") as f:
                 json.dump(settings, f, indent=2, ensure_ascii=False)
+        except Exception:
+            pass
+
+    # 4. Bootstrap messages.json if not present
+    if not os.path.exists(MESSAGES_FILE):
+        try:
+            with open(MESSAGES_FILE, "w", encoding="utf-8") as f:
+                json.dump(
+                    {"messages": DEFAULT_MESSAGES, "greetings": DEFAULT_GREETINGS},
+                    f, indent=2, ensure_ascii=False,
+                )
         except Exception:
             pass
 

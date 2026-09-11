@@ -261,3 +261,14 @@ Stacktrace:
 2026-09-12 02:21:55,801 [ERROR] [ENGINE] At least two different message templates are required!
 2026-09-12 02:21:55,801 [INFO] [ENGINE] Bot engine started.
 2026-09-12 02:21:55,802 [INFO] [ENGINE] Bot engine stopped cleanly.
+2026-09-12 02:22:47,237 [ERROR] [ENGINE] At least two different message templates are required!
+2026-09-12 02:22:47,237 [INFO] [ENGINE] Bot engine started.
+2026-09-12 02:22:47,237 [INFO] [ENGINE] Bot engine stopped cleanly.
+2026-09-12 02:40:43,621 [INFO] [ENGINE] Bot engine started.
+2026-09-12 02:40:43,625 [INFO] [ENGINE] Starting round with 2 pending accounts across 1 parallel browser(s)...
+2026-09-12 02:40:52,312 [INFO] [BROWSER] Chrome launched | Profile: NATIVE | Res: 1280x900 | TZ: system
+2026-09-12 02:40:52,313 [INFO] [AUTH] Attempting login for kazoulayacine012@gmail.com (attempt 1/2)...
+2026-09-12 02:41:01,873 [INFO] [AUTH] Login SUCCESSFUL: kazoulayacine012@gmail.com (9.6s)
+2026-09-12 02:41:01,876 [INFO] [kazoulayacine012@gmail.com] Ready! Processing up to 15 users in this session...
+2026-09-12 02:41:28,157 [INFO] kazoulayacine012@gmail.com | Sent:3 | Failed:1 | no_msg_button streak=1/10 user=robster08
+2026-09-12 02:45:03,308 [INFO] kazoulayacine012@gmail.com | Sent:4 | Failed:1 | sent_ok | user=amber-vulpes | session=1/15 | total=4/30
