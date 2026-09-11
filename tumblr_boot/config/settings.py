@@ -8,6 +8,7 @@ os.makedirs(DATA_DIR, exist_ok=True)
 os.makedirs(os.path.join(DATA_DIR, "error_screenshots"), exist_ok=True)
 
 SENT_USERS_FILE = os.path.join(DATA_DIR, "sent_users.txt")
+CONTACT_HISTORY_FILE = os.path.join(DATA_DIR, "contact_history.sqlite3")
 LOG_FILE = os.path.join(DATA_DIR, "account_logs.txt")
 SUMMARY_FILE = os.path.join(DATA_DIR, "account_summaries.txt")
 PROGRESS_FILE = os.path.join(DATA_DIR, "account_progress.json")

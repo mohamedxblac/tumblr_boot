@@ -130,15 +130,8 @@ def send_message_to_user(
             type_message_safely(input_box, msg, action_delay=action_delay)
             time.sleep(action_delay)
             input_box.send_keys(Keys.ENTER)
-
-            try:
-                sb = driver.find_element(
-                    By.XPATH, "//button[contains(@aria-label,'Send') or contains(.,'Send')]"
-                )
-                if sb.is_displayed():
-                    driver.execute_script("arguments[0].click();", sb)
-            except Exception:
-                pass
+            # Use one submit action. Clicking Send again can submit twice when
+            # the input has not yet cleared after Enter.
 
             time.sleep(line_delay)
 

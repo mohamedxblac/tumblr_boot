@@ -30,12 +30,12 @@ class SettingsTab(ttk.Frame):
         header_frame.pack(fill="x", pady=(0, 12))
         ttk.Label(
             header_frame,
-            text="⚙ Bot Configuration & Settings",
+            text="Bot Configuration & Settings",
             font=("Segoe UI", 14, "bold"),
         ).pack(side="left")
 
         # Scrollable Canvas container for all settings cards
-        canvas = tk.Canvas(self, borderwidth=0, highlightthickness=0)
+        canvas = tk.Canvas(self, background="#181825", borderwidth=0, highlightthickness=0)
         scrollbar = ttk.Scrollbar(self, orient="vertical", command=canvas.yview)
         scrollable_frame = ttk.Frame(canvas)
 
@@ -43,14 +43,15 @@ class SettingsTab(ttk.Frame):
             "<Configure>",
             lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
         )
-        canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
+        content_window = canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
+        canvas.bind("<Configure>", lambda event: canvas.itemconfigure(content_window, width=event.width))
         canvas.configure(yscrollcommand=scrollbar.set)
 
         canvas.pack(side="left", fill="both", expand=True)
         scrollbar.pack(side="right", fill="y")
 
         # ── 1. Target Post & Interaction Type Card ──
-        card1 = ttk.LabelFrame(scrollable_frame, text="🎯 Target Post & Mode", padding=12)
+        card1 = ttk.LabelFrame(scrollable_frame, text="Target Post & Mode", padding=12)
         card1.pack(fill="x", pady=6, padx=4)
 
         self._add_row(card1, "post_url", "Target Post URL:", "https://www.tumblr.com/username/123456789/post-slug", width=60)
@@ -71,7 +72,7 @@ class SettingsTab(ttk.Frame):
         self.entries["tab_type"] = self.tab_type_var
 
         # ── 2. Account Limits & Safety Caps ──
-        card2 = ttk.LabelFrame(scrollable_frame, text="🛡 Account Limits & Safety Caps", padding=12)
+        card2 = ttk.LabelFrame(scrollable_frame, text="Account Limits & Safety Caps", padding=12)
         card2.pack(fill="x", pady=6, padx=4)
 
         self._add_row(card2, "max_success_per_account", "Max Success Per Account (Lifetime):", "30", is_int=True)
@@ -80,7 +81,7 @@ class SettingsTab(ttk.Frame):
         self._add_row(card2, "start_account_index", "Start From Account # (1-indexed):", "1", is_int=True)
 
         # ── 3. Timing & Human Jitter (Seconds) ──
-        card3 = ttk.LabelFrame(scrollable_frame, text="⏱ Human Delays & Jitter (Seconds)", padding=12)
+        card3 = ttk.LabelFrame(scrollable_frame, text="Human Delays & Jitter (Seconds)", padding=12)
         card3.pack(fill="x", pady=6, padx=4)
 
         self._add_row(card3, "action_delay", "Delay Between UI Actions (sec):", "0.5", is_float=True)
@@ -92,7 +93,7 @@ class SettingsTab(ttk.Frame):
         self._add_row(card3, "sleep_between_rounds_hrs", "Sleep Between Full Rounds (Hours):", "12", is_float=True)
 
         # ── 4. Scraper & Behavior ──
-        card4 = ttk.LabelFrame(scrollable_frame, text="🔍 Scraper & Follow Settings", padding=12)
+        card4 = ttk.LabelFrame(scrollable_frame, text="Scraper & Follow Settings", padding=12)
         card4.pack(fill="x", pady=6, padx=4)
 
         self._add_row(card4, "notes_max_users", "Max Users to Scrape from Post:", "3000", is_int=True)
@@ -101,7 +102,7 @@ class SettingsTab(ttk.Frame):
         self._add_row(card4, "follow_every_n", "Follow Every N Users (0 = Disabled):", "4", is_int=True)
 
         # ── 5. Stealth & Fingerprint Rotation ──
-        card5 = ttk.LabelFrame(scrollable_frame, text="🕵 Stealth & Anti-Detection", padding=12)
+        card5 = ttk.LabelFrame(scrollable_frame, text="Stealth & Anti-Detection", padding=12)
         card5.pack(fill="x", pady=6, padx=4)
 
         self.fp_rotation_var = tk.BooleanVar(value=True)
@@ -117,10 +118,10 @@ class SettingsTab(ttk.Frame):
         btn_frame = ttk.Frame(scrollable_frame)
         btn_frame.pack(fill="x", pady=16)
 
-        save_btn = ttk.Button(btn_frame, text="💾 Save Settings", command=self.save_values)
+        save_btn = ttk.Button(btn_frame, text="Save Settings", command=self.save_values)
         save_btn.pack(side="left", padx=6)
 
-        reset_btn = ttk.Button(btn_frame, text="🔄 Reset to Defaults", command=self.reset_defaults)
+        reset_btn = ttk.Button(btn_frame, text="Reset to Defaults", command=self.reset_defaults)
         reset_btn.pack(side="left", padx=6)
 
     def _add_row(self, parent, key: str, label_text: str, default_val: str, width: int = 24, is_int: bool = False, is_float: bool = False):
@@ -128,7 +129,7 @@ class SettingsTab(ttk.Frame):
         row.pack(fill="x", pady=4)
         ttk.Label(row, text=label_text, width=34, anchor="w").pack(side="left")
         var = tk.StringVar(value=str(default_val))
-        entry = ttk.Entry(row, textvariable=var, width=width)
+        entry = ttk.Entry(row, textvariable=var, width=width, style="Timing.TEntry" if is_float else "TEntry")
         entry.pack(side="left", fill="x", expand=(width > 30))
         self.entries[key] = var
 

@@ -35,12 +35,12 @@ class AccountsTab(ttk.Frame):
         header.pack(fill="x", pady=(0, 10))
         ttk.Label(
             header,
-            text="👥 Accounts Management",
+            text="Accounts Management",
             font=("Segoe UI", 14, "bold")
         ).pack(side="left")
 
         # ── Add Account Form ──
-        add_frame = ttk.LabelFrame(self, text="➕ Add New Account", padding=10)
+        add_frame = ttk.LabelFrame(self, text="Add New Account", padding=10)
         add_frame.pack(fill="x", pady=(0, 12))
 
         ttk.Label(add_frame, text="Email:").pack(side="left", padx=(0, 4))
@@ -85,11 +85,11 @@ class AccountsTab(ttk.Frame):
         btn_bar = ttk.Frame(self)
         btn_bar.pack(fill="x", pady=(10, 0))
 
-        ttk.Button(btn_bar, text="🗑 Delete Selected", command=self.delete_selected).pack(side="left", padx=4)
-        ttk.Button(btn_bar, text="👁 Toggle Passwords", command=self.toggle_passwords).pack(side="left", padx=4)
-        ttk.Button(btn_bar, text="📂 Import from File", command=self.import_accounts).pack(side="left", padx=4)
-        ttk.Button(btn_bar, text="💾 Export to TXT", command=self.export_accounts).pack(side="left", padx=4)
-        ttk.Button(btn_bar, text="🔄 Refresh", command=self.refresh_accounts).pack(side="left", padx=4)
+        ttk.Button(btn_bar, text="Delete Selected", command=self.delete_selected).pack(side="left", padx=4)
+        ttk.Button(btn_bar, text="Toggle Passwords", command=self.toggle_passwords).pack(side="left", padx=4)
+        ttk.Button(btn_bar, text="Import from File", command=self.import_accounts).pack(side="left", padx=4)
+        ttk.Button(btn_bar, text="Export to TXT", command=self.export_accounts).pack(side="left", padx=4)
+        ttk.Button(btn_bar, text="Refresh", command=self.refresh_accounts).pack(side="left", padx=4)
 
     def refresh_accounts(self):
         """Reloads accounts and current sent counts into Treeview."""
@@ -107,7 +107,7 @@ class AccountsTab(ttk.Frame):
             sent_count = progress.get(email, 0)
 
             if sent_count >= max_quota:
-                status = "✔ Target Reached"
+                status = "Target Reached"
             elif sent_count > 0:
                 status = f"In Progress ({sent_count}/{max_quota})"
             else:

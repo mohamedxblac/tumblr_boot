@@ -33,7 +33,7 @@ class MessagesTab(ttk.Frame):
         header.pack(fill="x", pady=(0, 10))
         ttk.Label(
             header,
-            text="✉ Message & Greeting Templates",
+            text="Message & Greeting Templates",
             font=("Segoe UI", 14, "bold")
         ).pack(side="left")
 
@@ -47,7 +47,7 @@ class MessagesTab(ttk.Frame):
         paned.add(right_frame, weight=2)
 
         # ── 1. Base Message Editor (Left) ──
-        msg_frame = ttk.LabelFrame(left_frame, text="📝 Main Message Body", padding=8)
+        msg_frame = ttk.LabelFrame(left_frame, text="Main Message Body", padding=8)
         msg_frame.pack(fill="both", expand=True, pady=(0, 8))
 
         ttk.Label(
@@ -65,7 +65,7 @@ class MessagesTab(ttk.Frame):
         self.msg_text.bind("<KeyRelease>", lambda e: self.update_preview())
 
         # ── 2. Greetings Editor (Left) ──
-        greet_frame = ttk.LabelFrame(left_frame, text="👋 Greetings (Rotated per user)", padding=8)
+        greet_frame = ttk.LabelFrame(left_frame, text="Greetings (Rotated per user)", padding=8)
         greet_frame.pack(fill="x", pady=(0, 8))
 
         self.greeting_vars = []
@@ -82,11 +82,11 @@ class MessagesTab(ttk.Frame):
         # ── 3. Action Buttons (Left) ──
         btn_bar = ttk.Frame(left_frame)
         btn_bar.pack(fill="x", pady=4)
-        ttk.Button(btn_bar, text="💾 Save Changes", command=self.save_data).pack(side="left", padx=4)
-        ttk.Button(btn_bar, text="🔄 Reset Defaults", command=self.reset_defaults).pack(side="left", padx=4)
+        ttk.Button(btn_bar, text="Save Changes", command=self.save_data).pack(side="left", padx=4)
+        ttk.Button(btn_bar, text="Reset Defaults", command=self.reset_defaults).pack(side="left", padx=4)
 
         # ── 4. Live Message Preview (Right) ──
-        prev_frame = ttk.LabelFrame(right_frame, text="👁 Live Recipient Preview (@sample_user)", padding=10)
+        prev_frame = ttk.LabelFrame(right_frame, text="Live Recipient Preview (@sample_user)", padding=10)
         prev_frame.pack(fill="both", expand=True)
 
         self.preview_text = tk.Text(
@@ -130,9 +130,9 @@ class MessagesTab(ttk.Frame):
         parts = compose_message_parts(username="sample_user", base_message=base_msg, greeting=greeting, index=0)
 
         preview_content = (
-            f"📨 [Line 1 — Salutation]:\n{parts[0]}\n\n"
-            f"🤝 [Line 2 — Personalized Greeting]:\n{parts[1]}\n\n"
-            f"📖 [Line 3 — Message Body]:\n{parts[2]}"
+            f"[Line 1 — Salutation]:\n{parts[0]}\n\n"
+            f"[Line 2 — Personalized Greeting]:\n{parts[1]}\n\n"
+            f"[Line 3 — Message Body]:\n{parts[2]}"
         )
 
         self.preview_text.configure(state="normal")

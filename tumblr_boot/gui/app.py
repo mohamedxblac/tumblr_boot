@@ -98,6 +98,21 @@ class TumblrBotApp(tk.Tk):
         # Entry & Combobox
         style.configure("TEntry", fieldbackground=bg_input, foreground=fg_text, padding=4, relief="flat")
         style.configure("TCombobox", fieldbackground=bg_input, foreground=fg_text, padding=3)
+        style.map("TCombobox", fieldbackground=[("readonly", bg_input)], foreground=[("readonly", fg_text)])
+
+        # Explicit input colors also apply while focused, selected or disabled.
+        for input_style in ("Timing.TSpinbox", "Timing.TEntry"):
+            style.configure(
+                input_style, fieldbackground="#ffffff", foreground="#000000",
+                insertcolor="#000000", selectbackground="#cfe2ff",
+                selectforeground="#000000", padding=4,
+            )
+            style.map(
+                input_style,
+                fieldbackground=[("disabled", "#ffffff"), ("!disabled", "#ffffff")],
+                foreground=[("disabled", "#000000"), ("!disabled", "#000000")],
+                selectforeground=[("!disabled", "#000000")],
+            )
 
         # Notebook (Tabs)
         style.configure("TNotebook", background=bg_dark, borderwidth=0)

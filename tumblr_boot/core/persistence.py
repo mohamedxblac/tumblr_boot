@@ -5,19 +5,28 @@ import tempfile
 from typing import Set, List, Dict
 
 from config.settings import (
+    BASE_DIR,
+    CONTACT_HISTORY_FILE,
     SENT_USERS_FILE,
     TARGET_QUEUE_FILE,
     PROGRESS_FILE,
     SUMMARY_FILE,
 )
-from utils.helpers import extract_username
 from utils.logger import logger
+from core.contact_history import ContactHistory, ContactHistoryError, normalize_recipient
 
 
 # فئة إدارة حفظ وقراءة قوائم المستخدمين وطابور الأهداف وسجل تقدم الحسابات بأمان
 class PersistenceManager:
     def __init__(self):
         self._ensure_files()
+        project_dir = os.path.dirname(BASE_DIR)
+        self.contact_history = ContactHistory(CONTACT_HISTORY_FILE, (
+            SENT_USERS_FILE,
+            os.path.join(BASE_DIR, "sent_users.txt"),
+            os.path.join(project_dir, "sent_users.txt"),
+            os.path.join(project_dir, "data", "sent_users.txt"),
+        ))
 
     def _ensure_files(self):
         for filepath in [SENT_USERS_FILE, TARGET_QUEUE_FILE]:
@@ -42,44 +51,37 @@ class PersistenceManager:
             raise
 
     def load_sent_users(self) -> Set[str]:
-        users = set()
-        if os.path.exists(SENT_USERS_FILE):
-            try:
-                with open(SENT_USERS_FILE, "r", encoding="utf-8") as f:
-                    for line in f:
-                        u = extract_username(line.strip())
-                        if u:
-                            users.add(u.lower())
-            except Exception as e:
-                logger.error(f"Failed to load sent users: {e}")
-        return users
+        return self.contact_history.load_sent_users()
+
+    def load_contacted_users(self) -> Set[str]:
+        return self.contact_history.load_contacted_users()
+
+    def claim_recipient(self, username: str) -> bool:
+        return self.contact_history.claim_recipient(username)
 
     def save_sent_user(self, username: str):
-        u = extract_username(username).lower()
-        if not u:
-            return
+        u = normalize_recipient(username)
+        # SQLite is authoritative; the text file remains a compatibility export.
+        self.contact_history.mark_sent(u)
         try:
             with open(SENT_USERS_FILE, "a", encoding="utf-8") as f:
                 f.write(f"{u}\n")
+                f.flush()
+                os.fsync(f.fileno())
         except Exception as e:
-            logger.error(f"Could not save sent user {u}: {e}")
+            logger.warning(f"Recipient is protected in history, but text export failed: {e}")
 
     def clear_sent_users(self):
-        try:
-            with open(SENT_USERS_FILE, "w", encoding="utf-8") as f:
-                pass
-            logger.info("Sent users history cleared.")
-        except Exception as e:
-            logger.error(f"Failed to clear sent users: {e}")
+        raise ContactHistoryError("Recipient history is retained to prevent repeat messages.")
 
     def load_target_queue(self) -> List[str]:
         queue = []
-        seen = set()
+        seen = self.load_contacted_users()
         if os.path.exists(TARGET_QUEUE_FILE):
             try:
                 with open(TARGET_QUEUE_FILE, "r", encoding="utf-8") as f:
                     for line in f:
-                        u = line.strip().lower()
+                        u = normalize_recipient(line)
                         if u and u not in seen:
                             queue.append(u)
                             seen.add(u)
@@ -88,11 +90,12 @@ class PersistenceManager:
         return queue
 
     def save_target_queue(self, queue: List[str]):
+        contacted = self.load_contacted_users()
         try:
             unique_queue = []
-            seen = set()
+            seen = set(contacted)
             for u in queue:
-                u_clean = u.strip().lower()
+                u_clean = normalize_recipient(u)
                 if u_clean and u_clean not in seen:
                     unique_queue.append(u_clean)
                     seen.add(u_clean)

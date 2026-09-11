@@ -4,6 +4,7 @@ import time
 import random
 from datetime import datetime
 from typing import Optional
+from urllib.parse import unquote, urlsplit
 
 RESERVED_USERNAMES = {
     "dashboard", "explore", "settings", "help", "about", "press", "terms",
@@ -29,18 +30,23 @@ def extract_username(url_or_str: str) -> str:
     if not url_or_str:
         return ""
     
-    url = url_or_str.strip().lower()
-    url = url.replace("https://", "").replace("http://", "").replace("www.", "")
-    
-    if ".tumblr.com" in url:
-        part = url.split(".tumblr.com")[0].strip("/")
-        return part.split("/")[-1]
-    
-    if "tumblr.com/" in url:
-        part = url.split("tumblr.com/")[1].strip("/")
-        return part.split("/")[0]
-        
-    return url.strip("/").split("/")[0]
+    value = url_or_str.strip().lower().lstrip("@")
+    if "://" not in value and not value.startswith("//"):
+        if value.split("/", 1)[0].split("?", 1)[0].endswith("tumblr.com"):
+            value = "https://" + value
+    try:
+        parsed = urlsplit(value)
+    except ValueError:
+        return ""
+    host = parsed.hostname or ""
+    if host.endswith(".tumblr.com") and host != "www.tumblr.com":
+        return host.removesuffix(".tumblr.com")
+    if host and host not in ("tumblr.com", "www.tumblr.com"):
+        return ""
+    parts = [unquote(part).lower() for part in parsed.path.split("/") if part]
+    if host and parts[:2] == ["blog", "view"]:
+        parts = parts[2:]
+    return parts[0].lstrip("@") if parts else ""
 
 
 # التحقق من صحة اسم الحساب والتأكد أنه ليس رابطاً نظامياً أو كلمة محجوزة

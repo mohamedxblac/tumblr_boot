@@ -74,7 +74,7 @@ class BotLogger:
         self.logger.error(msg)
 
     def success(self, msg: str):
-        self.logger.info(f"✔ {msg}")
+        self.logger.info(f"SUCCESS {msg}")
 
     def log_event(self, email: str, total_ok: int, fails: int, note: str = ""):
         extra = f" | {note}" if note else ""

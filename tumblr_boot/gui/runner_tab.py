@@ -33,16 +33,16 @@ class RunnerTab(ttk.Frame):
         ctrl_frame = ttk.Frame(self)
         ctrl_frame.pack(fill="x", pady=(0, 12))
 
-        self.start_btn = ttk.Button(ctrl_frame, text="▶ Start Bot", command=self.on_start)
+        self.start_btn = ttk.Button(ctrl_frame, text="Start Bot", command=self.on_start)
         self.start_btn.pack(side="left", padx=(0, 6))
 
-        self.pause_btn = ttk.Button(ctrl_frame, text="⏸ Pause", command=self.on_pause, state="disabled")
+        self.pause_btn = ttk.Button(ctrl_frame, text="Pause", command=self.on_pause, state="disabled")
         self.pause_btn.pack(side="left", padx=6)
 
-        self.stop_btn = ttk.Button(ctrl_frame, text="⏹ Stop Bot", command=self.on_stop, state="disabled")
+        self.stop_btn = ttk.Button(ctrl_frame, text="Stop Bot", command=self.on_stop, state="disabled")
         self.stop_btn.pack(side="left", padx=6)
 
-        timing_frame = ttk.LabelFrame(self, text="⏱ Quick Timing Controls (seconds)", padding=8)
+        timing_frame = ttk.LabelFrame(self, text="Quick Timing Controls (seconds)", padding=8)
         timing_frame.pack(fill="x", pady=(0, 10))
 
         timing_fields = (
@@ -61,6 +61,7 @@ class RunnerTab(ttk.Frame):
                 increment=increment,
                 textvariable=var,
                 width=7,
+                style="Timing.TSpinbox",
             ).pack(side="left", padx=(0, 8))
             self.timing_vars[key] = var
 
@@ -76,7 +77,7 @@ class RunnerTab(ttk.Frame):
         ).pack(side="left", padx=4)
 
         # ── 2. Live Dashboard Status Cards ──
-        status_card = ttk.LabelFrame(self, text="📊 Live Operation Dashboard", padding=10)
+        status_card = ttk.LabelFrame(self, text="Live Operation Dashboard", padding=10)
         status_card.pack(fill="x", pady=(0, 10))
 
         # Top row: State & Active Account
@@ -112,7 +113,7 @@ class RunnerTab(ttk.Frame):
         self.prog_text.pack(side="left")
 
         # ── 3. Live Log Viewer ──
-        log_card = ttk.LabelFrame(self, text="📜 Live Activity Logs", padding=8)
+        log_card = ttk.LabelFrame(self, text="Live Activity Logs", padding=8)
         log_card.pack(fill="both", expand=True)
 
         self.log_text = ScrolledText(
@@ -149,10 +150,10 @@ class RunnerTab(ttk.Frame):
     def on_pause(self):
         if self.engine.is_paused:
             self.engine.resume()
-            self.pause_btn.configure(text="⏸ Pause")
+            self.pause_btn.configure(text="Pause")
         else:
             self.engine.pause()
-            self.pause_btn.configure(text="▶ Resume")
+            self.pause_btn.configure(text="Resume")
 
     def on_stop(self):
         if messagebox.askyesno("Confirm Stop", "Are you sure you want to stop the bot?"):
@@ -195,7 +196,7 @@ class RunnerTab(ttk.Frame):
         """Called by the main app when the engine updates its operational state."""
         if running:
             self.start_btn.configure(state="disabled")
-            self.pause_btn.configure(state="normal", text="▶ Resume" if paused else "⏸ Pause")
+            self.pause_btn.configure(state="normal", text="Resume" if paused else "Pause")
             self.stop_btn.configure(state="normal")
             self.state_label.configure(
                 text="Paused" if paused else "Running",
@@ -203,7 +204,7 @@ class RunnerTab(ttk.Frame):
             )
         else:
             self.start_btn.configure(state="normal")
-            self.pause_btn.configure(state="disabled", text="⏸ Pause")
+            self.pause_btn.configure(state="disabled", text="Pause")
             self.stop_btn.configure(state="disabled")
             self.state_label.configure(text="Idle", foreground="#89b4fa")
             self.timer_label.configure(text="--")
@@ -240,7 +241,7 @@ class RunnerTab(ttk.Frame):
         else:
             tag = "INFO"
 
-        self.log_text.insert("end", f"{message}\n", tag)
+        self.log_text.insert("end", f"{message.replace('✔', '').strip()}\n", tag)
         self.log_text.see("end")
 
     def clear_logs(self):

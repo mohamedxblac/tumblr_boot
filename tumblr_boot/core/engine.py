@@ -13,6 +13,7 @@ from core.auth import login, logout, dismiss_consent_screen_if_present
 from core.scraper import scrape_post_master_queue, parse_post_info
 from core.messenger import send_message_to_user, compose_message_parts
 from core.persistence import persistence
+from core.contact_history import ContactHistoryError, normalize_recipient
 from utils.logger import logger
 from utils.helpers import random_sleep
 
@@ -214,6 +215,9 @@ class BotEngine:
                 if not self._sleep_with_checks(sleep_seconds, label=f"Next Round in ({sleep_hrs}h)"):
                     break
 
+        except ContactHistoryError as e:
+            logger.error(f"[ENGINE] {e}")
+            self.post_gui_update("error", {"message": str(e)})
         except Exception as e:
             logger.error(f"[ENGINE] Unhandled exception in run loop: {e}")
         finally:
@@ -279,7 +283,8 @@ class BotEngine:
                 "detail": f"Active: {email} | Target limit: {total_ok}/{max_per_account}"
             })
 
-            uncontacted = [u for u in target_queue if u not in sent_users]
+            contacted_users = persistence.load_contacted_users() | sent_users
+            uncontacted = [u for u in target_queue if normalize_recipient(u) not in contacted_users]
 
             if len(uncontacted) < scrape_threshold and not self._stop_event.is_set():
                 self.post_gui_update("status_info", {
@@ -293,7 +298,7 @@ class BotEngine:
                     post_url=post_url,
                     tab_type=tab_type,
                     owner_blog=owner_blog or "",
-                    already_sent=sent_users,
+                    already_sent=contacted_users,
                     max_users=notes_max,
                     timeout_sec=scrape_timeout,
                     progress_callback=lambda count, total: self.post_gui_update("scrape_progress", {"count": count, "max": total}),
@@ -301,10 +306,11 @@ class BotEngine:
                 )
 
                 for u in fresh_users:
-                    if u not in target_queue:
+                    u = normalize_recipient(u)
+                    if u and u not in target_queue and u not in contacted_users:
                         target_queue.append(u)
                 persistence.save_target_queue(target_queue)
-                uncontacted = [u for u in target_queue if u not in sent_users]
+                uncontacted = [u for u in target_queue if normalize_recipient(u) not in contacted_users]
 
             if not uncontacted:
                 account_note = "no_uncontacted_users_left"
@@ -329,6 +335,10 @@ class BotEngine:
                         break
                     time.sleep(0.5)
 
+                if self._stop_event.is_set():
+                    account_note = "stopped_by_user"
+                    break
+
                 if session_ok >= session_cap:
                     account_note = f"session_cap_{session_cap}_reached"
                     logger.log_event(email, total_ok, fail_count, note=account_note)
@@ -339,8 +349,8 @@ class BotEngine:
                     logger.log_event(email, total_ok, fail_count, note=account_note)
                     break
 
-                username = username.strip().lower()
-                if not username or username in sent_users:
+                username = normalize_recipient(username)
+                if not username or username in contacted_users:
                     continue
 
                 users_seen += 1
@@ -351,6 +361,16 @@ class BotEngine:
                 parts = compose_message_parts(username, base_msg, greeting, msg_i)
                 msg_i += 1
                 greet_i += 1
+
+                # Commit an exclusive claim before any possible message delivery.
+                # Never retry an uncertain attempt, including across accounts/runs.
+                if not persistence.claim_recipient(username):
+                    contacted_users.add(username)
+                    logger.info(f"[ENGINE] Skipping previously attempted recipient: {username}")
+                    continue
+                contacted_users.add(username)
+                target_queue[:] = [u for u in target_queue if normalize_recipient(u) != username]
+                persistence.save_target_queue(target_queue)
 
                 self.post_gui_update("status_info", {
                     "status": "Messaging",
@@ -428,6 +448,8 @@ class BotEngine:
             logger.log_summary(email, total_ok, fail_count, note=account_note)
             logout(driver)
 
+        except ContactHistoryError:
+            raise
         except Exception as e:
             logger.error(f"[ENGINE] Session exception for {email}: {e}")
             logger.log_summary(email, total_ok, fail_count, note=f"session_exception: {e}")

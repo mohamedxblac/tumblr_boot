@@ -5,7 +5,7 @@ gui/stats_tab.py — Analytics & Database Management Tab
 Visual dashboard showing:
 - Total outreach metrics (Total Sent, In Queue, Active Accounts)
 - Per-account performance and progress breakdown
-- Data maintenance tools (reset progress, purge queue, clear history)
+- Data maintenance tools with permanent recipient protection
 """
 
 import tkinter as tk
@@ -13,6 +13,7 @@ from tkinter import ttk, messagebox
 
 from config.settings import SettingsManager
 from core.persistence import persistence
+from core.contact_history import ContactHistoryError
 
 
 class StatsTab(ttk.Frame):
@@ -31,7 +32,7 @@ class StatsTab(ttk.Frame):
         header.pack(fill="x", pady=(0, 10))
         ttk.Label(
             header,
-            text="📈 Performance Analytics & Maintenance",
+            text="Performance Analytics & Maintenance",
             font=("Segoe UI", 14, "bold")
         ).pack(side="left")
 
@@ -44,7 +45,7 @@ class StatsTab(ttk.Frame):
         self.card_accs = self._create_kpi_card(cards_frame, "Configured Accounts", "0", "#f9e2af")
 
         # ── Per-Account Progress Table ──
-        table_frame = ttk.LabelFrame(self, text="📋 Account Performance Breakdown", padding=8)
+        table_frame = ttk.LabelFrame(self, text="Account Performance Breakdown", padding=8)
         table_frame.pack(fill="both", expand=True, pady=(0, 10))
 
         cols = ("email", "sent", "quota", "percent", "status")
@@ -69,13 +70,14 @@ class StatsTab(ttk.Frame):
         scroll.pack(side="right", fill="y")
 
         # ── Maintenance Action Buttons ──
-        action_frame = ttk.LabelFrame(self, text="🛠 Data Maintenance & Cache Tools", padding=8)
+        action_frame = ttk.LabelFrame(self, text="Data Maintenance & Cache Tools", padding=8)
         action_frame.pack(fill="x")
 
-        ttk.Button(action_frame, text="🔄 Refresh Stats", command=self.refresh_stats).pack(side="left", padx=4)
-        ttk.Button(action_frame, text="⚡ Reset Progress Counters", command=self.on_reset_progress).pack(side="left", padx=4)
-        ttk.Button(action_frame, text="🗑 Clear Target Queue", command=self.on_clear_queue).pack(side="left", padx=4)
-        ttk.Button(action_frame, text="⚠️ Clear Sent Users History", command=self.on_clear_sent_users).pack(side="left", padx=4)
+        ttk.Button(action_frame, text="Refresh Stats", command=self.refresh_stats).pack(side="left", padx=4)
+        ttk.Button(action_frame, text="Reset Progress Counters", command=self.on_reset_progress).pack(side="left", padx=4)
+        ttk.Button(action_frame, text="Clear Target Queue", command=self.on_clear_queue).pack(side="left", padx=4)
+        self.history_note = ttk.Label(self, text="Recipient history is retained to prevent repeat messages.")
+        self.history_note.pack(fill="x", pady=(8, 0))
 
     def _create_kpi_card(self, parent, title: str, initial_val: str, color: str):
         card = ttk.Frame(parent, padding=12)
@@ -88,8 +90,19 @@ class StatsTab(ttk.Frame):
 
     def refresh_stats(self):
         """Updates KPI counters and table data."""
-        sent_users = persistence.load_sent_users()
-        queue = persistence.load_target_queue()
+        try:
+            sent_users = persistence.load_sent_users()
+            contacted_users = persistence.load_contacted_users()
+            queue = persistence.load_target_queue()
+        except ContactHistoryError as error:
+            self.card_sent.configure(text="Unavailable")
+            self.card_queue.configure(text="Unavailable")
+            self.history_note.configure(text=str(error), foreground="#f38ba8")
+            return
+        self.history_note.configure(
+            text=f"Protected recipients: {len(contacted_users)} | Unconfirmed attempts: {len(contacted_users - sent_users)}. History is retained to prevent repeats.",
+            foreground="#cdd6f4",
+        )
         accounts = self.settings_mgr.get_accounts()
         progress = persistence.load_progress()
         max_quota = int(self.settings_mgr.get_settings().get("max_success_per_account", 30))
@@ -121,13 +134,3 @@ class StatsTab(ttk.Frame):
             persistence.clear_target_queue()
             self.refresh_stats()
             messagebox.showinfo("Cleared", "Target queue cleared.")
-
-    def on_clear_sent_users(self):
-        if messagebox.askyesno(
-            "Caution",
-            "Are you sure you want to clear sent_users.txt?\n"
-            "This will allow the bot to message previously contacted users again."
-        ):
-            persistence.clear_sent_users()
-            self.refresh_stats()
-            messagebox.showinfo("Cleared", "Sent users history cleared.")
