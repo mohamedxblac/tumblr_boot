@@ -77,6 +77,7 @@ class SettingsTab(ttk.Frame):
 
         self._add_row(card2, "max_success_per_account", "Max Success Per Account (Lifetime):", "30", is_int=True)
         self._add_row(card2, "session_success_cap", "Session Cap (Messages per login):", "15", is_int=True)
+        self._add_row(card2, "parallel_accounts", "Parallel Tabs / Accounts (1-10):", "1", is_int=True)
         self._add_row(card2, "no_message_limit", "Streak Limit (Closed DMs before skip):", "10", is_int=True)
         self._add_row(card2, "start_account_index", "Start From Account # (1-indexed):", "1", is_int=True)
 
@@ -85,6 +86,8 @@ class SettingsTab(ttk.Frame):
         card3.pack(fill="x", pady=6, padx=4)
 
         self._add_row(card3, "action_delay", "Delay Between UI Actions (sec):", "0.5", is_float=True)
+        self._add_row(card3, "typing_min_delay", "Typing Min Delay Per Character:", "0.05", is_float=True)
+        self._add_row(card3, "typing_max_delay", "Typing Max Delay Per Character:", "0.14", is_float=True)
         self._add_row(card3, "min_between_users", "Min Delay Between Users (sec):", "60", is_float=True)
         self._add_row(card3, "max_between_users", "Max Delay Between Users (sec):", "130", is_float=True)
         self._add_row(card3, "line_delay", "Line Delay (Between message parts):", "7.55", is_float=True)
@@ -153,11 +156,11 @@ class SettingsTab(ttk.Frame):
             updates = {}
             for key, var in self.entries.items():
                 val = var.get()
-                if key in ("max_success_per_account", "session_success_cap", "no_message_limit", "notes_max_users", "scrape_threshold", "scrape_timeout_sec", "follow_every_n"):
+                if key in ("max_success_per_account", "session_success_cap", "parallel_accounts", "no_message_limit", "notes_max_users", "scrape_threshold", "scrape_timeout_sec", "follow_every_n"):
                     updates[key] = int(val)
                 elif key == "start_account_index":
                     updates[key] = max(0, int(val) - 1)
-                elif key in ("action_delay", "min_between_users", "max_between_users", "line_delay", "after_send_delay", "after_success_delay", "sleep_between_rounds_hrs"):
+                elif key in ("action_delay", "typing_min_delay", "typing_max_delay", "min_between_users", "max_between_users", "line_delay", "after_send_delay", "after_success_delay", "sleep_between_rounds_hrs"):
                     updates[key] = float(val)
                 elif key == "enable_fingerprint_rotation":
                     updates[key] = bool(val)
@@ -168,8 +171,17 @@ class SettingsTab(ttk.Frame):
                 messagebox.showerror("Validation Error", "Min delay cannot be greater than Max delay.")
                 return
 
+            if updates["typing_min_delay"] > updates["typing_max_delay"]:
+                messagebox.showerror("Validation Error", "Typing min delay cannot be greater than typing max delay.")
+                return
+
+            if not 1 <= updates["parallel_accounts"] <= 10:
+                messagebox.showerror("Validation Error", "Parallel tabs/accounts must be between 1 and 10.")
+                return
+
             delay_keys = (
-                "action_delay", "min_between_users", "max_between_users",
+                "action_delay", "typing_min_delay", "typing_max_delay",
+                "min_between_users", "max_between_users",
                 "line_delay", "after_send_delay", "after_success_delay",
                 "sleep_between_rounds_hrs",
             )

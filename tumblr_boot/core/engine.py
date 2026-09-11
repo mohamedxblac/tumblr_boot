@@ -4,6 +4,7 @@ import time
 import random
 import threading
 import queue
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from typing import List, Dict, Optional, Any
 
 from config.settings import SettingsManager
@@ -11,7 +12,11 @@ from config.fingerprints import generate_stealth_fingerprint
 from core.browser import BrowserFactory
 from core.auth import login, logout, dismiss_consent_screen_if_present
 from core.scraper import scrape_post_master_queue, parse_post_info
-from core.messenger import send_message_to_user, compose_message_parts
+from core.messenger import (
+    NonRepeatingTemplateRotator,
+    compose_message_parts,
+    send_message_to_user,
+)
 from core.persistence import persistence
 from core.contact_history import ContactHistoryError, normalize_recipient
 from utils.logger import logger
@@ -28,6 +33,10 @@ class BotEngine:
         self._stop_event = threading.Event()
         self._pause_event = threading.Event()
         self._is_running = False
+        self._state_lock = threading.RLock()
+        self._scrape_lock = threading.Lock()
+        self._active_lock = threading.Lock()
+        self._active_accounts = set()
 
     @property
     def is_running(self) -> bool:
@@ -101,6 +110,27 @@ class BotEngine:
         self.post_gui_update("countdown", {"label": "", "remaining": 0, "total": 0})
         return True
 
+    def _set_account_active(self, email: str, active: bool, total_accounts: int):
+        with self._active_lock:
+            if active:
+                self._active_accounts.add(email)
+            else:
+                self._active_accounts.discard(email)
+            active_accounts = sorted(self._active_accounts)
+        self.post_gui_update("workers_active", {
+            "accounts": active_accounts,
+            "active_count": len(active_accounts),
+            "total_accounts": total_accounts,
+        })
+
+    def _run_account_worker(self, *, total_accounts: int, **kwargs):
+        email = kwargs["acc"].get("email", "").strip()
+        self._set_account_active(email, True, total_accounts)
+        try:
+            return self._process_single_account(**kwargs)
+        finally:
+            self._set_account_active(email, False, total_accounts)
+
     def _run_loop(self):
         try:
             settings = self.settings_mgr.get_settings()
@@ -112,8 +142,14 @@ class BotEngine:
             tab_type = settings.get("tab_type", "likes").strip().lower()
             max_per_account = int(settings.get("max_success_per_account", 30))
             session_cap = int(settings.get("session_success_cap", 15))
+            parallel_accounts = max(1, min(10, int(settings.get("parallel_accounts", 1))))
             no_msg_limit = int(settings.get("no_message_limit", 10))
             action_delay = float(settings.get("action_delay", 0.5))
+            typing_min_delay = max(0.01, float(settings.get("typing_min_delay", 0.05)))
+            typing_max_delay = max(
+                typing_min_delay,
+                float(settings.get("typing_max_delay", 0.14)),
+            )
             line_delay = float(settings.get("line_delay", 7.55))
             after_send_delay = float(settings.get("after_send_delay", 2.2))
             after_success_delay = float(settings.get("after_success_delay", 2.2))
@@ -136,10 +172,27 @@ class BotEngine:
                 self.post_gui_update("error", {"message": "No accounts available to run."})
                 return
 
-            if not messages:
-                logger.error("[ENGINE] No message templates configured!")
-                self.post_gui_update("error", {"message": "No message templates configured."})
+            distinct_messages = list(dict.fromkeys(
+                str(message).strip() for message in messages if str(message).strip()
+            ))
+            if len(distinct_messages) < 2:
+                logger.error("[ENGINE] At least two different message templates are required!")
+                self.post_gui_update("error", {
+                    "message": (
+                        "Please save at least two different message templates. "
+                        "This is required to prevent consecutive recipients from receiving the same text."
+                    )
+                })
                 return
+
+            distinct_greetings = list(dict.fromkeys(
+                str(greeting).strip() for greeting in greetings if str(greeting).strip()
+            ))
+            if not distinct_greetings:
+                distinct_greetings = ["I hope this message finds you in peace"]
+
+            message_rotator = NonRepeatingTemplateRotator(distinct_messages)
+            greeting_rotator = NonRepeatingTemplateRotator(distinct_greetings)
 
             sent_users = persistence.load_sent_users()
             progress = persistence.load_progress()
@@ -147,7 +200,7 @@ class BotEngine:
 
             while not self._stop_event.is_set():
                 pending_accounts = [
-                    accounts[i]
+                    (i, accounts[i])
                     for i in range(start_acc_idx, len(accounts))
                     if int(progress.get(accounts[i]["email"], 0)) < max_per_account
                 ]
@@ -160,45 +213,57 @@ class BotEngine:
                     self.post_gui_update("status_info", {"status": "Complete", "detail": "All accounts finished"})
                     break
 
-                logger.info(f"[ENGINE] Starting round with {len(pending_accounts)} pending accounts...")
+                worker_count = min(parallel_accounts, len(pending_accounts))
+                logger.info(
+                    f"[ENGINE] Starting round with {len(pending_accounts)} pending accounts "
+                    f"across {worker_count} parallel browser(s)..."
+                )
 
-                for acc_idx, acc in enumerate(pending_accounts):
-                    if self._stop_event.is_set():
-                        break
+                with ThreadPoolExecutor(
+                    max_workers=worker_count,
+                    thread_name_prefix="TumblrAccount",
+                ) as executor:
+                    futures = []
+                    for _, acc in pending_accounts:
+                        futures.append(executor.submit(
+                            self._run_account_worker,
+                            total_accounts=len(pending_accounts),
+                            acc=acc,
+                            post_url=post_url,
+                            tab_type=tab_type,
+                            target_queue=target_queue,
+                            sent_users=sent_users,
+                            progress=progress,
+                            messages=distinct_messages,
+                            greetings=distinct_greetings,
+                            max_per_account=max_per_account,
+                            session_cap=session_cap,
+                            no_msg_limit=no_msg_limit,
+                            action_delay=action_delay,
+                            line_delay=line_delay,
+                            after_send_delay=after_send_delay,
+                            after_success_delay=after_success_delay,
+                            min_between=min_between,
+                            max_between=max_between,
+                            notes_max=notes_max,
+                            follow_every=follow_every,
+                            scrape_threshold=scrape_threshold,
+                            scrape_timeout=scrape_timeout,
+                            enable_fp_rotation=enable_fp_rotation,
+                            typing_min_delay=typing_min_delay,
+                            typing_max_delay=typing_max_delay,
+                            message_rotator=message_rotator,
+                            greeting_rotator=greeting_rotator,
+                        ))
 
-                    email = acc.get("email", "").strip()
-                    password = acc.get("password", "").strip()
-
-                    self.post_gui_update("account_active", {
-                        "email": email,
-                        "account_index": acc_idx + 1,
-                        "total_accounts": len(pending_accounts),
-                    })
-
-                    self._process_single_account(
-                        acc=acc,
-                        post_url=post_url,
-                        tab_type=tab_type,
-                        target_queue=target_queue,
-                        sent_users=sent_users,
-                        progress=progress,
-                        messages=messages,
-                        greetings=greetings,
-                        max_per_account=max_per_account,
-                        session_cap=session_cap,
-                        no_msg_limit=no_msg_limit,
-                        action_delay=action_delay,
-                        line_delay=line_delay,
-                        after_send_delay=after_send_delay,
-                        after_success_delay=after_success_delay,
-                        min_between=min_between,
-                        max_between=max_between,
-                        notes_max=notes_max,
-                        follow_every=follow_every,
-                        scrape_threshold=scrape_threshold,
-                        scrape_timeout=scrape_timeout,
-                        enable_fp_rotation=enable_fp_rotation,
-                    )
+                    for future in as_completed(futures):
+                        try:
+                            future.result()
+                        except ContactHistoryError:
+                            self._stop_event.set()
+                            for pending in futures:
+                                pending.cancel()
+                            raise
 
                 start_acc_idx = 0
 
@@ -250,6 +315,10 @@ class BotEngine:
         scrape_threshold: int,
         scrape_timeout: int,
         enable_fp_rotation: bool,
+        typing_min_delay: float = 0.05,
+        typing_max_delay: float = 0.14,
+        message_rotator: Optional[NonRepeatingTemplateRotator] = None,
+        greeting_rotator: Optional[NonRepeatingTemplateRotator] = None,
     ):
         email = acc["email"]
         password = acc["password"]
@@ -283,34 +352,54 @@ class BotEngine:
                 "detail": f"Active: {email} | Target limit: {total_ok}/{max_per_account}"
             })
 
-            contacted_users = persistence.load_contacted_users() | sent_users
-            uncontacted = [u for u in target_queue if normalize_recipient(u) not in contacted_users]
+            with self._state_lock:
+                contacted_users = persistence.load_contacted_users() | set(sent_users)
+                uncontacted = [
+                    u for u in target_queue
+                    if normalize_recipient(u) not in contacted_users
+                ]
 
             if len(uncontacted) < scrape_threshold and not self._stop_event.is_set():
-                self.post_gui_update("status_info", {
-                    "status": "Scraping Notes",
-                    "detail": f"Queue low ({len(uncontacted)}). Scraping fresh users..."
-                })
+                # Only one account scrapes at a time.  Waiting workers re-check
+                # the shared queue after the current scrape completes.
+                with self._scrape_lock:
+                    with self._state_lock:
+                        contacted_users = persistence.load_contacted_users() | set(sent_users)
+                        uncontacted = [
+                            u for u in target_queue
+                            if normalize_recipient(u) not in contacted_users
+                        ]
 
-                owner_blog, _ = parse_post_info(post_url)
-                fresh_users = scrape_post_master_queue(
-                    driver=driver,
-                    post_url=post_url,
-                    tab_type=tab_type,
-                    owner_blog=owner_blog or "",
-                    already_sent=contacted_users,
-                    max_users=notes_max,
-                    timeout_sec=scrape_timeout,
-                    progress_callback=lambda count, total: self.post_gui_update("scrape_progress", {"count": count, "max": total}),
-                    stop_check=lambda: self._stop_event.is_set()
-                )
+                    if len(uncontacted) < scrape_threshold and not self._stop_event.is_set():
+                        self.post_gui_update("status_info", {
+                            "status": "Scraping Notes",
+                            "detail": f"Queue low ({len(uncontacted)}). Scraping fresh users..."
+                        })
 
-                for u in fresh_users:
-                    u = normalize_recipient(u)
-                    if u and u not in target_queue and u not in contacted_users:
-                        target_queue.append(u)
-                persistence.save_target_queue(target_queue)
-                uncontacted = [u for u in target_queue if normalize_recipient(u) not in contacted_users]
+                        owner_blog, _ = parse_post_info(post_url)
+                        fresh_users = scrape_post_master_queue(
+                            driver=driver,
+                            post_url=post_url,
+                            tab_type=tab_type,
+                            owner_blog=owner_blog or "",
+                            already_sent=contacted_users,
+                            max_users=notes_max,
+                            timeout_sec=scrape_timeout,
+                            progress_callback=lambda count, total: self.post_gui_update("scrape_progress", {"count": count, "max": total}),
+                            stop_check=lambda: self._stop_event.is_set()
+                        )
+
+                        with self._state_lock:
+                            contacted_users = persistence.load_contacted_users() | set(sent_users)
+                            for u in fresh_users:
+                                u = normalize_recipient(u)
+                                if u and u not in target_queue and u not in contacted_users:
+                                    target_queue.append(u)
+                            persistence.save_target_queue(target_queue)
+                            uncontacted = [
+                                u for u in target_queue
+                                if normalize_recipient(u) not in contacted_users
+                            ]
 
             if not uncontacted:
                 account_note = "no_uncontacted_users_left"
@@ -356,21 +445,33 @@ class BotEngine:
                 users_seen += 1
                 do_follow = (follow_every > 0 and users_seen % follow_every == 0)
 
-                base_msg = messages[msg_i % len(messages)]
-                greeting = greetings[greet_i % len(greetings)]
-                parts = compose_message_parts(username, base_msg, greeting, msg_i)
-                msg_i += 1
-                greet_i += 1
-
                 # Commit an exclusive claim before any possible message delivery.
                 # Never retry an uncertain attempt, including across accounts/runs.
-                if not persistence.claim_recipient(username):
+                with self._state_lock:
+                    if not persistence.claim_recipient(username):
+                        contacted_users.add(username)
+                        logger.info(f"[ENGINE] Skipping previously attempted recipient: {username}")
+                        continue
                     contacted_users.add(username)
-                    logger.info(f"[ENGINE] Skipping previously attempted recipient: {username}")
-                    continue
-                contacted_users.add(username)
-                target_queue[:] = [u for u in target_queue if normalize_recipient(u) != username]
-                persistence.save_target_queue(target_queue)
+                    target_queue[:] = [
+                        u for u in target_queue
+                        if normalize_recipient(u) != username
+                    ]
+                    persistence.save_target_queue(target_queue)
+
+                if message_rotator is None:
+                    base_msg = messages[msg_i % len(messages)]
+                    message_index = msg_i
+                    msg_i += 1
+                else:
+                    base_msg, message_index = message_rotator.next_template()
+
+                if greeting_rotator is None:
+                    greeting = greetings[greet_i % len(greetings)]
+                    greet_i += 1
+                else:
+                    greeting, _ = greeting_rotator.next_template()
+                parts = compose_message_parts(username, base_msg, greeting, message_index)
 
                 self.post_gui_update("status_info", {
                     "status": "Messaging",
@@ -385,6 +486,8 @@ class BotEngine:
                     action_delay=action_delay,
                     line_delay=line_delay,
                     after_send_delay=after_send_delay,
+                    typing_min_delay=typing_min_delay,
+                    typing_max_delay=typing_max_delay,
                 )
 
                 if do_follow:
@@ -415,18 +518,20 @@ class BotEngine:
                 no_msg_streak = 0
 
                 if result is True:
-                    persistence.save_sent_user(username)
-                    sent_users.add(username)
-                    total_ok += 1
-                    session_ok += 1
-                    progress[email] = total_ok
-                    persistence.save_progress(progress)
+                    with self._state_lock:
+                        persistence.save_sent_user(username)
+                        sent_users.add(username)
+                        total_ok += 1
+                        session_ok += 1
+                        progress[email] = total_ok
+                        persistence.save_progress(progress)
+                        total_sent = len(sent_users)
 
                     self.post_gui_update("progress_update", {
                         "email": email,
                         "total_ok": total_ok,
                         "session_ok": session_ok,
-                        "total_sent": len(sent_users),
+                        "total_sent": total_sent,
                     })
 
                     logger.log_event(

@@ -3,6 +3,7 @@ import os
 import json
 import shutil
 import tempfile
+import threading
 import time
 from typing import Optional, Tuple
 import undetected_chromedriver as uc
@@ -68,6 +69,10 @@ STEALTH_INJECTION_JS = """
 
 # فئة تشغيل المتصفح الخفي وتدوير البصمة الرقمية وعزل بيانات كل جلسة
 class BrowserFactory:
+    # undetected-chromedriver patches/reads one shared driver executable.  Launch
+    # setup is serialized, while the resulting browser sessions run in parallel.
+    _launch_lock = threading.Lock()
+
     @staticmethod
     def create_browser(
         fingerprint: Optional[dict] = None,
@@ -104,20 +109,21 @@ class BrowserFactory:
             options.add_argument("--headless=new")
 
         driver = None
-        try:
-            driver = uc.Chrome(options=options)
-        except Exception as ex_main:
-            logger.warning(f"[BROWSER] Standard initialization failed ({ex_main}), attempting fallback...")
+        with BrowserFactory._launch_lock:
             try:
-                driver = uc.Chrome(options=options, version_main=None)
-            except Exception as ex_fallback:
-                logger.error(f"[BROWSER] Failed to initialize Chrome driver: {ex_fallback}")
-                if os.path.exists(profile_dir):
-                    try:
-                        shutil.rmtree(profile_dir, ignore_errors=True)
-                    except Exception:
-                        pass
-                raise ex_fallback
+                driver = uc.Chrome(options=options)
+            except Exception as ex_main:
+                logger.warning(f"[BROWSER] Standard initialization failed ({ex_main}), attempting fallback...")
+                try:
+                    driver = uc.Chrome(options=options, version_main=None)
+                except Exception as ex_fallback:
+                    logger.error(f"[BROWSER] Failed to initialize Chrome driver: {ex_fallback}")
+                    if os.path.exists(profile_dir):
+                        try:
+                            shutil.rmtree(profile_dir, ignore_errors=True)
+                        except Exception:
+                            pass
+                    raise ex_fallback
 
         driver.set_page_load_timeout(30)
         # Explicit waits are used at the actual interaction points.  A global

@@ -223,7 +223,7 @@ class TumblrBotApp(tk.Tk):
                     running = evt.get("running", False)
                     paused = evt.get("paused", False)
                     self.tab_runner.update_engine_state(running, paused)
-                    state_str = "Running" if running else ("Paused" if paused else "Idle")
+                    state_str = "Paused" if paused else ("Running" if running else "Idle")
                     self.status_left.configure(text=f"Status: {state_str}")
 
                 elif evt_type == "status_info":
@@ -237,6 +237,9 @@ class TumblrBotApp(tk.Tk):
                     idx = evt.get("account_index", 1)
                     total = evt.get("total_accounts", 1)
                     self.tab_runner.update_account_active(email, idx, total)
+
+                elif evt_type == "workers_active":
+                    self.tab_runner.update_active_workers(evt.get("accounts", []))
 
                 elif evt_type == "progress_update":
                     email = evt.get("email", "")

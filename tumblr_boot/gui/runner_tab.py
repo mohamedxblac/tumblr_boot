@@ -24,6 +24,7 @@ class RunnerTab(ttk.Frame):
         self.engine = engine
         self.on_timing_saved = on_timing_saved
         self.timing_vars = {}
+        self.parallel_var = tk.StringVar(value="1")
 
         self._build_ui()
         self.load_timing_values()
@@ -41,6 +42,23 @@ class RunnerTab(ttk.Frame):
 
         self.stop_btn = ttk.Button(ctrl_frame, text="Stop Bot", command=self.on_stop, state="disabled")
         self.stop_btn.pack(side="left", padx=6)
+
+        ttk.Label(ctrl_frame, text="Parallel tabs/accounts:").pack(side="left", padx=(24, 5))
+        self.parallel_spinbox = ttk.Spinbox(
+            ctrl_frame,
+            from_=1,
+            to=10,
+            increment=1,
+            textvariable=self.parallel_var,
+            width=5,
+            style="Timing.TSpinbox",
+        )
+        self.parallel_spinbox.pack(side="left", padx=(0, 5))
+        ttk.Label(
+            ctrl_frame,
+            text="(1–10, applied on Start)",
+            foreground="#6c7086",
+        ).pack(side="left")
 
         timing_frame = ttk.LabelFrame(self, text="Quick Timing Controls (seconds)", padding=8)
         timing_frame.pack(fill="x", pady=(0, 10))
@@ -145,6 +163,15 @@ class RunnerTab(ttk.Frame):
 
     # ── Button Handlers ──
     def on_start(self):
+        try:
+            parallel_accounts = int(self.parallel_var.get())
+        except ValueError:
+            messagebox.showerror("Invalid Parallel Count", "Parallel tabs/accounts must be a whole number.")
+            return
+        if not 1 <= parallel_accounts <= 10:
+            messagebox.showerror("Invalid Parallel Count", "Choose a number from 1 to 10.")
+            return
+        self.engine.settings_mgr.update_settings({"parallel_accounts": parallel_accounts})
         self.engine.start()
 
     def on_pause(self):
@@ -169,6 +196,7 @@ class RunnerTab(ttk.Frame):
         }
         for key, var in self.timing_vars.items():
             var.set(str(settings.get(key, defaults[key])))
+        self.parallel_var.set(str(settings.get("parallel_accounts", 1)))
 
     def save_timing_values(self):
         try:
@@ -198,6 +226,7 @@ class RunnerTab(ttk.Frame):
             self.start_btn.configure(state="disabled")
             self.pause_btn.configure(state="normal", text="Resume" if paused else "Pause")
             self.stop_btn.configure(state="normal")
+            self.parallel_spinbox.configure(state="disabled")
             self.state_label.configure(
                 text="Paused" if paused else "Running",
                 foreground="#f9e2af" if paused else "#a6e3a1"
@@ -206,6 +235,7 @@ class RunnerTab(ttk.Frame):
             self.start_btn.configure(state="normal")
             self.pause_btn.configure(state="disabled", text="Pause")
             self.stop_btn.configure(state="disabled")
+            self.parallel_spinbox.configure(state="normal")
             self.state_label.configure(text="Idle", foreground="#89b4fa")
             self.timer_label.configure(text="--")
 
@@ -214,6 +244,17 @@ class RunnerTab(ttk.Frame):
 
     def update_account_active(self, email: str, index: int, total: int):
         self.account_label.configure(text=f"#{index}/{total} ({email})")
+
+    def update_active_workers(self, accounts):
+        if not accounts:
+            self.account_label.configure(text="None")
+            return
+        if len(accounts) == 1:
+            self.account_label.configure(text=accounts[0])
+            return
+        self.account_label.configure(
+            text=f"{len(accounts)} parallel: " + ", ".join(accounts)
+        )
 
     def update_progress(self, current: int, maximum: int):
         if maximum > 0:

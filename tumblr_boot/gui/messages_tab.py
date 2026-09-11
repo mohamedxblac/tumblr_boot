@@ -12,7 +12,12 @@ import tkinter as tk
 from tkinter import ttk, messagebox
 from typing import List
 
-from config.settings import SettingsManager, DEFAULT_MESSAGES, DEFAULT_GREETINGS
+from config.settings import (
+    DEFAULT_GREETINGS,
+    DEFAULT_MESSAGES,
+    MESSAGE_SLOT_COUNT,
+    SettingsManager,
+)
 from core.messenger import compose_message_parts
 
 
@@ -24,6 +29,8 @@ class MessagesTab(ttk.Frame):
         self.settings_mgr = settings_mgr
 
         self.greeting_vars: List[tk.StringVar] = []
+        self.message_texts: List[tk.Text] = []
+        self.preview_message_var = tk.IntVar(value=1)
         self._build_ui()
         self.load_data()
 
@@ -46,23 +53,71 @@ class MessagesTab(ttk.Frame):
         paned.add(left_frame, weight=3)
         paned.add(right_frame, weight=2)
 
-        # ── 1. Base Message Editor (Left) ──
-        msg_frame = ttk.LabelFrame(left_frame, text="Main Message Body", padding=8)
+        # ── 1. Fifteen separate message variations (Left) ──
+        msg_frame = ttk.LabelFrame(
+            left_frame,
+            text=f"Message Variations ({MESSAGE_SLOT_COUNT} slots)",
+            padding=8,
+        )
         msg_frame.pack(fill="both", expand=True, pady=(0, 8))
 
         ttk.Label(
             msg_frame,
-            text="Separate multiple message variations with '---' on a new line.",
+            text="Fill at least two different messages. They are shuffled and never repeated consecutively.",
             font=("Segoe UI", 9, "italic")
         ).pack(anchor="w", pady=(0, 4))
 
-        self.msg_text = tk.Text(msg_frame, wrap="word", height=14, font=("Segoe UI", 10))
-        msg_scroll = ttk.Scrollbar(msg_frame, orient="vertical", command=self.msg_text.yview)
-        self.msg_text.configure(yscrollcommand=msg_scroll.set)
-
-        self.msg_text.pack(side="left", fill="both", expand=True)
+        msg_canvas = tk.Canvas(
+            msg_frame,
+            background="#181825",
+            borderwidth=0,
+            highlightthickness=0,
+            height=330,
+        )
+        msg_scroll = ttk.Scrollbar(msg_frame, orient="vertical", command=msg_canvas.yview)
+        msg_list = ttk.Frame(msg_canvas)
+        msg_window = msg_canvas.create_window((0, 0), window=msg_list, anchor="nw")
+        msg_list.bind(
+            "<Configure>",
+            lambda _event: msg_canvas.configure(scrollregion=msg_canvas.bbox("all")),
+        )
+        msg_canvas.bind(
+            "<Configure>",
+            lambda event: msg_canvas.itemconfigure(msg_window, width=event.width),
+        )
+        msg_canvas.configure(yscrollcommand=msg_scroll.set)
+        msg_canvas.pack(side="left", fill="both", expand=True)
         msg_scroll.pack(side="right", fill="y")
-        self.msg_text.bind("<<Modified>>", self._on_message_modified)
+
+        for index in range(MESSAGE_SLOT_COUNT):
+            row = ttk.Frame(msg_list)
+            row.pack(fill="x", pady=(2, 7), padx=(0, 6))
+            ttk.Label(
+                row,
+                text=f"Message #{index + 1}",
+                width=12,
+                anchor="nw",
+            ).pack(side="left", padx=(0, 6), pady=4)
+            field = tk.Text(
+                row,
+                wrap="word",
+                height=4,
+                font=("Segoe UI", 10),
+                bg="#313244",
+                fg="#cdd6f4",
+                insertbackground="#cdd6f4",
+                selectbackground="#585b70",
+                borderwidth=0,
+                padx=7,
+                pady=5,
+            )
+            field.pack(side="left", fill="x", expand=True)
+            field.bind("<<Modified>>", self._on_message_modified)
+            self.message_texts.append(field)
+
+        # Compatibility alias for integrations that previously targeted the
+        # single message editor. It now points at variation number one.
+        self.msg_text = self.message_texts[0]
 
         # ── 2. Greetings Editor (Left) ──
         greet_frame = ttk.LabelFrame(left_frame, text="Greetings (Rotated per user)", padding=8)
@@ -84,8 +139,26 @@ class MessagesTab(ttk.Frame):
         btn_bar.pack(fill="x", pady=4)
         ttk.Button(btn_bar, text="Save Changes", command=self.save_data).pack(side="left", padx=4)
         ttk.Button(btn_bar, text="Reset Defaults", command=self.reset_defaults).pack(side="left", padx=4)
+        self.message_count_label = ttk.Label(btn_bar, text="0 / 15 filled", foreground="#6c7086")
+        self.message_count_label.pack(side="right", padx=6)
 
         # ── 4. Live Message Preview (Right) ──
+        preview_picker = ttk.Frame(right_frame)
+        preview_picker.pack(fill="x", pady=(0, 6))
+        ttk.Label(preview_picker, text="Preview variation:").pack(side="left")
+        preview_spin = ttk.Spinbox(
+            preview_picker,
+            from_=1,
+            to=MESSAGE_SLOT_COUNT,
+            textvariable=self.preview_message_var,
+            width=5,
+            state="readonly",
+            command=self.update_preview,
+            style="Timing.TSpinbox",
+        )
+        preview_spin.pack(side="left", padx=6)
+        self.preview_message_var.trace_add("write", lambda *_: self.update_preview())
+
         prev_frame = ttk.LabelFrame(right_frame, text="Live Recipient Preview (@sample_user)", padding=10)
         prev_frame.pack(fill="both", expand=True)
 
@@ -107,8 +180,11 @@ class MessagesTab(ttk.Frame):
         messages = self.settings_mgr.get_messages()
         greetings = self.settings_mgr.get_greetings()
 
-        self.msg_text.delete("1.0", "end")
-        self.msg_text.insert("1.0", "\n---\n".join(messages))
+        for index, field in enumerate(self.message_texts):
+            field.delete("1.0", "end")
+            if index < len(messages):
+                field.insert("1.0", messages[index])
+            field.edit_modified(False)
 
         for i, var in enumerate(self.greeting_vars):
             if i < len(greetings):
@@ -119,15 +195,32 @@ class MessagesTab(ttk.Frame):
         self.update_preview()
 
     def _on_message_modified(self, event=None):
-        if self.msg_text.edit_modified():
-            self.msg_text.edit_modified(False)
+        field = event.widget if event is not None else None
+        if field is None or field.edit_modified():
+            if field is not None:
+                field.edit_modified(False)
             self.update_preview()
+
+    def _messages_by_slot(self) -> List[str]:
+        return [field.get("1.0", "end").strip() for field in self.message_texts]
 
     def update_preview(self):
         """Updates the live preview on the right side."""
-        raw_text = self.msg_text.get("1.0", "end").strip()
-        messages = [m.strip() for m in raw_text.split("---") if m.strip()]
-        base_msg = messages[0] if messages else "No message text provided."
+        messages_by_slot = self._messages_by_slot()
+        filled_messages = [message for message in messages_by_slot if message]
+        self.message_count_label.configure(
+            text=f"{len(filled_messages)} / {MESSAGE_SLOT_COUNT} filled"
+        )
+        try:
+            preview_index = max(
+                0,
+                min(MESSAGE_SLOT_COUNT - 1, int(self.preview_message_var.get()) - 1),
+            )
+        except (tk.TclError, ValueError):
+            preview_index = 0
+        base_msg = messages_by_slot[preview_index]
+        if not base_msg:
+            base_msg = filled_messages[0] if filled_messages else "No message text provided."
 
         greetings = [v.get().strip() for v in self.greeting_vars if v.get().strip()]
         greeting = greetings[0] if greetings else "I hope this message finds you in peace"
@@ -146,11 +239,20 @@ class MessagesTab(ttk.Frame):
         self.preview_text.configure(state="disabled")
 
     def save_data(self):
-        raw_text = self.msg_text.get("1.0", "end").strip()
-        messages = [m.strip() for m in raw_text.split("---") if m.strip()]
+        messages = [message for message in self._messages_by_slot() if message]
 
-        if not messages:
-            messagebox.showwarning("Empty Message", "Please enter at least one message body.")
+        if len(messages) < 2:
+            messagebox.showwarning(
+                "More Variations Required",
+                "Please enter at least two different message bodies before saving.",
+            )
+            return
+
+        if len(set(messages)) != len(messages):
+            messagebox.showwarning(
+                "Duplicate Messages",
+                "Each filled message field must contain different text.",
+            )
             return
 
         greetings = [v.get().strip() for v in self.greeting_vars if v.get().strip()]

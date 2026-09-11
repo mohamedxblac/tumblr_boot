@@ -21,8 +21,11 @@ MESSAGES_FILE = os.path.join(DATA_DIR, "messages.json")
 DEFAULT_SETTINGS = {
     "max_success_per_account": 30,
     "session_success_cap": 15,
+    "parallel_accounts": 1,
     "no_message_limit": 10,
     "action_delay": 0.5,
+    "typing_min_delay": 0.05,
+    "typing_max_delay": 0.14,
     "line_delay": 7.55,
     "after_send_delay": 2.2,
     "after_success_delay": 2.2,
@@ -43,6 +46,8 @@ DEFAULT_SETTINGS = {
     "max_retries": 3,
     "retry_delay_sec": 5,
 }
+
+MESSAGE_SLOT_COUNT = 15
 
 DEFAULT_MESSAGES = [
     (
