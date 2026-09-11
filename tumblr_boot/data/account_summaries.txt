@@ -1,3 +1,7 @@
 2026-09-12 00:03:13 | kazoulayacine012@gmail.com | Sent:0 | Failed:0 | login_failed
 2026-09-12 01:00:36 | kazoulayacine012@gmail.com | Sent:0 | Failed:0 | session_exception: 'BotLogger' object has no attribute 'debug'
 2026-09-12 01:12:55 | kazoulayacine012@gmail.com | Sent:3 | Failed:0 | could_not_send
+2026-09-12 01:59:08 | kazoulayacine012@gmail.com | Sent:3 | Failed:0 | could_not_send
+2026-09-12 02:00:12 | kazoulayacine0.12@gmail.com | Sent:0 | Failed:0 | could_not_send
+2026-09-12 02:03:21 | kazoulayacine012@gmail.com | Sent:3 | Failed:0 | could_not_send
+2026-09-12 02:04:00 | kazoulayacine0.12@gmail.com | Sent:0 | Failed:0 | login_failed

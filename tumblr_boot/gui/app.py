@@ -22,6 +22,7 @@ from gui.settings_tab import SettingsTab
 from gui.accounts_tab import AccountsTab
 from gui.messages_tab import MessagesTab
 from gui.stats_tab import StatsTab
+from gui.clipboard import ClipboardSupport
 
 
 class TumblrBotApp(tk.Tk):
@@ -50,6 +51,7 @@ class TumblrBotApp(tk.Tk):
         # ── 3. Build UI Layout ──
         self._build_tabs()
         self._build_statusbar()
+        self.clipboard_support = ClipboardSupport(self)
 
         # ── 4. Start Event Loop Polling & Close Handler ──
         self.protocol("WM_DELETE_WINDOW", self.on_closing)

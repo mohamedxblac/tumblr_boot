@@ -141,3 +141,116 @@ Stacktrace:
 2026-09-12 01:12:55,766 [INFO] kazoulayacine012@gmail.com | Sent:3 | Failed:0 | follow | user=emmelinemisix | ok=True
 2026-09-12 01:12:55,767 [INFO] kazoulayacine012@gmail.com | Sent:3 | Failed:0 | could_not_send
 2026-09-12 01:12:55,767 [INFO] kazoulayacine012@gmail.com | ===SUMMARY=== | Sent:3 | Failed:0 | could_not_send
+2026-09-12 01:58:27,567 [INFO] [ENGINE] Bot engine started.
+2026-09-12 01:58:27,572 [INFO] [ENGINE] Starting round with 2 pending accounts...
+2026-09-12 01:58:33,311 [INFO] [BROWSER] Chrome launched | Profile: NATIVE | Res: 1280x900 | TZ: system
+2026-09-12 01:58:33,311 [INFO] [AUTH] Attempting login for kazoulayacine012@gmail.com (attempt 1/2)...
+2026-09-12 01:58:44,604 [INFO] [AUTH] Login SUCCESSFUL: kazoulayacine012@gmail.com (11.3s)
+2026-09-12 01:58:44,607 [INFO] [kazoulayacine012@gmail.com] Ready! Processing up to 15 users in this session...
+2026-09-12 01:59:08,591 [INFO] [SCREENSHOT] Saved state capture to: C:\Users\mohamed\Desktop\project2\tumblr_boot\data\error_screenshots\could_not_send_emmelinemisix_20260912_015908.png
+2026-09-12 01:59:08,591 [INFO] kazoulayacine012@gmail.com | Sent:3 | Failed:0 | could_not_send
+2026-09-12 01:59:08,591 [INFO] kazoulayacine012@gmail.com | ===SUMMARY=== | Sent:3 | Failed:0 | could_not_send
+2026-09-12 01:59:21,560 [WARNING] [AUTH] Logout did not complete cleanly (Message: 
+Stacktrace:
+	undetected_chromedriver!GetHandleVerifier [0x771c33+4e33]
+	undetected_chromedriver!(No symbol) [0x68d154]
+	undetected_chromedriver!(No symbol) [0x4cc0b0]
+	undetected_chromedriver!(No symbol) [0x517066]
+	undetected_chromedriver!(No symbol) [0x51723b]
+	undetected_chromedriver!(No symbol) [0x55b782]
+	undetected_chromedriver!(No symbol) [0x539af4]
+	undetected_chromedriver!(No symbol) [0x558ff3]
+	undetected_chromedriver!(No symbol) [0x539846]
+	undetected_chromedriver!(No symbol) [0x50be6a]
+	undetected_chromedriver!(No symbol) [0x50cb44]
+	undetected_chromedriver!GetHandleVerifier [0xbd797a+46ab7a]
+	undetected_chromedriver!GetHandleVerifier [0xbf945b+48c65b]
+	undetected_chromedriver!GetHandleVerifier [0x894282+127482]
+	undetected_chromedriver!GetHandleVerifier [0x89af93+12e193]
+	undetected_chromedriver!(No symbol) [0x69b278]
+	undetected_chromedriver!(No symbol) [0x6965a8]
+	undetected_chromedriver!(No symbol) [0x696755]
+	undetected_chromedriver!(No symbol) [0x682b97]
+	KERNEL32!BaseThreadInitThunk [0x763afcc9+19]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x774482ae+11e]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x7744827e+ee]
+).
+2026-09-12 01:59:30,316 [INFO] [BROWSER] Chrome launched | Profile: NATIVE | Res: 1280x900 | TZ: system
+2026-09-12 01:59:30,317 [INFO] [AUTH] Attempting login for kazoulayacine0.12@gmail.com (attempt 1/2)...
+2026-09-12 01:59:46,225 [INFO] [AUTH] Login SUCCESSFUL: kazoulayacine0.12@gmail.com (15.9s)
+2026-09-12 01:59:46,228 [INFO] [kazoulayacine0.12@gmail.com] Ready! Processing up to 15 users in this session...
+2026-09-12 02:00:12,647 [INFO] [SCREENSHOT] Saved state capture to: C:\Users\mohamed\Desktop\project2\tumblr_boot\data\error_screenshots\could_not_send_momentumandtorque_20260912_020012.png
+2026-09-12 02:00:12,648 [INFO] kazoulayacine0.12@gmail.com | Sent:0 | Failed:0 | could_not_send
+2026-09-12 02:00:12,648 [INFO] kazoulayacine0.12@gmail.com | ===SUMMARY=== | Sent:0 | Failed:0 | could_not_send
+2026-09-12 02:00:25,726 [WARNING] [AUTH] Logout did not complete cleanly (Message: 
+Stacktrace:
+	undetected_chromedriver!GetHandleVerifier [0x1241c33+4e33]
+	undetected_chromedriver!(No symbol) [0x115d154]
+	undetected_chromedriver!(No symbol) [0xf9c0b0]
+	undetected_chromedriver!(No symbol) [0xfe7066]
+	undetected_chromedriver!(No symbol) [0xfe723b]
+	undetected_chromedriver!(No symbol) [0x102b782]
+	undetected_chromedriver!(No symbol) [0x1009af4]
+	undetected_chromedriver!(No symbol) [0x1028ff3]
+	undetected_chromedriver!(No symbol) [0x1009846]
+	undetected_chromedriver!(No symbol) [0xfdbe6a]
+	undetected_chromedriver!(No symbol) [0xfdcb44]
+	undetected_chromedriver!GetHandleVerifier [0x16a797a+46ab7a]
+	undetected_chromedriver!GetHandleVerifier [0x16c945b+48c65b]
+	undetected_chromedriver!GetHandleVerifier [0x1364282+127482]
+	undetected_chromedriver!GetHandleVerifier [0x136af93+12e193]
+	undetected_chromedriver!(No symbol) [0x116b278]
+	undetected_chromedriver!(No symbol) [0x11665a8]
+	undetected_chromedriver!(No symbol) [0x1166755]
+	undetected_chromedriver!(No symbol) [0x1152b97]
+	KERNEL32!BaseThreadInitThunk [0x763afcc9+19]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x774482ae+11e]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x7744827e+ee]
+).
+2026-09-12 02:00:28,902 [INFO] [ENGINE] Round finished. Sleeping 12.0 hours before next cycle...
+2026-09-12 02:01:42,883 [INFO] [ENGINE] Stop requested. Waiting for current action to wrap up...
+2026-09-12 02:01:42,983 [INFO] [ENGINE] Bot engine stopped cleanly.
+2026-09-12 02:02:00,415 [INFO] [ENGINE] Bot engine started.
+2026-09-12 02:02:00,419 [INFO] [ENGINE] Starting round with 2 pending accounts...
+2026-09-12 02:02:12,380 [INFO] [BROWSER] Chrome launched | Profile: NATIVE | Res: 1280x900 | TZ: system
+2026-09-12 02:02:12,381 [INFO] [AUTH] Attempting login for kazoulayacine012@gmail.com (attempt 1/2)...
+2026-09-12 02:02:22,134 [INFO] [AUTH] Login SUCCESSFUL: kazoulayacine012@gmail.com (9.8s)
+2026-09-12 02:02:22,137 [INFO] [kazoulayacine012@gmail.com] Ready! Processing up to 15 users in this session...
+2026-09-12 02:03:21,117 [INFO] [SCREENSHOT] Saved state capture to: C:\Users\mohamed\Desktop\project2\tumblr_boot\data\error_screenshots\could_not_send_fm-tales_20260912_020320.png
+2026-09-12 02:03:21,118 [INFO] kazoulayacine012@gmail.com | Sent:3 | Failed:0 | could_not_send
+2026-09-12 02:03:21,118 [INFO] kazoulayacine012@gmail.com | ===SUMMARY=== | Sent:3 | Failed:0 | could_not_send
+2026-09-12 02:03:35,532 [WARNING] [AUTH] Logout did not complete cleanly (Message: 
+Stacktrace:
+	undetected_chromedriver!GetHandleVerifier [0x11f1c33+4e33]
+	undetected_chromedriver!(No symbol) [0x110d154]
+	undetected_chromedriver!(No symbol) [0xf4c0b0]
+	undetected_chromedriver!(No symbol) [0xf97066]
+	undetected_chromedriver!(No symbol) [0xf9723b]
+	undetected_chromedriver!(No symbol) [0xfdb782]
+	undetected_chromedriver!(No symbol) [0xfb9af4]
+	undetected_chromedriver!(No symbol) [0xfd8ff3]
+	undetected_chromedriver!(No symbol) [0xfb9846]
+	undetected_chromedriver!(No symbol) [0xf8be6a]
+	undetected_chromedriver!(No symbol) [0xf8cb44]
+	undetected_chromedriver!GetHandleVerifier [0x165797a+46ab7a]
+	undetected_chromedriver!GetHandleVerifier [0x167945b+48c65b]
+	undetected_chromedriver!GetHandleVerifier [0x1314282+127482]
+	undetected_chromedriver!GetHandleVerifier [0x131af93+12e193]
+	undetected_chromedriver!(No symbol) [0x111b278]
+	undetected_chromedriver!(No symbol) [0x11165a8]
+	undetected_chromedriver!(No symbol) [0x1116755]
+	undetected_chromedriver!(No symbol) [0x1102b97]
+	KERNEL32!BaseThreadInitThunk [0x763afcc9+19]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x774482ae+11e]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x7744827e+ee]
+).
+2026-09-12 02:03:49,095 [INFO] [BROWSER] Chrome launched | Profile: NATIVE | Res: 1280x900 | TZ: system
+2026-09-12 02:03:49,096 [INFO] [AUTH] Attempting login for kazoulayacine0.12@gmail.com (attempt 1/2)...
+2026-09-12 02:03:54,623 [WARNING] [AUTH] Login attempt 1 failed for kazoulayacine0.12@gmail.com after 5.5s: RuntimeError: The login form did not retain the entered field value
+2026-09-12 02:03:56,365 [INFO] [AUTH] Attempting login for kazoulayacine0.12@gmail.com (attempt 2/2)...
+2026-09-12 02:04:00,556 [WARNING] [AUTH] Login attempt 2 failed for kazoulayacine0.12@gmail.com after 4.2s: RuntimeError: The login form did not retain the entered field value
+2026-09-12 02:04:00,928 [INFO] [SCREENSHOT] Saved state capture to: C:\Users\mohamed\Desktop\project2\tumblr_boot\data\error_screenshots\login_fail_kazoulayacine0.12_20260912_020400.png
+2026-09-12 02:04:00,929 [ERROR] [AUTH] All login attempts failed for kazoulayacine0.12@gmail.com
+2026-09-12 02:04:00,929 [INFO] kazoulayacine0.12@gmail.com | Sent:0 | Failed:0 | login_failed
+2026-09-12 02:04:00,929 [INFO] kazoulayacine0.12@gmail.com | ===SUMMARY=== | Sent:0 | Failed:0 | login_failed
+2026-09-12 02:04:03,998 [INFO] [ENGINE] Round finished. Sleeping 12.0 hours before next cycle...

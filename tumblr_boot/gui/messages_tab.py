@@ -62,7 +62,7 @@ class MessagesTab(ttk.Frame):
 
         self.msg_text.pack(side="left", fill="both", expand=True)
         msg_scroll.pack(side="right", fill="y")
-        self.msg_text.bind("<KeyRelease>", lambda e: self.update_preview())
+        self.msg_text.bind("<<Modified>>", self._on_message_modified)
 
         # ── 2. Greetings Editor (Left) ──
         greet_frame = ttk.LabelFrame(left_frame, text="Greetings (Rotated per user)", padding=8)
@@ -76,7 +76,7 @@ class MessagesTab(ttk.Frame):
             var = tk.StringVar()
             entry = ttk.Entry(row, textvariable=var)
             entry.pack(side="left", fill="x", expand=True)
-            entry.bind("<KeyRelease>", lambda e: self.update_preview())
+            var.trace_add("write", lambda *_: self.update_preview())
             self.greeting_vars.append(var)
 
         # ── 3. Action Buttons (Left) ──
@@ -117,6 +117,11 @@ class MessagesTab(ttk.Frame):
                 var.set("")
 
         self.update_preview()
+
+    def _on_message_modified(self, event=None):
+        if self.msg_text.edit_modified():
+            self.msg_text.edit_modified(False)
+            self.update_preview()
 
     def update_preview(self):
         """Updates the live preview on the right side."""
