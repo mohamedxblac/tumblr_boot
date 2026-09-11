@@ -1,12 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-core/messenger.py — Messaging, Follows & Human-Like Interaction
-===============================================================
-Handles navigating to target user profiles in the same browser tab,
-performing follows, typing personalized multi-line messages with Shift+Enter,
-detecting rate limits ('Could not send') and closed DMs ('no_message_button').
-"""
-
 import time
 from typing import List, Tuple, Union
 
@@ -20,8 +12,8 @@ from core.browser import BrowserFactory
 from utils.logger import logger
 
 
+# متابعة حساب المستخدم المستهدف إذا كان زر المتابعة متاحاً
 def follow_user(driver) -> bool:
-    """Clicks the Follow button on a user profile if present and clickable."""
     for sel in [
         "button[aria-label='Follow']",
         "button[aria-label='Follow @']",
@@ -46,8 +38,8 @@ def follow_user(driver) -> bool:
         return False
 
 
+# كتابة فقرات الرسالة بأمان باستخدام Shift+Enter للفصل بين الأسطر دون إرسال مبكر
 def type_message_safely(element, text: str):
-    """Types a block of text, using Shift+Enter for linebreaks so the form isn't prematurely submitted."""
     lines = text.split("\n")
     for i, line in enumerate(lines):
         if line:
@@ -57,23 +49,19 @@ def type_message_safely(element, text: str):
         time.sleep(0.05)
 
 
+# تجهيز أجزاء الرسالة الثلاثة: التحية البسيطة، التحية باسم المستخدم، ونص الرسالة
 def compose_message_parts(
     username: str,
     base_message: str,
     greeting: str,
     index: int
 ) -> List[str]:
-    """
-    Constructs the 3 message parts:
-    1. 'hi' or 'hello'
-    2. '{greeting}, {username}'
-    3. The main message body
-    """
     salute = "hello" if (index % 2 == 1) else "hi"
     greeting_line = f"{greeting}, {username}"
     return [salute, greeting_line, base_message]
 
 
+# الانتقال لحساب المستخدم في نفس التبويب وإرسال الرسائل واكتشاف أخطاء الحظر أو الإغلاق
 def send_message_to_user(
     driver,
     username: str,
@@ -82,11 +70,6 @@ def send_message_to_user(
     line_delay: float = 7.55,
     after_send_delay: float = 2.2,
 ) -> Tuple[Union[bool, str], bool]:
-    """
-    Navigates to the user's profile in the active tab and sends DM parts sequentially.
-    Returns: (result, follow_success)
-    where result is True, 'could_not_send', 'no_message_button', or False.
-    """
     user_url = f"https://www.tumblr.com/{username}"
     try:
         driver.get(user_url)
@@ -102,7 +85,6 @@ def send_message_to_user(
         except Exception:
             pass
 
-        # Locate and click Message button
         clicked = False
         for sel in [
             "a.tx-icon-button.message-button",
@@ -127,7 +109,6 @@ def send_message_to_user(
         if not clicked:
             return ("no_message_button", followed)
 
-        # Locate message input area
         input_box = None
         for sel in ["textarea", "div[contenteditable='true']", "[role='textbox']"]:
             try:
@@ -142,14 +123,12 @@ def send_message_to_user(
         if not input_box:
             return ("no_message_button", followed)
 
-        # Send each part sequentially
         for msg in messages:
             input_box.click()
             type_message_safely(input_box, msg)
             time.sleep(0.3)
             input_box.send_keys(Keys.ENTER)
 
-            # Try clicking Send button if Enter didn't trigger submission
             try:
                 sb = driver.find_element(
                     By.XPATH, "//button[contains(@aria-label,'Send') or contains(.,'Send')]"
@@ -163,7 +142,6 @@ def send_message_to_user(
 
         time.sleep(after_send_delay)
 
-        # Detect rate limiting / block indication
         if "Could not send" in driver.page_source:
             BrowserFactory.capture_screenshot(driver, prefix=f"could_not_send_{username}")
             return ("could_not_send", followed)

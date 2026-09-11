@@ -1,25 +1,16 @@
 # -*- coding: utf-8 -*-
-"""
-utils/logger.py — Advanced Thread-Safe Logging System
-=====================================================
-Handles logging to file, console, and sends structured log records to a GUI
-message queue for real-time display in the live runner tab.
-"""
-
 import os
 import sys
 import logging
 import queue
-from datetime import datetime
-from typing import Optional, Callable
+from typing import Optional
 
 from config.settings import LOG_FILE, SUMMARY_FILE
 from utils.helpers import now_ts
 
 
+# معالج السجلات الذي يرسل رسائل التسجيل إلى واجهة المستخدم مباشرة
 class GuiLogHandler(logging.Handler):
-    """Logging handler that delivers formatted log records into a thread-safe queue for the GUI."""
-
     def __init__(self, log_queue: queue.Queue):
         super().__init__()
         self.log_queue = log_queue
@@ -38,9 +29,8 @@ class GuiLogHandler(logging.Handler):
             self.handleError(record)
 
 
+# فئة إدارة وتنسيق سجلات البوت في الملف والطرفية وواجهة المستخدم
 class BotLogger:
-    """Central Logger wrapper providing helper methods for event and summary tracking."""
-
     def __init__(self, name: str = "TumblrBot"):
         self.name = name
         self.logger = logging.getLogger(name)
@@ -51,24 +41,19 @@ class BotLogger:
         self._setup_handlers()
 
     def _setup_handlers(self):
-        # Clear existing handlers
         self.logger.handlers.clear()
-
         formatter = logging.Formatter("%(asctime)s [%(levelname)s] %(message)s")
 
-        # File Handler (append mode)
         os.makedirs(os.path.dirname(LOG_FILE), exist_ok=True)
         file_handler = logging.FileHandler(LOG_FILE, encoding="utf-8")
         file_handler.setFormatter(formatter)
         self.logger.addHandler(file_handler)
 
-        # Stream Handler (stdout)
         stream_handler = logging.StreamHandler(sys.stdout)
         stream_handler.setFormatter(formatter)
         self.logger.addHandler(stream_handler)
 
     def attach_gui_queue(self, q: queue.Queue):
-        """Attaches a queue for live GUI streaming."""
         if self._gui_handler:
             self.logger.removeHandler(self._gui_handler)
         self._gui_handler = GuiLogHandler(q)
@@ -86,7 +71,6 @@ class BotLogger:
         self.logger.error(msg)
 
     def success(self, msg: str):
-        # We log success as INFO with a special prefix for the GUI
         self.logger.info(f"✔ {msg}")
 
     def log_event(self, email: str, total_ok: int, fails: int, note: str = ""):
@@ -104,5 +88,4 @@ class BotLogger:
             self.logger.error(f"Failed to write summary: {e}")
 
 
-# Global logger instance
 logger = BotLogger()

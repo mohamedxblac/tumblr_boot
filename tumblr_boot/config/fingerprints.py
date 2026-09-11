@@ -1,14 +1,6 @@
 # -*- coding: utf-8 -*-
-"""
-config/fingerprints.py — Browser Fingerprint Bank & Stealth Profiles
-===================================================================
-Provides realistic, modern User-Agents, screen resolutions, WebGL vendor/renderers,
-timezones, and locales. Generates consistent fingerprints to prevent bot detection.
-"""
-
 import random
 
-# ─── Modern User Agents (Chrome 120-134 on Windows, macOS, Linux) ────────────
 USER_AGENTS_WINDOWS = [
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36",
@@ -36,7 +28,6 @@ USER_AGENTS_LINUX = [
     "Mozilla/5.0 (X11; Ubuntu; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
 ]
 
-# ─── Screen Resolutions ──────────────────────────────────────────────────────
 SCREEN_RESOLUTIONS = [
     {"width": 1920, "height": 1080, "avail_height": 1040},
     {"width": 1536, "height": 864,  "avail_height": 824},
@@ -48,7 +39,6 @@ SCREEN_RESOLUTIONS = [
     {"width": 1920, "height": 1200, "avail_height": 1160},
 ]
 
-# ─── WebGL Profiles (Vendor & Renderer pairs) ────────────────────────────────
 WEBGL_PROFILES_WINDOWS = [
     {"vendor": "Google Inc. (NVIDIA)", "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 3060 Direct3D11 vs_5_0 ps_5_0, D3D11)"},
     {"vendor": "Google Inc. (NVIDIA)", "renderer": "ANGLE (NVIDIA, NVIDIA GeForce GTX 1660 SUPER Direct3D11 vs_5_0 ps_5_0, D3D11)"},
@@ -71,7 +61,6 @@ WEBGL_PROFILES_LINUX = [
     {"vendor": "X.Org", "renderer": "AMD Radeon RX 580 Series (radeonsi, polaris10, LLVM 15.0.7)"},
 ]
 
-# ─── Timezones & Locales ─────────────────────────────────────────────────────
 TIMEZONE_PROFILES = [
     {"tz": "America/New_York",    "locale": "en-US", "languages": ["en-US", "en"]},
     {"tz": "America/Chicago",     "locale": "en-US", "languages": ["en-US", "en"]},
@@ -84,12 +73,8 @@ TIMEZONE_PROFILES = [
 ]
 
 
+# توليد بصمة متصفح وهمية متناسقة وواقعية لتفادي كشف البوت وحظر الحسابات
 def generate_stealth_fingerprint() -> dict:
-    """
-    Generates a realistic, coherent browser fingerprint.
-    OS, User-Agent, platform, and WebGL renderer will match consistently.
-    """
-    # 80% Windows, 15% Mac, 5% Linux for maximum blend-in
     platform_choice = random.choices(["windows", "mac", "linux"], weights=[80, 15, 5])[0]
 
     if platform_choice == "windows":

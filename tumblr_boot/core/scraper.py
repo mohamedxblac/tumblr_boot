@@ -1,12 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-core/scraper.py — Notes Scraper with Scoped Pagination
-======================================================
-Scrapes prospective users from Tumblr post notes (Likes or Reblogs) strictly in
-top-to-bottom chronological order. Handles dynamic scroll containers, 'Show more notes'
-pagination, DOM updates, and reports real-time progress callbacks to the GUI.
-"""
-
 import re
 import time
 from typing import List, Set, Optional, Callable
@@ -20,20 +12,17 @@ from utils.helpers import extract_blog_from_href, is_valid_blog
 from utils.logger import logger
 
 
+# استخراج اسم الحساب ورقم المنشور من رابط البوست
 def parse_post_info(url: str):
-    """Extracts (owner_blog, post_id) from a Tumblr post URL."""
     m = re.search(r"tumblr\.com/([^/?#]+)/([0-9]{6,})", url)
     return (m.group(1), m.group(2)) if m else (None, None)
 
 
+# فتح تبويب التفاعلات (الإعجابات أو إعادة التدوين) داخل صفحة المنشور
 def open_notes_in_selenium(driver, want_tab: str = "likes") -> bool:
-    """
-    Opens and activates the Notes tab ('likes' or 'reblogs') on the currently loaded post.
-    """
     want = want_tab.lower()
     dismiss_consent_screen_if_present(driver)
 
-    # 1. Try inline tabs directly visible on the post article
     tab_xpaths = (
         [
             "//article//button[contains(.,'likes') or contains(@aria-label,'Likes')]",
@@ -60,7 +49,6 @@ def open_notes_in_selenium(driver, want_tab: str = "likes") -> bool:
         except Exception:
             continue
 
-    # 2. Try footer notes button which triggers the notes dialog modal
     for sel in [
         "//footer//button[contains(@aria-label,'Notes') or contains(@aria-label,'notes')]",
         "//button[contains(@aria-label,'Notes') or contains(@aria-label,'notes')]",
@@ -92,6 +80,7 @@ def open_notes_in_selenium(driver, want_tab: str = "likes") -> bool:
     return False
 
 
+# جمع وسحب المتفاعلين مع المنشور بالترتيب من الأعلى للأسفل عبر التمرير
 def scrape_post_master_queue(
     driver,
     post_url: str,
@@ -105,10 +94,6 @@ def scrape_post_master_queue(
     progress_callback: Optional[Callable[[int, int], None]] = None,
     stop_check: Optional[Callable[[], bool]] = None,
 ) -> List[str]:
-    """
-    Scrapes the target post strictly from the notes container in top-to-bottom order.
-    Periodically checks stop_check() and invokes progress_callback(scraped_count, max_users).
-    """
     if already_sent is None:
         already_sent = set()
 
@@ -161,7 +146,6 @@ def scrape_post_master_queue(
         scroll_n += 1
         before = len(found)
 
-        # Scoped extraction strictly to notes-root or post article
         raw_links = driver.execute_script("""
             const targetScope = document.querySelector("[data-testid='notes-root']") 
                              || document.querySelector("[role='dialog']") 
@@ -195,7 +179,6 @@ def scrape_post_master_queue(
         if after >= max_users:
             break
 
-        # Scroll internal container and page
         driver.execute_script("""
             const root = document.querySelector("[data-testid='notes-root']");
             if (root) {
@@ -213,7 +196,6 @@ def scrape_post_master_queue(
             window.scrollBy(0, 1000);
         """)
 
-        # Click 'Show more notes' / 'Load more' if visible
         try:
             more_btns = driver.find_elements(
                 By.XPATH,

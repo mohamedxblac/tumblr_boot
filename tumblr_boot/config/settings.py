@@ -1,67 +1,47 @@
 # -*- coding: utf-8 -*-
-"""
-config/settings.py — Central Configuration & Default Settings
-=============================================================
-All tunable parameters with their defaults.
-The GUI reads/writes these values at runtime.
-"""
-
 import os
 import json
 
-# ─── Base Directories ────────────────────────────────────────────────────────
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA_DIR = os.path.join(BASE_DIR, "data")
 os.makedirs(DATA_DIR, exist_ok=True)
 os.makedirs(os.path.join(DATA_DIR, "error_screenshots"), exist_ok=True)
 
-# ─── Data File Paths ─────────────────────────────────────────────────────────
-SENT_USERS_FILE   = os.path.join(DATA_DIR, "sent_users.txt")
-LOG_FILE          = os.path.join(DATA_DIR, "account_logs.txt")
-SUMMARY_FILE      = os.path.join(DATA_DIR, "account_summaries.txt")
-PROGRESS_FILE     = os.path.join(DATA_DIR, "account_progress.json")
+SENT_USERS_FILE = os.path.join(DATA_DIR, "sent_users.txt")
+LOG_FILE = os.path.join(DATA_DIR, "account_logs.txt")
+SUMMARY_FILE = os.path.join(DATA_DIR, "account_summaries.txt")
+PROGRESS_FILE = os.path.join(DATA_DIR, "account_progress.json")
 TARGET_QUEUE_FILE = os.path.join(DATA_DIR, "target_queue.txt")
-SCREENSHOTS_DIR   = os.path.join(DATA_DIR, "error_screenshots")
-SETTINGS_FILE     = os.path.join(DATA_DIR, "bot_settings.json")
-ACCOUNTS_FILE     = os.path.join(DATA_DIR, "accounts.json")
-MESSAGES_FILE     = os.path.join(DATA_DIR, "messages.json")
+SCREENSHOTS_DIR = os.path.join(DATA_DIR, "error_screenshots")
+SETTINGS_FILE = os.path.join(DATA_DIR, "bot_settings.json")
+ACCOUNTS_FILE = os.path.join(DATA_DIR, "accounts.json")
+MESSAGES_FILE = os.path.join(DATA_DIR, "messages.json")
 
-# ─── Default Settings ────────────────────────────────────────────────────────
 DEFAULT_SETTINGS = {
-    # ── Account Limits ──
-    "max_success_per_account":  30,    # الحد الأقصى الكلي للرسائل لكل حساب
-    "session_success_cap":      15,    # الحد الأقصى للجلسة الواحدة
-    "no_message_limit":         10,    # عدد الفشل المتتالي قبل الانتقال
-
-    # ── Timing & Delays (seconds) ──
-    "line_delay":               7.55,  # التأخير بين أجزاء الرسالة الواحدة
-    "after_send_delay":         2.2,   # التأخير بعد إرسال الرسالة
-    "after_success_delay":      2.2,   # التأخير بعد النجاح
-    "min_between_users":        60,    # أقل فاصل بين المستخدمين (ثوانٍ)
-    "max_between_users":        130,   # أقصى فاصل بين المستخدمين (ثوانٍ)
-    "sleep_between_rounds_hrs": 12,    # ساعات النوم بين الجولات
-
-    # ── Scraper Settings ──
-    "notes_max_users":          3000,  # الحد الأقصى لعدد المستخدمين المسحوبين
-    "scroll_pause":             1.5,   # التأخير بين التمريرات
-    "stagnant_limit":           8,     # عدد التمريرات بدون نتائج جديدة قبل التوقف
-    "scrape_threshold":         15,    # الحد الأدنى للطابور قبل إعادة السحب
-    "scrape_timeout_sec":       150,   # الحد الزمني للسحب (ثوانٍ)
-
-    # ── Behavior ──
-    "follow_every_n":           4,     # متابعة كل كام مستخدم
-    "tab_type":                 "likes",  # نوع التفاعل: "likes" أو "reblogs"
-    "post_url":                 "",    # رابط المنشور المستهدف
-    "start_account_index":      0,     # رقم الحساب للبدء منه (0-indexed)
-
-    # ── Stealth & Protection ──
-    "enable_fingerprint_rotation": True,  # تفعيل تدوير بصمة المتصفح
-    "enable_auto_retry":           True,  # تفعيل إعادة المحاولة التلقائية
-    "max_retries":                 3,     # أقصى عدد محاولات إعادة المحاولة
-    "retry_delay_sec":             5,     # التأخير بين المحاولات (ثوانٍ)
+    "max_success_per_account": 30,
+    "session_success_cap": 15,
+    "no_message_limit": 10,
+    "line_delay": 7.55,
+    "after_send_delay": 2.2,
+    "after_success_delay": 2.2,
+    "min_between_users": 60,
+    "max_between_users": 130,
+    "sleep_between_rounds_hrs": 12,
+    "notes_max_users": 3000,
+    "scroll_pause": 1.5,
+    "stagnant_limit": 8,
+    "scrape_threshold": 15,
+    "scrape_timeout_sec": 150,
+    "follow_every_n": 4,
+    "tab_type": "likes",
+    "post_url": "",
+    "start_account_index": 0,
+    "enable_fingerprint_rotation": True,
+    "enable_auto_retry": True,
+    "max_retries": 3,
+    "retry_delay_sec": 5,
 }
 
-# ─── Default Messages ────────────────────────────────────────────────────────
 DEFAULT_MESSAGES = [
     (
         "I never imagined I would have to ask for help like this. "
@@ -90,10 +70,8 @@ DEFAULT_GREETINGS = [
 ]
 
 
-# ─── Settings Manager ────────────────────────────────────────────────────────
+# فئة إدارة إعدادات البوت وقراءة وحفظ الحسابات والرسائل على القرص تلقائياً
 class SettingsManager:
-    """Loads, saves, and provides access to all bot settings."""
-
     def __init__(self):
         self._settings = dict(DEFAULT_SETTINGS)
         self._accounts = []
@@ -101,7 +79,6 @@ class SettingsManager:
         self._greetings = list(DEFAULT_GREETINGS)
         self.load_all()
 
-    # ── Settings ──────────────────────────────────────────────────────────
     def get(self, key, default=None):
         return self._settings.get(key, default)
 
@@ -119,7 +96,6 @@ class SettingsManager:
         self._settings.update(new_settings)
         self._save_settings()
 
-    # ── Accounts ──────────────────────────────────────────────────────────
     def get_accounts(self) -> list:
         return list(self._accounts)
 
@@ -145,7 +121,6 @@ class SettingsManager:
             self._accounts.pop(index)
             self._save_accounts()
 
-    # ── Messages & Greetings ──────────────────────────────────────────────
     def get_messages(self) -> list:
         return list(self._messages)
 
@@ -178,15 +153,12 @@ class SettingsManager:
         self._greetings = list(value)
         self._save_messages()
 
-    # ── Persistence ───────────────────────────────────────────────────────
     def load_all(self):
-        """Load settings, accounts, and messages from disk."""
         self._load_settings()
         self._load_accounts()
         self._load_messages()
 
     def save_all(self):
-        """Save settings, accounts, and messages to disk."""
         self._save_settings()
         self._save_accounts()
         self._save_messages()

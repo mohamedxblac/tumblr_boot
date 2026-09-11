@@ -1,11 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-core/auth.py — Authentication & Consent Bypass Handler
-======================================================
-Handles Tumblr account login, logout, and automatic dismissal of GDPR / Cookie
-consent walls, modals, and CMP iframes with retry logic and error diagnostics.
-"""
-
 import time
 import random
 from typing import Optional
@@ -20,8 +13,8 @@ from core.browser import BrowserFactory
 from utils.logger import logger
 
 
+# كتابة النص حرفاً بحرف مع تأخير زمني عشوائي لمحاكاة الكتابة البشرية
 def human_type(element, text: str, min_d: float = 0.03, max_d: float = 0.08):
-    """Types text character by character with realistic randomized typing delay."""
     try:
         element.click()
         time.sleep(0.25)
@@ -38,16 +31,11 @@ def human_type(element, text: str, min_d: float = 0.03, max_d: float = 0.08):
         element.send_keys(text)
 
 
+# فحص وتخطي شاشات وإشعارات الموافقة وملفات تعريف الارتباط تلقائياً
 def dismiss_consent_screen_if_present(driver) -> bool:
-    """
-    Detects and automatically dismisses Tumblr Consent / GDPR / Cookie walls,
-    whether they appear as a full-page redirect, an overlay modal popup,
-    a CMP iframe, or a floating banner.
-    """
     try:
         curr_url = driver.current_url.lower()
         if "consent" in curr_url or "privacy" in curr_url:
-            logger.info("[CONSENT] Detected full-page consent redirect, dismissing...")
             for sel in [
                 "//button[contains(translate(., 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), 'i agree')]",
                 "//button[contains(translate(., 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), 'accept all')]",
@@ -60,7 +48,6 @@ def dismiss_consent_screen_if_present(driver) -> bool:
                     if btn.is_displayed():
                         driver.execute_script("arguments[0].click();", btn)
                         time.sleep(2.0)
-                        logger.info("[CONSENT] Clicked full-page consent submit button.")
                         return True
                 except Exception:
                     continue
@@ -99,12 +86,10 @@ def dismiss_consent_screen_if_present(driver) -> bool:
                     if el.is_displayed():
                         driver.execute_script("arguments[0].click();", el)
                         time.sleep(0.8)
-                        logger.info(f"[CONSENT] Dismissed consent popup via selector: '{sel}'")
                         return True
             except Exception:
                 continue
 
-        # Check iframes for consent buttons
         iframes = driver.find_elements(By.TAG_NAME, "iframe")
         for frame in iframes:
             try:
@@ -120,7 +105,6 @@ def dismiss_consent_screen_if_present(driver) -> bool:
                     if ib.is_displayed():
                         driver.execute_script("arguments[0].click();", ib)
                         time.sleep(1.0)
-                        logger.info("[CONSENT] Dismissed popup button inside iframe.")
                         driver.switch_to.default_content()
                         return True
                 driver.switch_to.default_content()
@@ -132,11 +116,8 @@ def dismiss_consent_screen_if_present(driver) -> bool:
     return False
 
 
+# تسجيل الدخول إلى حساب تمبلر والتحقق من فتح لوحة التحكم بنجاح
 def login(driver, email: str, password: str, max_retries: int = 2) -> bool:
-    """
-    Performs full Tumblr authentication sequence with human typing,
-    consent handling, and verification.
-    """
     for attempt in range(1, max_retries + 1):
         try:
             logger.info(f"[AUTH] Attempting login for {email} (attempt {attempt}/{max_retries})...")
@@ -144,13 +125,11 @@ def login(driver, email: str, password: str, max_retries: int = 2) -> bool:
             time.sleep(3)
             dismiss_consent_screen_if_present(driver)
 
-            # Wait for email input
             email_el = WebDriverWait(driver, 15).until(
                 EC.element_to_be_clickable((By.NAME, "email"))
             )
             human_type(email_el, email)
 
-            # Wait for password input
             pwd_el = WebDriverWait(driver, 15).until(
                 EC.element_to_be_clickable((By.NAME, "password"))
             )
@@ -176,7 +155,6 @@ def login(driver, email: str, password: str, max_retries: int = 2) -> bool:
             else:
                 pwd_el.send_keys(Keys.ENTER)
 
-            # Wait for successful dashboard load
             WebDriverWait(driver, 20).until(
                 lambda d: "dashboard" in d.current_url
                 or bool(d.find_elements(By.CSS_SELECTOR, "[data-testid='dashboard-feed'], nav"))
@@ -190,14 +168,13 @@ def login(driver, email: str, password: str, max_retries: int = 2) -> bool:
             if attempt < max_retries:
                 time.sleep(4.0)
 
-    # All attempts failed - take diagnostic screenshot
     BrowserFactory.capture_screenshot(driver, prefix=f"login_fail_{email.split('@')[0]}")
     logger.error(f"[AUTH] All login attempts failed for {email}")
     return False
 
 
+# تسجيل الخروج من الحساب الحالي لإنهاء الجلسة بأمان
 def logout(driver):
-    """Logs out cleanly by navigating to account settings."""
     try:
         driver.get("https://www.tumblr.com/settings/account")
         time.sleep(2)

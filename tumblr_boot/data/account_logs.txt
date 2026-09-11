@@ -2,3 +2,14 @@
 2026-09-11 23:51:34,210 [INFO] [ENGINE] Starting round with 1 pending accounts...
 2026-09-11 23:51:43,238 [INFO] [BROWSER] Chrome launched | OS: MAC | Res: 1920x1200 | TZ: Europe/Paris
 2026-09-11 23:51:43,238 [INFO] [AUTH] Attempting login for kazoulayacine012@gmail.com (attempt 1/2)...
+2026-09-11 23:54:54,722 [WARNING] [AUTH] Login attempt 1 failed for kazoulayacine012@gmail.com: Message: 
+
+2026-09-11 23:57:29,870 [INFO] [AUTH] Attempting login for kazoulayacine012@gmail.com (attempt 2/2)...
+2026-09-12 00:00:40,475 [WARNING] [AUTH] Login attempt 2 failed for kazoulayacine012@gmail.com: Message: 
+
+2026-09-12 00:03:13,132 [INFO] [SCREENSHOT] Saved state capture to: C:\Users\mohamed\Desktop\project2\tumblr_boot\data\error_screenshots\login_fail_kazoulayacine012_20260912_000311.png
+2026-09-12 00:03:13,134 [ERROR] [AUTH] All login attempts failed for kazoulayacine012@gmail.com
+2026-09-12 00:03:13,134 [INFO] kazoulayacine012@gmail.com | Sent:0 | Failed:0 | login_failed
+2026-09-12 00:03:13,135 [INFO] kazoulayacine012@gmail.com | ===SUMMARY=== | Sent:0 | Failed:0 | login_failed
+2026-09-12 00:03:14,683 [ERROR] [ENGINE] Unhandled exception in run loop: 'BotLogger' object has no attribute 'debug'
+2026-09-12 00:03:14,684 [INFO] [ENGINE] Bot engine stopped cleanly.

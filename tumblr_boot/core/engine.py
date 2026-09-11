@@ -1,15 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-core/engine.py — Bot Orchestration Engine
-=========================================
-Coordinates the entire bot lifecycle in a dedicated background worker thread:
-- Fingerprint rotation and browser isolation per account
-- Automatic scraping when target queue drops below threshold
-- Direct message delivery with human-like timing, typing, and follows
-- Live reporting of status, progress, countdowns, and logs via a thread-safe Queue
-- Graceful pause, resume, and stop controls
-"""
-
 import os
 import time
 import random
@@ -27,9 +16,8 @@ from utils.logger import logger
 from utils.helpers import random_sleep
 
 
+# محرك البوت الرئيسي الذي يدير عمليات التشغيل والإرسال والتنقل بين الحسابات في خيط معالجة مستقل
 class BotEngine:
-    """Multi-account automated messaging engine with threading and GUI integration."""
-
     def __init__(self, settings_mgr: SettingsManager, gui_queue: Optional[queue.Queue] = None):
         self.settings_mgr = settings_mgr
         self.gui_queue = gui_queue or queue.Queue()
@@ -48,12 +36,10 @@ class BotEngine:
         return self._pause_event.is_set()
 
     def post_gui_update(self, event_type: str, data: Dict[str, Any]):
-        """Pushes a structured event to the GUI message queue."""
         if self.gui_queue:
             self.gui_queue.put({"type": event_type, **data})
 
     def start(self):
-        """Starts the bot engine in a background thread."""
         if self._is_running:
             logger.warning("[ENGINE] Bot is already running.")
             return
@@ -68,7 +54,6 @@ class BotEngine:
         logger.info("[ENGINE] Bot engine started.")
 
     def pause(self):
-        """Pauses the bot between tasks."""
         if not self._is_running:
             return
         self._pause_event.set()
@@ -76,7 +61,6 @@ class BotEngine:
         logger.info("[ENGINE] Pause requested.")
 
     def resume(self):
-        """Resumes the bot from pause."""
         if not self._is_running:
             return
         self._pause_event.clear()
@@ -84,7 +68,6 @@ class BotEngine:
         logger.info("[ENGINE] Resumed from pause.")
 
     def stop(self):
-        """Signals the engine to stop gracefully."""
         if not self._is_running:
             return
         self._stop_event.set()
@@ -92,10 +75,6 @@ class BotEngine:
         logger.info("[ENGINE] Stop requested. Waiting for current action to wrap up...")
 
     def _sleep_with_checks(self, seconds: float, label: str = "Waiting") -> bool:
-        """
-        Sleeps for the given number of seconds while checking stop and pause flags every 0.5s.
-        Posts live countdown updates to the GUI. Returns False if stopped.
-        """
         remaining = float(seconds)
         step = 0.5
         while remaining > 0:
@@ -121,7 +100,6 @@ class BotEngine:
         return True
 
     def _run_loop(self):
-        """Main execution thread."""
         try:
             settings = self.settings_mgr.get_settings()
             accounts = self.settings_mgr.get_accounts()
@@ -164,9 +142,7 @@ class BotEngine:
             progress = persistence.load_progress()
             target_queue = persistence.load_target_queue()
 
-            # Global round loop
             while not self._stop_event.is_set():
-                # Filter pending accounts
                 pending_accounts = [
                     accounts[i]
                     for i in range(start_acc_idx, len(accounts))
@@ -222,7 +198,6 @@ class BotEngine:
 
                 start_acc_idx = 0
 
-                # Check if all accounts are done across the board
                 still_pending = [
                     a for a in accounts
                     if int(progress.get(a["email"], 0)) < max_per_account
@@ -230,7 +205,6 @@ class BotEngine:
                 if not still_pending or self._stop_event.is_set():
                     break
 
-                # Sleep between rounds
                 sleep_hrs = float(settings.get("sleep_between_rounds_hrs", 12))
                 sleep_seconds = sleep_hrs * 3600
                 logger.info(f"[ENGINE] Round finished. Sleeping {sleep_hrs} hours before next cycle...")
@@ -287,7 +261,6 @@ class BotEngine:
                 "detail": f"Initializing browser for {email}"
             })
 
-            # ── 1. Create Browser with Stealth & Fingerprint ─────────────────
             fp = None if enable_fp_rotation else {"user_agent": "", "screen_width": 1920, "screen_height": 1080}
             driver, profile_dir, used_fp = BrowserFactory.create_browser(fingerprint=fp)
 
@@ -302,7 +275,6 @@ class BotEngine:
                 "detail": f"Active: {email} | Target limit: {total_ok}/{max_per_account}"
             })
 
-            # ── 2. Check Queue & Scrape if Below Threshold ───────────────────
             uncontacted = [u for u in target_queue if u not in sent_users]
 
             if len(uncontacted) < scrape_threshold and not self._stop_event.is_set():
@@ -339,7 +311,6 @@ class BotEngine:
 
             logger.info(f"[{email}] Ready! Processing up to {session_cap} users in this session...")
 
-            # ── 3. Send DMs Sequentially in Same Browser Tab ─────────────────
             msg_i = 0
             greet_i = 0
             users_seen = 0
@@ -449,7 +420,6 @@ class BotEngine:
                     if not self._sleep_with_checks(delay, label=f"Retry/Next (@{username})"):
                         break
 
-            # ── 4. Clean Logout ──────────────────────────────────────────────
             logger.log_summary(email, total_ok, fail_count, note=account_note)
             logout(driver)
 
