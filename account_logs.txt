@@ -146,3 +146,50 @@
 2026-09-11 03:59:12,254 [INFO] Round complete. Sleeping 12h before next round...
 2026-09-11 03:59:38,823 [INFO] kazoulayacine012@gmail.com | Sent:1 | Failed:1 | no_msg_button streak=1/10 user=the-cat-queen-peasants
 2026-09-11 03:59:38,823 [INFO] [WAIT] 76s in open browser before next user...
+2026-09-12 03:27:15,575 [INFO] Round start — 1 accounts remaining
+2026-09-12 03:27:15,591 [INFO] kazoulayacine012@gmail.com | Sent:1 | Failed:0 | --- SESSION START ---
+2026-09-12 03:27:18,994 [INFO] patching driver executable C:\Users\mohamed\appdata\roaming\undetected_chromedriver\undetected_chromedriver.exe
+2026-09-12 03:27:43,962 [INFO] [UC] Login OK: kazoulayacine012@gmail.com
+2026-09-12 03:27:43,963 [INFO] [kazoulayacine012@gmail.com] Ready! Processing up to 15 users in this open browser session...
+2026-09-12 03:29:52,129 [INFO] kazoulayacine012@gmail.com | Sent:2 | Failed:0 | sent_ok | user=gr8stoneddragon | session=1/15 | total=2/30
+2026-09-12 03:29:54,331 [INFO] [WAIT] 82s in open browser before next user...
+2026-09-12 03:31:25,033 [WARNING] [SEND] Exception messaging https://www.tumblr.com/jousting-fenrisulfr: Message: stale element reference: stale element not found in the current frame
+  (Session info: chrome=153.0.8010.36); For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#stale-element-reference-exception
+Stacktrace:
+	undetected_chromedriver!GetHandleVerifier [0xa91863+4fe3]
+	undetected_chromedriver!(No symbol) [0x9f1694]
+	undetected_chromedriver!(No symbol) [0x88bf90]
+	undetected_chromedriver!(No symbol) [0x892d75]
+	undetected_chromedriver!(No symbol) [0x894d9a]
+	undetected_chromedriver!(No symbol) [0x894e28]
+	undetected_chromedriver!(No symbol) [0x8d6ce9]
+	undetected_chromedriver!(No symbol) [0x8d6d8e]
+	undetected_chromedriver!(No symbol) [0x8cfb80]
+	undetected_chromedriver!(No symbol) [0x8f85cc]
+	undetected_chromedriver!(No symbol) [0x8cc8b4]
+	undetected_chromedriver!(No symbol) [0x8f8794]
+	undetected_chromedriver!(No symbol) [0x91631f]
+	undetected_chromedriver!(No symbol) [0x8f8366]
+	undetected_chromedriver!(No symbol) [0x8cb4a9]
+	undetected_chromedriver!(No symbol) [0x8cc1b4]
+	undetected_chromedriver!GetHandleVerifier [0xe16a2a+38a1aa]
+	undetected_chromedriver!GetHandleVerifier [0xe3d702+3b0e82]
+	undetected_chromedriver!GetHandleVerifier [0xb5f272+d29f2]
+	undetected_chromedriver!GetHandleVerifier [0xb65263+d89e3]
+	undetected_chromedriver!(No symbol) [0x9fc54d]
+	undetected_chromedriver!(No symbol) [0x9f9358]
+	undetected_chromedriver!(No symbol) [0x9f9505]
+	undetected_chromedriver!(No symbol) [0x9e87a7]
+	KERNEL32!BaseThreadInitThunk [0x763afcc9+19]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x774482ae+11e]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x7744827e+ee]
+
+2026-09-12 03:31:25,033 [INFO] kazoulayacine012@gmail.com | Sent:2 | Failed:1 | send_failed | user=jousting-fenrisulfr
+2026-09-12 03:31:25,033 [INFO] [WAIT] 119s in open browser before next user...
+2026-09-12 03:33:50,048 [INFO] kazoulayacine012@gmail.com | Sent:2 | Failed:2 | no_msg_button streak=1/10 user=laplaces-idiot
+2026-09-12 03:33:50,048 [INFO] [WAIT] 102s in open browser before next user...
+2026-09-12 03:36:09,170 [INFO] kazoulayacine012@gmail.com | Sent:2 | Failed:2 | follow | user=edgedancing-queen | ok=False
+2026-09-12 03:36:09,171 [INFO] kazoulayacine012@gmail.com | Sent:2 | Failed:3 | no_msg_button streak=2/10 user=edgedancing-queen
+2026-09-12 03:36:09,171 [INFO] [WAIT] 92s in open browser before next user...
+2026-09-12 03:38:19,906 [INFO] kazoulayacine012@gmail.com | Sent:3 | Failed:3 | sent_ok | user=averylustygentleman | session=2/15 | total=3/30
+2026-09-12 03:38:22,107 [INFO] [WAIT] 109s in open browser before next user...

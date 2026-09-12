@@ -272,3 +272,284 @@ Stacktrace:
 2026-09-12 02:41:01,876 [INFO] [kazoulayacine012@gmail.com] Ready! Processing up to 15 users in this session...
 2026-09-12 02:41:28,157 [INFO] kazoulayacine012@gmail.com | Sent:3 | Failed:1 | no_msg_button streak=1/10 user=robster08
 2026-09-12 02:45:03,308 [INFO] kazoulayacine012@gmail.com | Sent:4 | Failed:1 | sent_ok | user=amber-vulpes | session=1/15 | total=4/30
+2026-09-12 02:47:22,270 [INFO] kazoulayacine012@gmail.com | Sent:4 | Failed:2 | no_msg_button streak=1/10 user=futurepharmtech888
+2026-09-12 02:50:25,299 [WARNING] [SEND] Error messaging frankazooid (https://www.tumblr.com/frankazooid): Message: stale element reference: stale element not found in the current frame
+  (Session info: chrome=153.0.8010.36); For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#stale-element-reference-exception
+Stacktrace:
+	undetected_chromedriver!GetHandleVerifier [0xe51c33+4e33]
+	undetected_chromedriver!(No symbol) [0xd6d154]
+	undetected_chromedriver!(No symbol) [0xbac0b0]
+	undetected_chromedriver!(No symbol) [0xbb2edd]
+	undetected_chromedriver!(No symbol) [0xbb4f3a]
+	undetected_chromedriver!(No symbol) [0xbb4fc8]
+	undetected_chromedriver!(No symbol) [0xbf7dee]
+	undetected_chromedriver!(No symbol) [0xbf7e8e]
+	undetected_chromedriver!(No symbol) [0xbf060e]
+	undetected_chromedriver!(No symbol) [0xc19aac]
+	undetected_chromedriver!(No symbol) [0xbed244]
+	undetected_chromedriver!(No symbol) [0xc19c74]
+	undetected_chromedriver!(No symbol) [0xc38ff3]
+	undetected_chromedriver!(No symbol) [0xc19846]
+	undetected_chromedriver!(No symbol) [0xbebe6a]
+	undetected_chromedriver!(No symbol) [0xbecb44]
+	undetected_chromedriver!GetHandleVerifier [0x12b797a+46ab7a]
+	undetected_chromedriver!GetHandleVerifier [0x12d945b+48c65b]
+	undetected_chromedriver!GetHandleVerifier [0xf74282+127482]
+	undetected_chromedriver!GetHandleVerifier [0xf7af93+12e193]
+	undetected_chromedriver!(No symbol) [0xd7b278]
+	undetected_chromedriver!(No symbol) [0xd765a8]
+	undetected_chromedriver!(No symbol) [0xd76755]
+	undetected_chromedriver!(No symbol) [0xd62b97]
+	KERNEL32!BaseThreadInitThunk [0x763afcc9+19]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x774482ae+11e]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x7744827e+ee]
+
+2026-09-12 02:50:25,533 [INFO] [SCREENSHOT] Saved state capture to: C:\Users\mohamed\Desktop\project2\tumblr_boot\data\error_screenshots\send_err_frankazooid_20260912_025025.png
+2026-09-12 02:50:25,533 [INFO] kazoulayacine012@gmail.com | Sent:4 | Failed:2 | follow | user=frankazooid | ok=False
+2026-09-12 02:50:25,533 [INFO] kazoulayacine012@gmail.com | Sent:4 | Failed:3 | send_failed | user=frankazooid
+2026-09-12 02:50:30,484 [INFO] [ENGINE] Stop requested. Waiting for current action to wrap up...
+2026-09-12 02:50:30,547 [INFO] kazoulayacine012@gmail.com | ===SUMMARY=== | Sent:4 | Failed:3 | completed
+2026-09-12 02:50:30,549 [WARNING] [AUTH] Logout did not complete cleanly (Message: invalid session id: session deleted as the browser has closed the connection
+from disconnected: not connected to DevTools
+  (Session info: chrome=153.0.8010.36)
+Stacktrace:
+	undetected_chromedriver!GetHandleVerifier [0xe51c33+4e33]
+	undetected_chromedriver!(No symbol) [0xd6d154]
+	undetected_chromedriver!(No symbol) [0xbac0b0]
+	undetected_chromedriver!(No symbol) [0xb9b2ee]
+	undetected_chromedriver!(No symbol) [0xbb9ad9]
+	undetected_chromedriver!(No symbol) [0xc208fc]
+	undetected_chromedriver!(No symbol) [0xc38a39]
+	undetected_chromedriver!(No symbol) [0xc19846]
+	undetected_chromedriver!(No symbol) [0xbebe6a]
+	undetected_chromedriver!(No symbol) [0xbecb44]
+	undetected_chromedriver!GetHandleVerifier [0x12b797a+46ab7a]
+	undetected_chromedriver!GetHandleVerifier [0x12d945b+48c65b]
+	undetected_chromedriver!GetHandleVerifier [0xf74282+127482]
+	undetected_chromedriver!GetHandleVerifier [0xf7af93+12e193]
+	undetected_chromedriver!(No symbol) [0xd7b278]
+	undetected_chromedriver!(No symbol) [0xd765a8]
+	undetected_chromedriver!(No symbol) [0xd76755]
+	undetected_chromedriver!(No symbol) [0xd62b97]
+	KERNEL32!BaseThreadInitThunk [0x763afcc9+19]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x774482ae+11e]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x7744827e+ee]
+).
+2026-09-12 02:50:34,446 [INFO] [ENGINE] Stop requested. Waiting for current action to wrap up...
+2026-09-12 02:50:43,434 [INFO] [BROWSER] Chrome launched | Profile: NATIVE | Res: 1280x900 | TZ: system
+2026-09-12 02:50:43,434 [INFO] [AUTH] Attempting login for kazoulayacine0.12@gmail.com (attempt 1/2)...
+2026-09-12 02:50:50,464 [WARNING] [AUTH] Login attempt 1 failed for kazoulayacine0.12@gmail.com after 7.0s: NoSuchWindowException: Message: no such window: target window already closed
+from unknown error: web view not found
+  (Session info: chrome=153.0.8010.36)
+Stacktrace:
+	undetected_chromedriver!GetHandleVerifier [0x10f1c33+4e33]
+	undetected_chromedriver!(No symbol) [0x100d154]
+	undetected_chromedriver!(No symbol) [0xe4c0b0]
+	undetected_chromedriver!(No symbol) [0xe2b073]
+	undetected_chromedriver!(No symbol) [0xec070b]
+	undetected_chromedriver!(No symbol) [0xed8a39]
+	undetected_chromedriver!(No symbol) [0xeb9846]
+	undetected_chromedriver!(No symbol) [0xe8be6a]
+	undetected_chromedriver!(No symbol) [0xe8cb44]
+	undetected_chromedriver!GetHandleVerifier [0x155797a+46ab7a]
+	undetected_chromedriver!GetHandleVerifier [0x157945b+48c65b]
+	undetected_chromedriver!GetHandleVerifier [0x1214282+127482]
+	undetected_chromedriver!GetHandleVerifier [0x121af93+12e193]
+	undetected_chromedriver!(No symbol) [0x101b278]
+	undetected_chromedriver!(No symbol) [0x10165a8]
+	undetected_chromedriver!(No symbol) [0x1016755]
+	undetected_chromedriver!(No symbol) [0x1002b97]
+	KERNEL32!BaseThreadInitThunk [0x763afcc9+19]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x774482ae+11e]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x7744827e+ee]
+
+2026-09-12 02:50:51,969 [INFO] [AUTH] Attempting login for kazoulayacine0.12@gmail.com (attempt 2/2)...
+2026-09-12 02:50:51,971 [WARNING] [AUTH] Login attempt 2 failed for kazoulayacine0.12@gmail.com after 0.0s: NoSuchWindowException: Message: no such window: target window already closed
+from unknown error: web view not found
+  (Session info: chrome=153.0.8010.36)
+Stacktrace:
+	undetected_chromedriver!GetHandleVerifier [0x10f1c33+4e33]
+	undetected_chromedriver!(No symbol) [0x100d154]
+	undetected_chromedriver!(No symbol) [0xe4c0b0]
+	undetected_chromedriver!(No symbol) [0xe2b073]
+	undetected_chromedriver!(No symbol) [0xec070b]
+	undetected_chromedriver!(No symbol) [0xed8a39]
+	undetected_chromedriver!(No symbol) [0xeb9846]
+	undetected_chromedriver!(No symbol) [0xe8be6a]
+	undetected_chromedriver!(No symbol) [0xe8cb44]
+	undetected_chromedriver!GetHandleVerifier [0x155797a+46ab7a]
+	undetected_chromedriver!GetHandleVerifier [0x157945b+48c65b]
+	undetected_chromedriver!GetHandleVerifier [0x1214282+127482]
+	undetected_chromedriver!GetHandleVerifier [0x121af93+12e193]
+	undetected_chromedriver!(No symbol) [0x101b278]
+	undetected_chromedriver!(No symbol) [0x10165a8]
+	undetected_chromedriver!(No symbol) [0x1016755]
+	undetected_chromedriver!(No symbol) [0x1002b97]
+	KERNEL32!BaseThreadInitThunk [0x763afcc9+19]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x774482ae+11e]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x7744827e+ee]
+
+2026-09-12 02:50:51,973 [WARNING] [SCREENSHOT] Failed to capture screenshot: Message: no such window: target window already closed
+from unknown error: web view not found
+  (Session info: chrome=153.0.8010.36)
+Stacktrace:
+	undetected_chromedriver!GetHandleVerifier [0x10f1c33+4e33]
+	undetected_chromedriver!(No symbol) [0x100d154]
+	undetected_chromedriver!(No symbol) [0xe4c0b0]
+	undetected_chromedriver!(No symbol) [0xe2b073]
+	undetected_chromedriver!(No symbol) [0xec070b]
+	undetected_chromedriver!(No symbol) [0xed8a39]
+	undetected_chromedriver!(No symbol) [0xeb9846]
+	undetected_chromedriver!(No symbol) [0xe8be6a]
+	undetected_chromedriver!(No symbol) [0xe8cb44]
+	undetected_chromedriver!GetHandleVerifier [0x155797a+46ab7a]
+	undetected_chromedriver!GetHandleVerifier [0x157945b+48c65b]
+	undetected_chromedriver!GetHandleVerifier [0x1214282+127482]
+	undetected_chromedriver!GetHandleVerifier [0x121af93+12e193]
+	undetected_chromedriver!(No symbol) [0x101b278]
+	undetected_chromedriver!(No symbol) [0x10165a8]
+	undetected_chromedriver!(No symbol) [0x1016755]
+	undetected_chromedriver!(No symbol) [0x1002b97]
+	KERNEL32!BaseThreadInitThunk [0x763afcc9+19]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x774482ae+11e]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x7744827e+ee]
+
+2026-09-12 02:50:51,974 [ERROR] [AUTH] All login attempts failed for kazoulayacine0.12@gmail.com
+2026-09-12 02:50:51,974 [INFO] kazoulayacine0.12@gmail.com | Sent:0 | Failed:0 | login_failed
+2026-09-12 02:50:51,974 [INFO] kazoulayacine0.12@gmail.com | ===SUMMARY=== | Sent:0 | Failed:0 | login_failed
+2026-09-12 02:57:26,561 [INFO] [ENGINE] Bot engine started.
+2026-09-12 02:57:26,565 [INFO] [ENGINE] Starting round with 15 pending accounts across 1 parallel browser(s)...
+2026-09-12 02:57:32,277 [INFO] [BROWSER] Chrome launched | Profile: NATIVE | Res: 1280x900 | TZ: system
+2026-09-12 02:57:32,277 [INFO] [AUTH] Attempting login for kazoulayacine012@gmail.com (attempt 1/2)...
+2026-09-12 02:57:43,745 [INFO] [AUTH] Login SUCCESSFUL: kazoulayacine012@gmail.com (11.5s)
+2026-09-12 02:57:43,749 [INFO] [kazoulayacine012@gmail.com] Ready! Processing up to 15 users in this session...
+2026-09-12 02:58:34,160 [WARNING] [SEND] Error messaging astrolotte (https://www.tumblr.com/astrolotte): ('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))
+2026-09-12 02:58:50,477 [WARNING] [SCREENSHOT] Failed to capture screenshot: HTTPConnectionPool(host='localhost', port=49525): Max retries exceeded with url: /session/78ff1e8196e0e9d709a59adb7cfaf9e3/screenshot (Caused by NewConnectionError("HTTPConnection(host='localhost', port=49525): Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it"))
+2026-09-12 02:58:50,478 [INFO] kazoulayacine012@gmail.com | Sent:4 | Failed:1 | send_failed | user=astrolotte
+2026-09-12 02:59:43,431 [INFO] [ENGINE] Bot engine started.
+2026-09-12 02:59:43,435 [INFO] [ENGINE] Starting round with 15 pending accounts across 1 parallel browser(s)...
+2026-09-12 02:59:51,214 [INFO] [BROWSER] Chrome launched | Profile: NATIVE | Res: 1280x900 | TZ: system
+2026-09-12 02:59:51,214 [INFO] [AUTH] Attempting login for kazoulayacine012@gmail.com (attempt 1/2)...
+2026-09-12 03:00:02,451 [INFO] [AUTH] Login SUCCESSFUL: kazoulayacine012@gmail.com (11.2s)
+2026-09-12 03:00:02,454 [INFO] [kazoulayacine012@gmail.com] Ready! Processing up to 15 users in this session...
+2026-09-12 03:02:38,717 [INFO] [ENGINE] Stop requested. Waiting for current action to wrap up...
+2026-09-12 03:02:41,928 [INFO] kazoulayacine012@gmail.com | Sent:4 | Failed:1 | no_msg_button streak=1/10 user=dracomaton-integration
+2026-09-12 03:02:41,928 [INFO] kazoulayacine012@gmail.com | ===SUMMARY=== | Sent:4 | Failed:1 | completed
+2026-09-12 03:02:55,429 [INFO] [ENGINE] Stop requested. Waiting for current action to wrap up...
+2026-09-12 03:02:58,185 [WARNING] [AUTH] Logout did not complete cleanly (HTTPConnectionPool(host='localhost', port=50809): Max retries exceeded with url: /session/fddfa46c39de6b38e40173ebfee367b6/url (Caused by NewConnectionError("HTTPConnection(host='localhost', port=50809): Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it"))).
+2026-09-12 03:03:01,124 [INFO] [ENGINE] Stop requested. Waiting for current action to wrap up...
+2026-09-12 03:03:07,076 [INFO] [BROWSER] Chrome launched | Profile: NATIVE | Res: 1280x900 | TZ: system
+2026-09-12 03:03:07,077 [INFO] [AUTH] Attempting login for kazoulayacine0.12@gmail.com (attempt 1/2)...
+2026-09-12 03:03:08,054 [WARNING] [AUTH] Login attempt 1 failed for kazoulayacine0.12@gmail.com after 1.0s: ProtocolError: ('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))
+2026-09-12 03:03:17,769 [INFO] [ENGINE] Bot engine started.
+2026-09-12 03:03:17,773 [INFO] [ENGINE] Starting round with 15 pending accounts across 2 parallel browser(s)...
+2026-09-12 03:03:23,430 [INFO] [BROWSER] Chrome launched | Profile: NATIVE | Res: 1280x900 | TZ: system
+2026-09-12 03:03:23,431 [INFO] [AUTH] Attempting login for kazoulayacine0.12@gmail.com (attempt 1/2)...
+2026-09-12 03:03:24,011 [INFO] [BROWSER] Chrome launched | Profile: NATIVE | Res: 1280x900 | TZ: system
+2026-09-12 03:03:24,011 [INFO] [AUTH] Attempting login for kazoulayacine012@gmail.com (attempt 1/2)...
+2026-09-12 03:03:34,403 [INFO] [AUTH] Login SUCCESSFUL: kazoulayacine0.12@gmail.com (11.0s)
+2026-09-12 03:03:34,407 [INFO] [kazoulayacine0.12@gmail.com] Ready! Processing up to 15 users in this session...
+2026-09-12 03:03:37,316 [INFO] [AUTH] Login SUCCESSFUL: kazoulayacine012@gmail.com (13.3s)
+2026-09-12 03:03:37,320 [INFO] [kazoulayacine012@gmail.com] Ready! Processing up to 15 users in this session...
+2026-09-12 03:05:58,204 [INFO] kazoulayacine012@gmail.com | Sent:5 | Failed:0 | sent_ok | user=91thornside | session=1/15 | total=5/30
+2026-09-12 03:06:14,662 [INFO] kazoulayacine0.12@gmail.com | Sent:1 | Failed:0 | sent_ok | user=lolazoel | session=1/15 | total=1/30
+2026-09-12 03:07:43,234 [INFO] [ENGINE] Stop requested. Waiting for current action to wrap up...
+2026-09-12 03:07:43,479 [INFO] kazoulayacine0.12@gmail.com | ===SUMMARY=== | Sent:1 | Failed:0 | completed
+2026-09-12 03:07:47,207 [WARNING] [AUTH] Logout did not complete cleanly (Message: target frame detached
+  (failed to check if window was closed: disconnected: Unable to receive message from renderer)
+  (Session info: chrome=153.0.8010.36)
+Stacktrace:
+	undetected_chromedriver!GetHandleVerifier [0x13e1c33+4e33]
+	undetected_chromedriver!(No symbol) [0x12fd154]
+	undetected_chromedriver!(No symbol) [0x113beee]
+	undetected_chromedriver!(No symbol) [0x112c213]
+	undetected_chromedriver!(No symbol) [0x112b4ad]
+	undetected_chromedriver!(No symbol) [0x1149ad9]
+	undetected_chromedriver!(No symbol) [0x11b08fc]
+	undetected_chromedriver!(No symbol) [0x11c8a39]
+	undetected_chromedriver!(No symbol) [0x11a9846]
+	undetected_chromedriver!(No symbol) [0x117be6a]
+	undetected_chromedriver!(No symbol) [0x117cb44]
+	undetected_chromedriver!GetHandleVerifier [0x184797a+46ab7a]
+	undetected_chromedriver!GetHandleVerifier [0x186945b+48c65b]
+	undetected_chromedriver!GetHandleVerifier [0x1504282+127482]
+	undetected_chromedriver!GetHandleVerifier [0x150af93+12e193]
+	undetected_chromedriver!(No symbol) [0x130b278]
+	undetected_chromedriver!(No symbol) [0x13065a8]
+	undetected_chromedriver!(No symbol) [0x1306755]
+	undetected_chromedriver!(No symbol) [0x12f2b97]
+	KERNEL32!BaseThreadInitThunk [0x763afcc9+19]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x774482ae+11e]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x7744827e+ee]
+).
+2026-09-12 03:07:51,249 [INFO] [BROWSER] Chrome launched | Profile: NATIVE | Res: 1280x900 | TZ: system
+2026-09-12 03:07:51,249 [INFO] [AUTH] Attempting login for k.azoulayacine012@gmail.com (attempt 1/2)...
+2026-09-12 03:08:26,579 [INFO] [ENGINE] Bot engine started.
+2026-09-12 03:08:26,583 [INFO] [ENGINE] Starting round with 15 pending accounts across 2 parallel browser(s)...
+2026-09-12 03:08:32,479 [INFO] [BROWSER] Chrome launched | Profile: NATIVE | Res: 1280x900 | TZ: system
+2026-09-12 03:08:32,479 [INFO] [AUTH] Attempting login for kazoulayacine012@gmail.com (attempt 1/2)...
+2026-09-12 03:08:33,157 [INFO] [BROWSER] Chrome launched | Profile: NATIVE | Res: 1280x900 | TZ: system
+2026-09-12 03:08:33,158 [INFO] [AUTH] Attempting login for kazoulayacine0.12@gmail.com (attempt 1/2)...
+2026-09-12 03:08:46,879 [INFO] [AUTH] Login SUCCESSFUL: kazoulayacine0.12@gmail.com (13.7s)
+2026-09-12 03:08:46,882 [INFO] [kazoulayacine0.12@gmail.com] Ready! Processing up to 15 users in this session...
+2026-09-12 03:08:49,470 [INFO] [AUTH] Login SUCCESSFUL: kazoulayacine012@gmail.com (17.0s)
+2026-09-12 03:08:49,475 [INFO] [kazoulayacine012@gmail.com] Ready! Processing up to 15 users in this session...
+2026-09-12 03:11:31,739 [INFO] kazoulayacine012@gmail.com | Sent:6 | Failed:0 | sent_ok | user=1notnowplease1 | session=1/15 | total=6/30
+2026-09-12 03:11:37,226 [INFO] kazoulayacine0.12@gmail.com | Sent:2 | Failed:0 | sent_ok | user=biggiantcrab | session=1/15 | total=2/30
+2026-09-12 04:12:15,898 [INFO] [ENGINE] Bot engine started.
+2026-09-12 04:12:15,901 [INFO] [ENGINE] Starting round with 20 pending accounts across 5 parallel browser(s)...
+2026-09-12 04:12:21,879 [INFO] [BROWSER] Chrome launched | Profile: NATIVE | Res: 1280x900 | TZ: system
+2026-09-12 04:12:21,879 [INFO] [AUTH] Attempting login for norman.dmavaughanbn@gmail.com (attempt 1/2)...
+2026-09-12 04:12:22,557 [INFO] [BROWSER] Chrome launched | Profile: NATIVE | Res: 1280x900 | TZ: system
+2026-09-12 04:12:22,557 [INFO] [AUTH] Attempting login for alymanyaljdyd79@gmail.com (attempt 1/2)...
+2026-09-12 04:12:23,436 [INFO] [BROWSER] Chrome launched | Profile: NATIVE | Res: 1280x900 | TZ: system
+2026-09-12 04:12:23,437 [INFO] [AUTH] Attempting login for a.lymanyaljdyd79@gmail.com (attempt 1/2)...
+2026-09-12 04:12:24,376 [INFO] [BROWSER] Chrome launched | Profile: NATIVE | Res: 1280x900 | TZ: system
+2026-09-12 04:12:24,377 [INFO] [AUTH] Attempting login for mathaniand.iakofrthb@gmail.com (attempt 1/2)...
+2026-09-12 04:12:25,239 [INFO] [BROWSER] Chrome launched | Profile: NATIVE | Res: 1280x900 | TZ: system
+2026-09-12 04:12:25,241 [INFO] [AUTH] Attempting login for mathaniandiak.ofrthb@gmail.com (attempt 1/2)...
+2026-09-12 04:12:31,525 [WARNING] [AUTH] Login attempt 1 failed for alymanyaljdyd79@gmail.com after 9.0s: RuntimeError: The login form did not retain the entered field value
+2026-09-12 04:12:31,919 [WARNING] [AUTH] Login attempt 1 failed for norman.dmavaughanbn@gmail.com after 10.0s: RuntimeError: The login form did not retain the entered field value
+2026-09-12 04:12:32,200 [WARNING] [AUTH] Login attempt 1 failed for a.lymanyaljdyd79@gmail.com after 8.8s: RuntimeError: The login form did not retain the entered field value
+2026-09-12 04:12:33,536 [INFO] [AUTH] Attempting login for alymanyaljdyd79@gmail.com (attempt 2/2)...
+2026-09-12 04:12:33,770 [INFO] [AUTH] Attempting login for norman.dmavaughanbn@gmail.com (attempt 2/2)...
+2026-09-12 04:12:33,972 [INFO] [AUTH] Attempting login for a.lymanyaljdyd79@gmail.com (attempt 2/2)...
+2026-09-12 04:12:42,060 [INFO] [AUTH] Login SUCCESSFUL: mathaniandiak.ofrthb@gmail.com (16.8s)
+2026-09-12 04:12:42,072 [INFO] [mathaniandiak.ofrthb@gmail.com] Ready! Processing up to 15 users in this session...
+2026-09-12 04:12:42,233 [WARNING] [AUTH] Login attempt 2 failed for norman.dmavaughanbn@gmail.com after 8.5s: RuntimeError: The login form did not retain the entered field value
+2026-09-12 04:12:42,244 [WARNING] [AUTH] Login attempt 2 failed for alymanyaljdyd79@gmail.com after 8.7s: RuntimeError: The login form did not retain the entered field value
+2026-09-12 04:12:43,153 [WARNING] [AUTH] Login attempt 2 failed for a.lymanyaljdyd79@gmail.com after 9.2s: RuntimeError: The login form did not retain the entered field value
+2026-09-12 04:12:44,507 [INFO] [SCREENSHOT] Saved state capture to: C:\Users\mohamed\Desktop\project2\tumblr_boot\data\error_screenshots\login_fail_norman.dmavaughanbn_20260912_041243.png
+2026-09-12 04:12:44,519 [ERROR] [AUTH] All login attempts failed for norman.dmavaughanbn@gmail.com
+2026-09-12 04:12:44,521 [INFO] norman.dmavaughanbn@gmail.com | Sent:0 | Failed:0 | login_failed
+2026-09-12 04:12:44,522 [INFO] norman.dmavaughanbn@gmail.com | ===SUMMARY=== | Sent:0 | Failed:0 | login_failed
+2026-09-12 04:12:45,445 [INFO] [SCREENSHOT] Saved state capture to: C:\Users\mohamed\Desktop\project2\tumblr_boot\data\error_screenshots\login_fail_alymanyaljdyd79_20260912_041244.png
+2026-09-12 04:12:45,456 [ERROR] [AUTH] All login attempts failed for alymanyaljdyd79@gmail.com
+2026-09-12 04:12:45,464 [INFO] alymanyaljdyd79@gmail.com | Sent:0 | Failed:0 | login_failed
+2026-09-12 04:12:45,466 [INFO] alymanyaljdyd79@gmail.com | ===SUMMARY=== | Sent:0 | Failed:0 | login_failed
+2026-09-12 04:12:47,665 [INFO] [SCREENSHOT] Saved state capture to: C:\Users\mohamed\Desktop\project2\tumblr_boot\data\error_screenshots\login_fail_a.lymanyaljdyd79_20260912_041246.png
+2026-09-12 04:12:47,666 [ERROR] [AUTH] All login attempts failed for a.lymanyaljdyd79@gmail.com
+2026-09-12 04:12:47,667 [INFO] a.lymanyaljdyd79@gmail.com | Sent:0 | Failed:0 | login_failed
+2026-09-12 04:12:47,667 [INFO] a.lymanyaljdyd79@gmail.com | ===SUMMARY=== | Sent:0 | Failed:0 | login_failed
+2026-09-12 04:12:49,675 [INFO] [BROWSER] Chrome launched | Profile: NATIVE | Res: 1280x900 | TZ: system
+2026-09-12 04:12:49,677 [INFO] [AUTH] Attempting login for frtondygrtheykolipo@gmail.com (attempt 1/2)...
+2026-09-12 04:12:50,522 [INFO] [BROWSER] Chrome launched | Profile: NATIVE | Res: 1280x900 | TZ: system
+2026-09-12 04:12:50,523 [INFO] [AUTH] Attempting login for fr.tondygrtheykolipo@gmail.com (attempt 1/2)...
+2026-09-12 04:12:52,139 [INFO] [BROWSER] Chrome launched | Profile: NATIVE | Res: 1280x900 | TZ: system
+2026-09-12 04:12:52,140 [INFO] [AUTH] Attempting login for ahmadsai.d25683901t@gmail.com (attempt 1/2)...
+2026-09-12 04:12:58,030 [WARNING] [AUTH] Login attempt 1 failed for mathaniand.iakofrthb@gmail.com after 33.7s: TimeoutException: Message: 
+
+2026-09-12 04:13:00,370 [INFO] [AUTH] Attempting login for mathaniand.iakofrthb@gmail.com (attempt 2/2)...
+2026-09-12 04:13:17,333 [INFO] [AUTH] Login SUCCESSFUL: frtondygrtheykolipo@gmail.com (27.7s)
+2026-09-12 04:13:17,343 [INFO] [frtondygrtheykolipo@gmail.com] Ready! Processing up to 15 users in this session...
+2026-09-12 04:13:17,790 [INFO] [AUTH] Login SUCCESSFUL: fr.tondygrtheykolipo@gmail.com (27.3s)
+2026-09-12 04:13:17,800 [INFO] [fr.tondygrtheykolipo@gmail.com] Ready! Processing up to 15 users in this session...
+2026-09-12 04:13:33,336 [WARNING] [AUTH] Login attempt 1 failed for ahmadsai.d25683901t@gmail.com after 41.2s: TimeoutException: Message: 
+
+2026-09-12 04:13:35,013 [INFO] [AUTH] Attempting login for ahmadsai.d25683901t@gmail.com (attempt 2/2)...
+2026-09-12 04:13:35,647 [WARNING] [AUTH] Login attempt 2 failed for mathaniand.iakofrthb@gmail.com after 35.3s: TimeoutException: Message: 
+
+2026-09-12 04:13:36,108 [INFO] [SCREENSHOT] Saved state capture to: C:\Users\mohamed\Desktop\project2\tumblr_boot\data\error_screenshots\login_fail_mathaniand.iakofrthb_20260912_041335.png
+2026-09-12 04:13:36,108 [ERROR] [AUTH] All login attempts failed for mathaniand.iakofrthb@gmail.com
+2026-09-12 04:13:36,108 [INFO] mathaniand.iakofrthb@gmail.com | Sent:0 | Failed:0 | login_failed
+2026-09-12 04:13:36,109 [INFO] mathaniand.iakofrthb@gmail.com | ===SUMMARY=== | Sent:0 | Failed:0 | login_failed
