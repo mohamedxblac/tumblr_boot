@@ -1,0 +1,1448 @@
+2026-09-12 04:50:09,241 [INFO] [ENGINE] Bot engine started.
+2026-09-12 04:50:09,244 [INFO] [ENGINE] Starting round with 1 pending accounts across 1 parallel browser(s)...
+2026-09-12 04:50:14,913 [INFO] [BROWSER] Chrome launched | Profile: NATIVE | Res: 1280x900 | TZ: system
+2026-09-12 04:50:14,913 [INFO] [AUTH] Attempting login for kazoulayacine012@gmail.com (attempt 1/2)...
+2026-09-12 04:50:25,424 [INFO] [AUTH] Login SUCCESSFUL: kazoulayacine012@gmail.com (10.5s)
+2026-09-12 04:50:25,427 [INFO] [SCRAPER] Navigating to target post: https://www.tumblr.com/hazard-symbols-that-fuck-hard/827145486405337088/fuck-marry-kill-the-grinch-the-cat-in-the-hat?source=share
+2026-09-12 04:50:32,593 [INFO] [SCRAPER] Clicked inline 'likes' tab on article.
+2026-09-12 04:50:34,095 [INFO] [SCRAPER] Starting top-to-bottom notes collection (Target max: 3000)...
+2026-09-12 04:50:34,111 [INFO] [SCRAPER] Scroll #1 | Found: 50 users (+50 new)
+2026-09-12 04:50:36,422 [INFO] [SCRAPER] Scroll #2 | Found: 50 users (+0 new)
+2026-09-12 04:50:38,614 [INFO] [SCRAPER] Scroll #3 | Found: 50 users (+0 new)
+2026-09-12 04:50:40,838 [INFO] [SCRAPER] Scroll #4 | Found: 51 users (+1 new)
+2026-09-12 04:51:02,688 [INFO] [SCRAPER] Scroll #5 | Found: 51 users (+0 new)
+2026-09-12 04:51:04,249 [INFO] [SCRAPER] Scroll #6 | Found: 52 users (+1 new)
+2026-09-12 04:51:05,773 [INFO] [SCRAPER] Scroll #7 | Found: 53 users (+1 new)
+2026-09-12 04:51:07,341 [INFO] [SCRAPER] Scroll #8 | Found: 54 users (+1 new)
+2026-09-12 04:51:08,883 [INFO] [SCRAPER] Scroll #9 | Found: 55 users (+1 new)
+2026-09-12 04:51:10,456 [INFO] [SCRAPER] Scroll #10 | Found: 56 users (+1 new)
+2026-09-12 04:51:11,996 [INFO] [SCRAPER] Scroll #11 | Found: 57 users (+1 new)
+2026-09-12 04:51:13,520 [INFO] [SCRAPER] Scroll #12 | Found: 57 users (+0 new)
+2026-09-12 04:51:15,080 [INFO] [SCRAPER] Scroll #13 | Found: 58 users (+1 new)
+2026-09-12 04:51:16,603 [INFO] [SCRAPER] Scroll #14 | Found: 58 users (+0 new)
+2026-09-12 04:51:18,467 [INFO] [SCRAPER] Scroll #15 | Found: 59 users (+1 new)
+2026-09-12 04:51:20,050 [INFO] [SCRAPER] Scroll #16 | Found: 59 users (+0 new)
+2026-09-12 04:51:21,616 [INFO] [SCRAPER] Scroll #17 | Found: 60 users (+1 new)
+2026-09-12 04:51:23,177 [INFO] [SCRAPER] Scroll #18 | Found: 60 users (+0 new)
+2026-09-12 04:51:24,745 [INFO] [SCRAPER] Scroll #19 | Found: 61 users (+1 new)
+2026-09-12 04:51:26,276 [INFO] [SCRAPER] Scroll #20 | Found: 62 users (+1 new)
+2026-09-12 04:51:27,807 [INFO] [SCRAPER] Scroll #21 | Found: 63 users (+1 new)
+2026-09-12 04:51:29,366 [INFO] [SCRAPER] Scroll #22 | Found: 63 users (+0 new)
+2026-09-12 04:51:30,960 [INFO] [SCRAPER] Scroll #23 | Found: 64 users (+1 new)
+2026-09-12 04:51:32,498 [INFO] [SCRAPER] Scroll #24 | Found: 65 users (+1 new)
+2026-09-12 04:51:34,057 [INFO] [SCRAPER] Scroll #25 | Found: 66 users (+1 new)
+2026-09-12 04:51:35,615 [INFO] [SCRAPER] Scroll #26 | Found: 66 users (+0 new)
+2026-09-12 04:51:37,137 [INFO] [SCRAPER] Scroll #27 | Found: 66 users (+0 new)
+2026-09-12 04:51:38,704 [INFO] [SCRAPER] Scroll #28 | Found: 66 users (+0 new)
+2026-09-12 04:51:40,536 [INFO] [SCRAPER] Scroll #29 | Found: 66 users (+0 new)
+2026-09-12 04:51:42,055 [INFO] [SCRAPER] Scroll #30 | Found: 66 users (+0 new)
+2026-09-12 04:51:43,590 [INFO] [SCRAPER] Scroll #31 | Found: 67 users (+1 new)
+2026-09-12 04:51:45,163 [INFO] [SCRAPER] Scroll #32 | Found: 67 users (+0 new)
+2026-09-12 04:51:46,736 [INFO] [SCRAPER] Scroll #33 | Found: 67 users (+0 new)
+2026-09-12 04:51:48,260 [INFO] [SCRAPER] Scroll #34 | Found: 67 users (+0 new)
+2026-09-12 04:51:49,806 [INFO] [SCRAPER] Scroll #35 | Found: 67 users (+0 new)
+2026-09-12 04:51:51,336 [INFO] [SCRAPER] Scroll #36 | Found: 68 users (+1 new)
+2026-09-12 04:51:53,360 [INFO] [SCRAPER] Scroll #37 | Found: 69 users (+1 new)
+2026-09-12 04:51:54,883 [INFO] [SCRAPER] Scroll #38 | Found: 69 users (+0 new)
+2026-09-12 04:51:56,436 [INFO] [SCRAPER] Scroll #39 | Found: 70 users (+1 new)
+2026-09-12 04:51:57,966 [INFO] [SCRAPER] Scroll #40 | Found: 71 users (+1 new)
+2026-09-12 04:51:59,490 [INFO] [SCRAPER] Scroll #41 | Found: 71 users (+0 new)
+2026-09-12 04:52:01,010 [INFO] [SCRAPER] Scroll #42 | Found: 71 users (+0 new)
+2026-09-12 04:52:03,524 [INFO] [SCRAPER] Scroll #43 | Found: 72 users (+1 new)
+2026-09-12 04:52:05,129 [INFO] [SCRAPER] Scroll #44 | Found: 73 users (+1 new)
+2026-09-12 04:52:06,653 [INFO] [SCRAPER] Scroll #45 | Found: 73 users (+0 new)
+2026-09-12 04:52:08,210 [INFO] [SCRAPER] Scroll #46 | Found: 74 users (+1 new)
+2026-09-12 04:52:10,371 [INFO] [SCRAPER] Scroll #47 | Found: 74 users (+0 new)
+2026-09-12 04:52:12,540 [INFO] [SCRAPER] Scroll #48 | Found: 74 users (+0 new)
+2026-09-12 04:52:14,717 [INFO] [SCRAPER] Scroll #49 | Found: 74 users (+0 new)
+2026-09-12 04:52:16,968 [INFO] [SCRAPER] Scroll #50 | Found: 75 users (+1 new)
+2026-09-12 04:52:19,122 [INFO] [SCRAPER] Scroll #51 | Found: 75 users (+0 new)
+2026-09-12 04:52:21,288 [INFO] [SCRAPER] Scroll #52 | Found: 76 users (+1 new)
+2026-09-12 04:52:23,819 [INFO] [SCRAPER] Scroll #53 | Found: 77 users (+1 new)
+2026-09-12 04:52:26,004 [INFO] [SCRAPER] Scroll #54 | Found: 77 users (+0 new)
+2026-09-12 04:52:28,172 [INFO] [SCRAPER] Scroll #55 | Found: 77 users (+0 new)
+2026-09-12 04:52:30,354 [INFO] [SCRAPER] Scroll #56 | Found: 77 users (+0 new)
+2026-09-12 04:52:32,538 [INFO] [SCRAPER] Scroll #57 | Found: 77 users (+0 new)
+2026-09-12 04:52:34,722 [INFO] [SCRAPER] Scroll #58 | Found: 77 users (+0 new)
+2026-09-12 04:52:36,264 [INFO] [SCRAPER] Scroll #59 | Found: 77 users (+0 new)
+2026-09-12 04:52:37,791 [INFO] [SCRAPER] Scroll #60 | Found: 77 users (+0 new)
+2026-09-12 04:52:39,350 [INFO] [SCRAPER] Scroll #61 | Found: 78 users (+1 new)
+2026-09-12 04:52:40,868 [INFO] [SCRAPER] Scroll #62 | Found: 79 users (+1 new)
+2026-09-12 04:52:42,392 [INFO] [SCRAPER] Scroll #63 | Found: 80 users (+1 new)
+2026-09-12 04:52:43,912 [INFO] [SCRAPER] Scroll #64 | Found: 81 users (+1 new)
+2026-09-12 04:52:45,431 [INFO] [SCRAPER] Scroll #65 | Found: 82 users (+1 new)
+2026-09-12 04:52:46,950 [INFO] [SCRAPER] Scroll #66 | Found: 83 users (+1 new)
+2026-09-12 04:52:48,527 [INFO] [SCRAPER] Scroll #67 | Found: 84 users (+1 new)
+2026-09-12 04:52:50,101 [INFO] [SCRAPER] Scroll #68 | Found: 84 users (+0 new)
+2026-09-12 04:52:51,642 [INFO] [SCRAPER] Scroll #69 | Found: 84 users (+0 new)
+2026-09-12 04:52:53,163 [INFO] [SCRAPER] Scroll #70 | Found: 84 users (+0 new)
+2026-09-12 04:52:54,718 [INFO] [SCRAPER] Scroll #71 | Found: 84 users (+0 new)
+2026-09-12 04:52:56,290 [INFO] [SCRAPER] Scroll #72 | Found: 84 users (+0 new)
+2026-09-12 04:52:57,811 [INFO] [SCRAPER] Scroll #73 | Found: 84 users (+0 new)
+2026-09-12 04:52:59,376 [INFO] [SCRAPER] Scroll #74 | Found: 85 users (+1 new)
+2026-09-12 04:53:01,202 [INFO] [SCRAPER] Scroll #75 | Found: 85 users (+0 new)
+2026-09-12 04:53:02,779 [INFO] [SCRAPER] Scroll #76 | Found: 86 users (+1 new)
+2026-09-12 04:53:04,336 [INFO] [SCRAPER] Reached time limit (150s), proceeding with 86 users.
+2026-09-12 04:53:04,336 [INFO] [SCRAPER] Finished gathering 86 users in 150s.
+2026-09-12 04:53:04,342 [INFO] [kazoulayacine012@gmail.com] Ready! Processing up to 15 users in this session...
+2026-09-12 04:55:23,189 [INFO] kazoulayacine012@gmail.com | Sent:1 | Failed:0 | sent_ok | user=itscrazylate | session=1/15 | total=1/30
+2026-09-12 04:56:56,714 [INFO] kazoulayacine012@gmail.com | Sent:1 | Failed:1 | no_msg_button streak=1/10 user=a-little-alien-called-bread
+2026-09-12 04:58:40,030 [WARNING] [SEND] Error messaging atalinadreamdoll (https://www.tumblr.com/atalinadreamdoll): Message: invalid session id: session deleted as the browser has closed the connection
+from disconnected: not connected to DevTools
+  (Session info: chrome=153.0.8010.36)
+Stacktrace:
+	undetected_chromedriver!GetHandleVerifier [0x13d1c33+4e33]
+	undetected_chromedriver!(No symbol) [0x12ed154]
+	undetected_chromedriver!(No symbol) [0x112c0b0]
+	undetected_chromedriver!(No symbol) [0x111b2ee]
+	undetected_chromedriver!(No symbol) [0x1139ad9]
+	undetected_chromedriver!(No symbol) [0x11a08fc]
+	undetected_chromedriver!(No symbol) [0x11b8a39]
+	undetected_chromedriver!(No symbol) [0x1199846]
+	undetected_chromedriver!(No symbol) [0x116be6a]
+	undetected_chromedriver!(No symbol) [0x116cb44]
+	undetected_chromedriver!GetHandleVerifier [0x183797a+46ab7a]
+	undetected_chromedriver!GetHandleVerifier [0x185945b+48c65b]
+	undetected_chromedriver!GetHandleVerifier [0x14f4282+127482]
+	undetected_chromedriver!GetHandleVerifier [0x14faf93+12e193]
+	undetected_chromedriver!(No symbol) [0x12fb278]
+	undetected_chromedriver!(No symbol) [0x12f65a8]
+	undetected_chromedriver!(No symbol) [0x12f6755]
+	undetected_chromedriver!(No symbol) [0x12e2b97]
+	KERNEL32!BaseThreadInitThunk [0x7550fcc9+19]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d82ae+11e]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d827e+ee]
+
+2026-09-12 04:58:40,032 [WARNING] [SCREENSHOT] Failed to capture screenshot: Message: invalid session id
+Stacktrace:
+	undetected_chromedriver!GetHandleVerifier [0x13d1c33+4e33]
+	undetected_chromedriver!(No symbol) [0x12ed154]
+	undetected_chromedriver!(No symbol) [0x112beee]
+	undetected_chromedriver!(No symbol) [0x116b137]
+	undetected_chromedriver!(No symbol) [0x1199966]
+	undetected_chromedriver!(No symbol) [0x1194c63]
+	undetected_chromedriver!(No symbol) [0x1194630]
+	undetected_chromedriver!(No symbol) [0x10fed01]
+	undetected_chromedriver!(No symbol) [0x10ff2a3]
+	undetected_chromedriver!(No symbol) [0x10ff7ed]
+	undetected_chromedriver!GetHandleVerifier [0x183797a+46ab7a]
+	undetected_chromedriver!GetHandleVerifier [0x185945b+48c65b]
+	undetected_chromedriver!GetHandleVerifier [0x14f4282+127482]
+	undetected_chromedriver!GetHandleVerifier [0x14faf93+12e193]
+	undetected_chromedriver!(No symbol) [0x12fb278]
+	undetected_chromedriver!(No symbol) [0x10fe480]
+	undetected_chromedriver!(No symbol) [0x10fdb72]
+	undetected_chromedriver!GetHandleVerifier [0x18b4201+4e7401]
+	KERNEL32!BaseThreadInitThunk [0x7550fcc9+19]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d82ae+11e]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d827e+ee]
+
+2026-09-12 04:58:40,032 [INFO] kazoulayacine012@gmail.com | Sent:1 | Failed:2 | send_failed | user=atalinadreamdoll
+2026-09-12 05:00:27,553 [WARNING] [SEND] Error messaging slugchamp (https://www.tumblr.com/slugchamp): Message: invalid session id
+Stacktrace:
+	undetected_chromedriver!GetHandleVerifier [0x13d1c33+4e33]
+	undetected_chromedriver!(No symbol) [0x12ed154]
+	undetected_chromedriver!(No symbol) [0x112beee]
+	undetected_chromedriver!(No symbol) [0x116b137]
+	undetected_chromedriver!(No symbol) [0x1199966]
+	undetected_chromedriver!(No symbol) [0x1194c63]
+	undetected_chromedriver!(No symbol) [0x1194630]
+	undetected_chromedriver!(No symbol) [0x10fed01]
+	undetected_chromedriver!(No symbol) [0x10ff2a3]
+	undetected_chromedriver!(No symbol) [0x10ff7ed]
+	undetected_chromedriver!GetHandleVerifier [0x183797a+46ab7a]
+	undetected_chromedriver!GetHandleVerifier [0x185945b+48c65b]
+	undetected_chromedriver!GetHandleVerifier [0x14f4282+127482]
+	undetected_chromedriver!GetHandleVerifier [0x14faf93+12e193]
+	undetected_chromedriver!(No symbol) [0x12fb278]
+	undetected_chromedriver!(No symbol) [0x10fe480]
+	undetected_chromedriver!(No symbol) [0x10fdb72]
+	undetected_chromedriver!GetHandleVerifier [0x18b4201+4e7401]
+	KERNEL32!BaseThreadInitThunk [0x7550fcc9+19]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d82ae+11e]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d827e+ee]
+
+2026-09-12 05:00:27,556 [WARNING] [SCREENSHOT] Failed to capture screenshot: Message: invalid session id
+Stacktrace:
+	undetected_chromedriver!GetHandleVerifier [0x13d1c33+4e33]
+	undetected_chromedriver!(No symbol) [0x12ed154]
+	undetected_chromedriver!(No symbol) [0x112beee]
+	undetected_chromedriver!(No symbol) [0x116b137]
+	undetected_chromedriver!(No symbol) [0x1199966]
+	undetected_chromedriver!(No symbol) [0x1194c63]
+	undetected_chromedriver!(No symbol) [0x1194630]
+	undetected_chromedriver!(No symbol) [0x10fed01]
+	undetected_chromedriver!(No symbol) [0x10ff2a3]
+	undetected_chromedriver!(No symbol) [0x10ff7ed]
+	undetected_chromedriver!GetHandleVerifier [0x183797a+46ab7a]
+	undetected_chromedriver!GetHandleVerifier [0x185945b+48c65b]
+	undetected_chromedriver!GetHandleVerifier [0x14f4282+127482]
+	undetected_chromedriver!GetHandleVerifier [0x14faf93+12e193]
+	undetected_chromedriver!(No symbol) [0x12fb278]
+	undetected_chromedriver!(No symbol) [0x10fe480]
+	undetected_chromedriver!(No symbol) [0x10fdb72]
+	undetected_chromedriver!GetHandleVerifier [0x18b4201+4e7401]
+	KERNEL32!BaseThreadInitThunk [0x7550fcc9+19]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d82ae+11e]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d827e+ee]
+
+2026-09-12 05:00:27,556 [INFO] kazoulayacine012@gmail.com | Sent:1 | Failed:2 | follow | user=slugchamp | ok=False
+2026-09-12 05:00:27,556 [INFO] kazoulayacine012@gmail.com | Sent:1 | Failed:3 | send_failed | user=slugchamp
+2026-09-12 05:02:34,366 [WARNING] [SEND] Error messaging khalko (https://www.tumblr.com/khalko): Message: invalid session id
+Stacktrace:
+	undetected_chromedriver!GetHandleVerifier [0x13d1c33+4e33]
+	undetected_chromedriver!(No symbol) [0x12ed154]
+	undetected_chromedriver!(No symbol) [0x112beee]
+	undetected_chromedriver!(No symbol) [0x116b137]
+	undetected_chromedriver!(No symbol) [0x1199966]
+	undetected_chromedriver!(No symbol) [0x1194c63]
+	undetected_chromedriver!(No symbol) [0x1194630]
+	undetected_chromedriver!(No symbol) [0x10fed01]
+	undetected_chromedriver!(No symbol) [0x10ff2a3]
+	undetected_chromedriver!(No symbol) [0x10ff7ed]
+	undetected_chromedriver!GetHandleVerifier [0x183797a+46ab7a]
+	undetected_chromedriver!GetHandleVerifier [0x185945b+48c65b]
+	undetected_chromedriver!GetHandleVerifier [0x14f4282+127482]
+	undetected_chromedriver!GetHandleVerifier [0x14faf93+12e193]
+	undetected_chromedriver!(No symbol) [0x12fb278]
+	undetected_chromedriver!(No symbol) [0x10fe480]
+	undetected_chromedriver!(No symbol) [0x10fdb72]
+	undetected_chromedriver!GetHandleVerifier [0x18b4201+4e7401]
+	KERNEL32!BaseThreadInitThunk [0x7550fcc9+19]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d82ae+11e]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d827e+ee]
+
+2026-09-12 05:02:34,367 [WARNING] [SCREENSHOT] Failed to capture screenshot: Message: invalid session id
+Stacktrace:
+	undetected_chromedriver!GetHandleVerifier [0x13d1c33+4e33]
+	undetected_chromedriver!(No symbol) [0x12ed154]
+	undetected_chromedriver!(No symbol) [0x112beee]
+	undetected_chromedriver!(No symbol) [0x116b137]
+	undetected_chromedriver!(No symbol) [0x1199966]
+	undetected_chromedriver!(No symbol) [0x1194c63]
+	undetected_chromedriver!(No symbol) [0x1194630]
+	undetected_chromedriver!(No symbol) [0x10fed01]
+	undetected_chromedriver!(No symbol) [0x10ff2a3]
+	undetected_chromedriver!(No symbol) [0x10ff7ed]
+	undetected_chromedriver!GetHandleVerifier [0x183797a+46ab7a]
+	undetected_chromedriver!GetHandleVerifier [0x185945b+48c65b]
+	undetected_chromedriver!GetHandleVerifier [0x14f4282+127482]
+	undetected_chromedriver!GetHandleVerifier [0x14faf93+12e193]
+	undetected_chromedriver!(No symbol) [0x12fb278]
+	undetected_chromedriver!(No symbol) [0x10fe480]
+	undetected_chromedriver!(No symbol) [0x10fdb72]
+	undetected_chromedriver!GetHandleVerifier [0x18b4201+4e7401]
+	KERNEL32!BaseThreadInitThunk [0x7550fcc9+19]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d82ae+11e]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d827e+ee]
+
+2026-09-12 05:02:34,367 [INFO] kazoulayacine012@gmail.com | Sent:1 | Failed:4 | send_failed | user=khalko
+2026-09-12 05:04:15,490 [WARNING] [SEND] Error messaging itsstarbeammotherfuckerr (https://www.tumblr.com/itsstarbeammotherfuckerr): Message: invalid session id
+Stacktrace:
+	undetected_chromedriver!GetHandleVerifier [0x13d1c33+4e33]
+	undetected_chromedriver!(No symbol) [0x12ed154]
+	undetected_chromedriver!(No symbol) [0x112beee]
+	undetected_chromedriver!(No symbol) [0x116b137]
+	undetected_chromedriver!(No symbol) [0x1199966]
+	undetected_chromedriver!(No symbol) [0x1194c63]
+	undetected_chromedriver!(No symbol) [0x1194630]
+	undetected_chromedriver!(No symbol) [0x10fed01]
+	undetected_chromedriver!(No symbol) [0x10ff2a3]
+	undetected_chromedriver!(No symbol) [0x10ff7ed]
+	undetected_chromedriver!GetHandleVerifier [0x183797a+46ab7a]
+	undetected_chromedriver!GetHandleVerifier [0x185945b+48c65b]
+	undetected_chromedriver!GetHandleVerifier [0x14f4282+127482]
+	undetected_chromedriver!GetHandleVerifier [0x14faf93+12e193]
+	undetected_chromedriver!(No symbol) [0x12fb278]
+	undetected_chromedriver!(No symbol) [0x10fe480]
+	undetected_chromedriver!(No symbol) [0x10fdb72]
+	undetected_chromedriver!GetHandleVerifier [0x18b4201+4e7401]
+	KERNEL32!BaseThreadInitThunk [0x7550fcc9+19]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d82ae+11e]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d827e+ee]
+
+2026-09-12 05:04:15,491 [WARNING] [SCREENSHOT] Failed to capture screenshot: Message: invalid session id
+Stacktrace:
+	undetected_chromedriver!GetHandleVerifier [0x13d1c33+4e33]
+	undetected_chromedriver!(No symbol) [0x12ed154]
+	undetected_chromedriver!(No symbol) [0x112beee]
+	undetected_chromedriver!(No symbol) [0x116b137]
+	undetected_chromedriver!(No symbol) [0x1199966]
+	undetected_chromedriver!(No symbol) [0x1194c63]
+	undetected_chromedriver!(No symbol) [0x1194630]
+	undetected_chromedriver!(No symbol) [0x10fed01]
+	undetected_chromedriver!(No symbol) [0x10ff2a3]
+	undetected_chromedriver!(No symbol) [0x10ff7ed]
+	undetected_chromedriver!GetHandleVerifier [0x183797a+46ab7a]
+	undetected_chromedriver!GetHandleVerifier [0x185945b+48c65b]
+	undetected_chromedriver!GetHandleVerifier [0x14f4282+127482]
+	undetected_chromedriver!GetHandleVerifier [0x14faf93+12e193]
+	undetected_chromedriver!(No symbol) [0x12fb278]
+	undetected_chromedriver!(No symbol) [0x10fe480]
+	undetected_chromedriver!(No symbol) [0x10fdb72]
+	undetected_chromedriver!GetHandleVerifier [0x18b4201+4e7401]
+	KERNEL32!BaseThreadInitThunk [0x7550fcc9+19]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d82ae+11e]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d827e+ee]
+
+2026-09-12 05:04:15,491 [INFO] kazoulayacine012@gmail.com | Sent:1 | Failed:5 | send_failed | user=itsstarbeammotherfuckerr
+2026-09-12 05:05:41,138 [WARNING] [SEND] Error messaging lunarxylem (https://www.tumblr.com/lunarxylem): Message: invalid session id
+Stacktrace:
+	undetected_chromedriver!GetHandleVerifier [0x13d1c33+4e33]
+	undetected_chromedriver!(No symbol) [0x12ed154]
+	undetected_chromedriver!(No symbol) [0x112beee]
+	undetected_chromedriver!(No symbol) [0x116b137]
+	undetected_chromedriver!(No symbol) [0x1199966]
+	undetected_chromedriver!(No symbol) [0x1194c63]
+	undetected_chromedriver!(No symbol) [0x1194630]
+	undetected_chromedriver!(No symbol) [0x10fed01]
+	undetected_chromedriver!(No symbol) [0x10ff2a3]
+	undetected_chromedriver!(No symbol) [0x10ff7ed]
+	undetected_chromedriver!GetHandleVerifier [0x183797a+46ab7a]
+	undetected_chromedriver!GetHandleVerifier [0x185945b+48c65b]
+	undetected_chromedriver!GetHandleVerifier [0x14f4282+127482]
+	undetected_chromedriver!GetHandleVerifier [0x14faf93+12e193]
+	undetected_chromedriver!(No symbol) [0x12fb278]
+	undetected_chromedriver!(No symbol) [0x10fe480]
+	undetected_chromedriver!(No symbol) [0x10fdb72]
+	undetected_chromedriver!GetHandleVerifier [0x18b4201+4e7401]
+	KERNEL32!BaseThreadInitThunk [0x7550fcc9+19]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d82ae+11e]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d827e+ee]
+
+2026-09-12 05:05:41,140 [WARNING] [SCREENSHOT] Failed to capture screenshot: Message: invalid session id
+Stacktrace:
+	undetected_chromedriver!GetHandleVerifier [0x13d1c33+4e33]
+	undetected_chromedriver!(No symbol) [0x12ed154]
+	undetected_chromedriver!(No symbol) [0x112beee]
+	undetected_chromedriver!(No symbol) [0x116b137]
+	undetected_chromedriver!(No symbol) [0x1199966]
+	undetected_chromedriver!(No symbol) [0x1194c63]
+	undetected_chromedriver!(No symbol) [0x1194630]
+	undetected_chromedriver!(No symbol) [0x10fed01]
+	undetected_chromedriver!(No symbol) [0x10ff2a3]
+	undetected_chromedriver!(No symbol) [0x10ff7ed]
+	undetected_chromedriver!GetHandleVerifier [0x183797a+46ab7a]
+	undetected_chromedriver!GetHandleVerifier [0x185945b+48c65b]
+	undetected_chromedriver!GetHandleVerifier [0x14f4282+127482]
+	undetected_chromedriver!GetHandleVerifier [0x14faf93+12e193]
+	undetected_chromedriver!(No symbol) [0x12fb278]
+	undetected_chromedriver!(No symbol) [0x10fe480]
+	undetected_chromedriver!(No symbol) [0x10fdb72]
+	undetected_chromedriver!GetHandleVerifier [0x18b4201+4e7401]
+	KERNEL32!BaseThreadInitThunk [0x7550fcc9+19]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d82ae+11e]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d827e+ee]
+
+2026-09-12 05:05:41,140 [INFO] kazoulayacine012@gmail.com | Sent:1 | Failed:6 | send_failed | user=lunarxylem
+2026-09-12 05:06:47,941 [WARNING] [SEND] Error messaging lacking-limes (https://www.tumblr.com/lacking-limes): Message: invalid session id
+Stacktrace:
+	undetected_chromedriver!GetHandleVerifier [0x13d1c33+4e33]
+	undetected_chromedriver!(No symbol) [0x12ed154]
+	undetected_chromedriver!(No symbol) [0x112beee]
+	undetected_chromedriver!(No symbol) [0x116b137]
+	undetected_chromedriver!(No symbol) [0x1199966]
+	undetected_chromedriver!(No symbol) [0x1194c63]
+	undetected_chromedriver!(No symbol) [0x1194630]
+	undetected_chromedriver!(No symbol) [0x10fed01]
+	undetected_chromedriver!(No symbol) [0x10ff2a3]
+	undetected_chromedriver!(No symbol) [0x10ff7ed]
+	undetected_chromedriver!GetHandleVerifier [0x183797a+46ab7a]
+	undetected_chromedriver!GetHandleVerifier [0x185945b+48c65b]
+	undetected_chromedriver!GetHandleVerifier [0x14f4282+127482]
+	undetected_chromedriver!GetHandleVerifier [0x14faf93+12e193]
+	undetected_chromedriver!(No symbol) [0x12fb278]
+	undetected_chromedriver!(No symbol) [0x10fe480]
+	undetected_chromedriver!(No symbol) [0x10fdb72]
+	undetected_chromedriver!GetHandleVerifier [0x18b4201+4e7401]
+	KERNEL32!BaseThreadInitThunk [0x7550fcc9+19]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d82ae+11e]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d827e+ee]
+
+2026-09-12 05:06:47,943 [WARNING] [SCREENSHOT] Failed to capture screenshot: Message: invalid session id
+Stacktrace:
+	undetected_chromedriver!GetHandleVerifier [0x13d1c33+4e33]
+	undetected_chromedriver!(No symbol) [0x12ed154]
+	undetected_chromedriver!(No symbol) [0x112beee]
+	undetected_chromedriver!(No symbol) [0x116b137]
+	undetected_chromedriver!(No symbol) [0x1199966]
+	undetected_chromedriver!(No symbol) [0x1194c63]
+	undetected_chromedriver!(No symbol) [0x1194630]
+	undetected_chromedriver!(No symbol) [0x10fed01]
+	undetected_chromedriver!(No symbol) [0x10ff2a3]
+	undetected_chromedriver!(No symbol) [0x10ff7ed]
+	undetected_chromedriver!GetHandleVerifier [0x183797a+46ab7a]
+	undetected_chromedriver!GetHandleVerifier [0x185945b+48c65b]
+	undetected_chromedriver!GetHandleVerifier [0x14f4282+127482]
+	undetected_chromedriver!GetHandleVerifier [0x14faf93+12e193]
+	undetected_chromedriver!(No symbol) [0x12fb278]
+	undetected_chromedriver!(No symbol) [0x10fe480]
+	undetected_chromedriver!(No symbol) [0x10fdb72]
+	undetected_chromedriver!GetHandleVerifier [0x18b4201+4e7401]
+	KERNEL32!BaseThreadInitThunk [0x7550fcc9+19]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d82ae+11e]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d827e+ee]
+
+2026-09-12 05:06:47,943 [INFO] kazoulayacine012@gmail.com | Sent:1 | Failed:6 | follow | user=lacking-limes | ok=False
+2026-09-12 05:06:47,943 [INFO] kazoulayacine012@gmail.com | Sent:1 | Failed:7 | send_failed | user=lacking-limes
+2026-09-12 05:07:53,066 [WARNING] [SEND] Error messaging leluxiboi (https://www.tumblr.com/leluxiboi): Message: invalid session id
+Stacktrace:
+	undetected_chromedriver!GetHandleVerifier [0x13d1c33+4e33]
+	undetected_chromedriver!(No symbol) [0x12ed154]
+	undetected_chromedriver!(No symbol) [0x112beee]
+	undetected_chromedriver!(No symbol) [0x116b137]
+	undetected_chromedriver!(No symbol) [0x1199966]
+	undetected_chromedriver!(No symbol) [0x1194c63]
+	undetected_chromedriver!(No symbol) [0x1194630]
+	undetected_chromedriver!(No symbol) [0x10fed01]
+	undetected_chromedriver!(No symbol) [0x10ff2a3]
+	undetected_chromedriver!(No symbol) [0x10ff7ed]
+	undetected_chromedriver!GetHandleVerifier [0x183797a+46ab7a]
+	undetected_chromedriver!GetHandleVerifier [0x185945b+48c65b]
+	undetected_chromedriver!GetHandleVerifier [0x14f4282+127482]
+	undetected_chromedriver!GetHandleVerifier [0x14faf93+12e193]
+	undetected_chromedriver!(No symbol) [0x12fb278]
+	undetected_chromedriver!(No symbol) [0x10fe480]
+	undetected_chromedriver!(No symbol) [0x10fdb72]
+	undetected_chromedriver!GetHandleVerifier [0x18b4201+4e7401]
+	KERNEL32!BaseThreadInitThunk [0x7550fcc9+19]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d82ae+11e]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d827e+ee]
+
+2026-09-12 05:07:53,067 [WARNING] [SCREENSHOT] Failed to capture screenshot: Message: invalid session id
+Stacktrace:
+	undetected_chromedriver!GetHandleVerifier [0x13d1c33+4e33]
+	undetected_chromedriver!(No symbol) [0x12ed154]
+	undetected_chromedriver!(No symbol) [0x112beee]
+	undetected_chromedriver!(No symbol) [0x116b137]
+	undetected_chromedriver!(No symbol) [0x1199966]
+	undetected_chromedriver!(No symbol) [0x1194c63]
+	undetected_chromedriver!(No symbol) [0x1194630]
+	undetected_chromedriver!(No symbol) [0x10fed01]
+	undetected_chromedriver!(No symbol) [0x10ff2a3]
+	undetected_chromedriver!(No symbol) [0x10ff7ed]
+	undetected_chromedriver!GetHandleVerifier [0x183797a+46ab7a]
+	undetected_chromedriver!GetHandleVerifier [0x185945b+48c65b]
+	undetected_chromedriver!GetHandleVerifier [0x14f4282+127482]
+	undetected_chromedriver!GetHandleVerifier [0x14faf93+12e193]
+	undetected_chromedriver!(No symbol) [0x12fb278]
+	undetected_chromedriver!(No symbol) [0x10fe480]
+	undetected_chromedriver!(No symbol) [0x10fdb72]
+	undetected_chromedriver!GetHandleVerifier [0x18b4201+4e7401]
+	KERNEL32!BaseThreadInitThunk [0x7550fcc9+19]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d82ae+11e]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d827e+ee]
+
+2026-09-12 05:07:53,068 [INFO] kazoulayacine012@gmail.com | Sent:1 | Failed:8 | send_failed | user=leluxiboi
+2026-09-12 05:09:22,310 [WARNING] [SEND] Error messaging ellias-elliott (https://www.tumblr.com/ellias-elliott): Message: invalid session id
+Stacktrace:
+	undetected_chromedriver!GetHandleVerifier [0x13d1c33+4e33]
+	undetected_chromedriver!(No symbol) [0x12ed154]
+	undetected_chromedriver!(No symbol) [0x112beee]
+	undetected_chromedriver!(No symbol) [0x116b137]
+	undetected_chromedriver!(No symbol) [0x1199966]
+	undetected_chromedriver!(No symbol) [0x1194c63]
+	undetected_chromedriver!(No symbol) [0x1194630]
+	undetected_chromedriver!(No symbol) [0x10fed01]
+	undetected_chromedriver!(No symbol) [0x10ff2a3]
+	undetected_chromedriver!(No symbol) [0x10ff7ed]
+	undetected_chromedriver!GetHandleVerifier [0x183797a+46ab7a]
+	undetected_chromedriver!GetHandleVerifier [0x185945b+48c65b]
+	undetected_chromedriver!GetHandleVerifier [0x14f4282+127482]
+	undetected_chromedriver!GetHandleVerifier [0x14faf93+12e193]
+	undetected_chromedriver!(No symbol) [0x12fb278]
+	undetected_chromedriver!(No symbol) [0x10fe480]
+	undetected_chromedriver!(No symbol) [0x10fdb72]
+	undetected_chromedriver!GetHandleVerifier [0x18b4201+4e7401]
+	KERNEL32!BaseThreadInitThunk [0x7550fcc9+19]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d82ae+11e]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d827e+ee]
+
+2026-09-12 05:09:22,312 [WARNING] [SCREENSHOT] Failed to capture screenshot: Message: invalid session id
+Stacktrace:
+	undetected_chromedriver!GetHandleVerifier [0x13d1c33+4e33]
+	undetected_chromedriver!(No symbol) [0x12ed154]
+	undetected_chromedriver!(No symbol) [0x112beee]
+	undetected_chromedriver!(No symbol) [0x116b137]
+	undetected_chromedriver!(No symbol) [0x1199966]
+	undetected_chromedriver!(No symbol) [0x1194c63]
+	undetected_chromedriver!(No symbol) [0x1194630]
+	undetected_chromedriver!(No symbol) [0x10fed01]
+	undetected_chromedriver!(No symbol) [0x10ff2a3]
+	undetected_chromedriver!(No symbol) [0x10ff7ed]
+	undetected_chromedriver!GetHandleVerifier [0x183797a+46ab7a]
+	undetected_chromedriver!GetHandleVerifier [0x185945b+48c65b]
+	undetected_chromedriver!GetHandleVerifier [0x14f4282+127482]
+	undetected_chromedriver!GetHandleVerifier [0x14faf93+12e193]
+	undetected_chromedriver!(No symbol) [0x12fb278]
+	undetected_chromedriver!(No symbol) [0x10fe480]
+	undetected_chromedriver!(No symbol) [0x10fdb72]
+	undetected_chromedriver!GetHandleVerifier [0x18b4201+4e7401]
+	KERNEL32!BaseThreadInitThunk [0x7550fcc9+19]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d82ae+11e]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d827e+ee]
+
+2026-09-12 05:09:22,312 [INFO] kazoulayacine012@gmail.com | Sent:1 | Failed:9 | send_failed | user=ellias-elliott
+2026-09-12 05:27:03,683 [WARNING] [SEND] Error messaging lets-go-get-orange-juice (https://www.tumblr.com/lets-go-get-orange-juice): Message: invalid session id
+Stacktrace:
+	undetected_chromedriver!GetHandleVerifier [0x13d1c33+4e33]
+	undetected_chromedriver!(No symbol) [0x12ed154]
+	undetected_chromedriver!(No symbol) [0x112beee]
+	undetected_chromedriver!(No symbol) [0x116b137]
+	undetected_chromedriver!(No symbol) [0x1199966]
+	undetected_chromedriver!(No symbol) [0x1194c63]
+	undetected_chromedriver!(No symbol) [0x1194630]
+	undetected_chromedriver!(No symbol) [0x10fed01]
+	undetected_chromedriver!(No symbol) [0x10ff2a3]
+	undetected_chromedriver!(No symbol) [0x10ff7ed]
+	undetected_chromedriver!GetHandleVerifier [0x183797a+46ab7a]
+	undetected_chromedriver!GetHandleVerifier [0x185945b+48c65b]
+	undetected_chromedriver!GetHandleVerifier [0x14f4282+127482]
+	undetected_chromedriver!GetHandleVerifier [0x14faf93+12e193]
+	undetected_chromedriver!(No symbol) [0x12fb278]
+	undetected_chromedriver!(No symbol) [0x10fe480]
+	undetected_chromedriver!(No symbol) [0x10fdb72]
+	undetected_chromedriver!GetHandleVerifier [0x18b4201+4e7401]
+	KERNEL32!BaseThreadInitThunk [0x7550fcc9+19]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d82ae+11e]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d827e+ee]
+
+2026-09-12 05:27:03,684 [WARNING] [SCREENSHOT] Failed to capture screenshot: Message: invalid session id
+Stacktrace:
+	undetected_chromedriver!GetHandleVerifier [0x13d1c33+4e33]
+	undetected_chromedriver!(No symbol) [0x12ed154]
+	undetected_chromedriver!(No symbol) [0x112beee]
+	undetected_chromedriver!(No symbol) [0x116b137]
+	undetected_chromedriver!(No symbol) [0x1199966]
+	undetected_chromedriver!(No symbol) [0x1194c63]
+	undetected_chromedriver!(No symbol) [0x1194630]
+	undetected_chromedriver!(No symbol) [0x10fed01]
+	undetected_chromedriver!(No symbol) [0x10ff2a3]
+	undetected_chromedriver!(No symbol) [0x10ff7ed]
+	undetected_chromedriver!GetHandleVerifier [0x183797a+46ab7a]
+	undetected_chromedriver!GetHandleVerifier [0x185945b+48c65b]
+	undetected_chromedriver!GetHandleVerifier [0x14f4282+127482]
+	undetected_chromedriver!GetHandleVerifier [0x14faf93+12e193]
+	undetected_chromedriver!(No symbol) [0x12fb278]
+	undetected_chromedriver!(No symbol) [0x10fe480]
+	undetected_chromedriver!(No symbol) [0x10fdb72]
+	undetected_chromedriver!GetHandleVerifier [0x18b4201+4e7401]
+	KERNEL32!BaseThreadInitThunk [0x7550fcc9+19]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d82ae+11e]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d827e+ee]
+
+2026-09-12 05:27:03,685 [INFO] kazoulayacine012@gmail.com | Sent:1 | Failed:10 | send_failed | user=lets-go-get-orange-juice
+2026-09-12 05:29:11,129 [WARNING] [SEND] Error messaging soap-with-bite-marks (https://www.tumblr.com/soap-with-bite-marks): Message: invalid session id
+Stacktrace:
+	undetected_chromedriver!GetHandleVerifier [0x13d1c33+4e33]
+	undetected_chromedriver!(No symbol) [0x12ed154]
+	undetected_chromedriver!(No symbol) [0x112beee]
+	undetected_chromedriver!(No symbol) [0x116b137]
+	undetected_chromedriver!(No symbol) [0x1199966]
+	undetected_chromedriver!(No symbol) [0x1194c63]
+	undetected_chromedriver!(No symbol) [0x1194630]
+	undetected_chromedriver!(No symbol) [0x10fed01]
+	undetected_chromedriver!(No symbol) [0x10ff2a3]
+	undetected_chromedriver!(No symbol) [0x10ff7ed]
+	undetected_chromedriver!GetHandleVerifier [0x183797a+46ab7a]
+	undetected_chromedriver!GetHandleVerifier [0x185945b+48c65b]
+	undetected_chromedriver!GetHandleVerifier [0x14f4282+127482]
+	undetected_chromedriver!GetHandleVerifier [0x14faf93+12e193]
+	undetected_chromedriver!(No symbol) [0x12fb278]
+	undetected_chromedriver!(No symbol) [0x10fe480]
+	undetected_chromedriver!(No symbol) [0x10fdb72]
+	undetected_chromedriver!GetHandleVerifier [0x18b4201+4e7401]
+	KERNEL32!BaseThreadInitThunk [0x7550fcc9+19]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d82ae+11e]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d827e+ee]
+
+2026-09-12 05:29:11,131 [WARNING] [SCREENSHOT] Failed to capture screenshot: Message: invalid session id
+Stacktrace:
+	undetected_chromedriver!GetHandleVerifier [0x13d1c33+4e33]
+	undetected_chromedriver!(No symbol) [0x12ed154]
+	undetected_chromedriver!(No symbol) [0x112beee]
+	undetected_chromedriver!(No symbol) [0x116b137]
+	undetected_chromedriver!(No symbol) [0x1199966]
+	undetected_chromedriver!(No symbol) [0x1194c63]
+	undetected_chromedriver!(No symbol) [0x1194630]
+	undetected_chromedriver!(No symbol) [0x10fed01]
+	undetected_chromedriver!(No symbol) [0x10ff2a3]
+	undetected_chromedriver!(No symbol) [0x10ff7ed]
+	undetected_chromedriver!GetHandleVerifier [0x183797a+46ab7a]
+	undetected_chromedriver!GetHandleVerifier [0x185945b+48c65b]
+	undetected_chromedriver!GetHandleVerifier [0x14f4282+127482]
+	undetected_chromedriver!GetHandleVerifier [0x14faf93+12e193]
+	undetected_chromedriver!(No symbol) [0x12fb278]
+	undetected_chromedriver!(No symbol) [0x10fe480]
+	undetected_chromedriver!(No symbol) [0x10fdb72]
+	undetected_chromedriver!GetHandleVerifier [0x18b4201+4e7401]
+	KERNEL32!BaseThreadInitThunk [0x7550fcc9+19]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d82ae+11e]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d827e+ee]
+
+2026-09-12 05:29:11,131 [INFO] kazoulayacine012@gmail.com | Sent:1 | Failed:10 | follow | user=soap-with-bite-marks | ok=False
+2026-09-12 05:29:11,131 [INFO] kazoulayacine012@gmail.com | Sent:1 | Failed:11 | send_failed | user=soap-with-bite-marks
+2026-09-12 05:30:17,843 [WARNING] [SEND] Error messaging twigclub (https://www.tumblr.com/twigclub): Message: invalid session id
+Stacktrace:
+	undetected_chromedriver!GetHandleVerifier [0x13d1c33+4e33]
+	undetected_chromedriver!(No symbol) [0x12ed154]
+	undetected_chromedriver!(No symbol) [0x112beee]
+	undetected_chromedriver!(No symbol) [0x116b137]
+	undetected_chromedriver!(No symbol) [0x1199966]
+	undetected_chromedriver!(No symbol) [0x1194c63]
+	undetected_chromedriver!(No symbol) [0x1194630]
+	undetected_chromedriver!(No symbol) [0x10fed01]
+	undetected_chromedriver!(No symbol) [0x10ff2a3]
+	undetected_chromedriver!(No symbol) [0x10ff7ed]
+	undetected_chromedriver!GetHandleVerifier [0x183797a+46ab7a]
+	undetected_chromedriver!GetHandleVerifier [0x185945b+48c65b]
+	undetected_chromedriver!GetHandleVerifier [0x14f4282+127482]
+	undetected_chromedriver!GetHandleVerifier [0x14faf93+12e193]
+	undetected_chromedriver!(No symbol) [0x12fb278]
+	undetected_chromedriver!(No symbol) [0x10fe480]
+	undetected_chromedriver!(No symbol) [0x10fdb72]
+	undetected_chromedriver!GetHandleVerifier [0x18b4201+4e7401]
+	KERNEL32!BaseThreadInitThunk [0x7550fcc9+19]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d82ae+11e]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d827e+ee]
+
+2026-09-12 05:30:17,845 [WARNING] [SCREENSHOT] Failed to capture screenshot: Message: invalid session id
+Stacktrace:
+	undetected_chromedriver!GetHandleVerifier [0x13d1c33+4e33]
+	undetected_chromedriver!(No symbol) [0x12ed154]
+	undetected_chromedriver!(No symbol) [0x112beee]
+	undetected_chromedriver!(No symbol) [0x116b137]
+	undetected_chromedriver!(No symbol) [0x1199966]
+	undetected_chromedriver!(No symbol) [0x1194c63]
+	undetected_chromedriver!(No symbol) [0x1194630]
+	undetected_chromedriver!(No symbol) [0x10fed01]
+	undetected_chromedriver!(No symbol) [0x10ff2a3]
+	undetected_chromedriver!(No symbol) [0x10ff7ed]
+	undetected_chromedriver!GetHandleVerifier [0x183797a+46ab7a]
+	undetected_chromedriver!GetHandleVerifier [0x185945b+48c65b]
+	undetected_chromedriver!GetHandleVerifier [0x14f4282+127482]
+	undetected_chromedriver!GetHandleVerifier [0x14faf93+12e193]
+	undetected_chromedriver!(No symbol) [0x12fb278]
+	undetected_chromedriver!(No symbol) [0x10fe480]
+	undetected_chromedriver!(No symbol) [0x10fdb72]
+	undetected_chromedriver!GetHandleVerifier [0x18b4201+4e7401]
+	KERNEL32!BaseThreadInitThunk [0x7550fcc9+19]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d82ae+11e]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d827e+ee]
+
+2026-09-12 05:30:17,846 [INFO] kazoulayacine012@gmail.com | Sent:1 | Failed:12 | send_failed | user=twigclub
+2026-09-12 05:31:40,234 [WARNING] [SEND] Error messaging decembercamiecherries (https://www.tumblr.com/decembercamiecherries): Message: invalid session id
+Stacktrace:
+	undetected_chromedriver!GetHandleVerifier [0x13d1c33+4e33]
+	undetected_chromedriver!(No symbol) [0x12ed154]
+	undetected_chromedriver!(No symbol) [0x112beee]
+	undetected_chromedriver!(No symbol) [0x116b137]
+	undetected_chromedriver!(No symbol) [0x1199966]
+	undetected_chromedriver!(No symbol) [0x1194c63]
+	undetected_chromedriver!(No symbol) [0x1194630]
+	undetected_chromedriver!(No symbol) [0x10fed01]
+	undetected_chromedriver!(No symbol) [0x10ff2a3]
+	undetected_chromedriver!(No symbol) [0x10ff7ed]
+	undetected_chromedriver!GetHandleVerifier [0x183797a+46ab7a]
+	undetected_chromedriver!GetHandleVerifier [0x185945b+48c65b]
+	undetected_chromedriver!GetHandleVerifier [0x14f4282+127482]
+	undetected_chromedriver!GetHandleVerifier [0x14faf93+12e193]
+	undetected_chromedriver!(No symbol) [0x12fb278]
+	undetected_chromedriver!(No symbol) [0x10fe480]
+	undetected_chromedriver!(No symbol) [0x10fdb72]
+	undetected_chromedriver!GetHandleVerifier [0x18b4201+4e7401]
+	KERNEL32!BaseThreadInitThunk [0x7550fcc9+19]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d82ae+11e]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d827e+ee]
+
+2026-09-12 05:31:40,235 [WARNING] [SCREENSHOT] Failed to capture screenshot: Message: invalid session id
+Stacktrace:
+	undetected_chromedriver!GetHandleVerifier [0x13d1c33+4e33]
+	undetected_chromedriver!(No symbol) [0x12ed154]
+	undetected_chromedriver!(No symbol) [0x112beee]
+	undetected_chromedriver!(No symbol) [0x116b137]
+	undetected_chromedriver!(No symbol) [0x1199966]
+	undetected_chromedriver!(No symbol) [0x1194c63]
+	undetected_chromedriver!(No symbol) [0x1194630]
+	undetected_chromedriver!(No symbol) [0x10fed01]
+	undetected_chromedriver!(No symbol) [0x10ff2a3]
+	undetected_chromedriver!(No symbol) [0x10ff7ed]
+	undetected_chromedriver!GetHandleVerifier [0x183797a+46ab7a]
+	undetected_chromedriver!GetHandleVerifier [0x185945b+48c65b]
+	undetected_chromedriver!GetHandleVerifier [0x14f4282+127482]
+	undetected_chromedriver!GetHandleVerifier [0x14faf93+12e193]
+	undetected_chromedriver!(No symbol) [0x12fb278]
+	undetected_chromedriver!(No symbol) [0x10fe480]
+	undetected_chromedriver!(No symbol) [0x10fdb72]
+	undetected_chromedriver!GetHandleVerifier [0x18b4201+4e7401]
+	KERNEL32!BaseThreadInitThunk [0x7550fcc9+19]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d82ae+11e]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d827e+ee]
+
+2026-09-12 05:31:40,235 [INFO] kazoulayacine012@gmail.com | Sent:1 | Failed:13 | send_failed | user=decembercamiecherries
+2026-09-12 05:33:29,059 [WARNING] [SEND] Error messaging balletinthestars (https://www.tumblr.com/balletinthestars): Message: invalid session id
+Stacktrace:
+	undetected_chromedriver!GetHandleVerifier [0x13d1c33+4e33]
+	undetected_chromedriver!(No symbol) [0x12ed154]
+	undetected_chromedriver!(No symbol) [0x112beee]
+	undetected_chromedriver!(No symbol) [0x116b137]
+	undetected_chromedriver!(No symbol) [0x1199966]
+	undetected_chromedriver!(No symbol) [0x1194c63]
+	undetected_chromedriver!(No symbol) [0x1194630]
+	undetected_chromedriver!(No symbol) [0x10fed01]
+	undetected_chromedriver!(No symbol) [0x10ff2a3]
+	undetected_chromedriver!(No symbol) [0x10ff7ed]
+	undetected_chromedriver!GetHandleVerifier [0x183797a+46ab7a]
+	undetected_chromedriver!GetHandleVerifier [0x185945b+48c65b]
+	undetected_chromedriver!GetHandleVerifier [0x14f4282+127482]
+	undetected_chromedriver!GetHandleVerifier [0x14faf93+12e193]
+	undetected_chromedriver!(No symbol) [0x12fb278]
+	undetected_chromedriver!(No symbol) [0x10fe480]
+	undetected_chromedriver!(No symbol) [0x10fdb72]
+	undetected_chromedriver!GetHandleVerifier [0x18b4201+4e7401]
+	KERNEL32!BaseThreadInitThunk [0x7550fcc9+19]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d82ae+11e]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d827e+ee]
+
+2026-09-12 05:33:29,060 [WARNING] [SCREENSHOT] Failed to capture screenshot: Message: invalid session id
+Stacktrace:
+	undetected_chromedriver!GetHandleVerifier [0x13d1c33+4e33]
+	undetected_chromedriver!(No symbol) [0x12ed154]
+	undetected_chromedriver!(No symbol) [0x112beee]
+	undetected_chromedriver!(No symbol) [0x116b137]
+	undetected_chromedriver!(No symbol) [0x1199966]
+	undetected_chromedriver!(No symbol) [0x1194c63]
+	undetected_chromedriver!(No symbol) [0x1194630]
+	undetected_chromedriver!(No symbol) [0x10fed01]
+	undetected_chromedriver!(No symbol) [0x10ff2a3]
+	undetected_chromedriver!(No symbol) [0x10ff7ed]
+	undetected_chromedriver!GetHandleVerifier [0x183797a+46ab7a]
+	undetected_chromedriver!GetHandleVerifier [0x185945b+48c65b]
+	undetected_chromedriver!GetHandleVerifier [0x14f4282+127482]
+	undetected_chromedriver!GetHandleVerifier [0x14faf93+12e193]
+	undetected_chromedriver!(No symbol) [0x12fb278]
+	undetected_chromedriver!(No symbol) [0x10fe480]
+	undetected_chromedriver!(No symbol) [0x10fdb72]
+	undetected_chromedriver!GetHandleVerifier [0x18b4201+4e7401]
+	KERNEL32!BaseThreadInitThunk [0x7550fcc9+19]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d82ae+11e]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d827e+ee]
+
+2026-09-12 05:33:29,061 [INFO] kazoulayacine012@gmail.com | Sent:1 | Failed:14 | send_failed | user=balletinthestars
+2026-09-12 05:35:13,259 [WARNING] [SEND] Error messaging z3nozoldyck (https://www.tumblr.com/z3nozoldyck): Message: invalid session id
+Stacktrace:
+	undetected_chromedriver!GetHandleVerifier [0x13d1c33+4e33]
+	undetected_chromedriver!(No symbol) [0x12ed154]
+	undetected_chromedriver!(No symbol) [0x112beee]
+	undetected_chromedriver!(No symbol) [0x116b137]
+	undetected_chromedriver!(No symbol) [0x1199966]
+	undetected_chromedriver!(No symbol) [0x1194c63]
+	undetected_chromedriver!(No symbol) [0x1194630]
+	undetected_chromedriver!(No symbol) [0x10fed01]
+	undetected_chromedriver!(No symbol) [0x10ff2a3]
+	undetected_chromedriver!(No symbol) [0x10ff7ed]
+	undetected_chromedriver!GetHandleVerifier [0x183797a+46ab7a]
+	undetected_chromedriver!GetHandleVerifier [0x185945b+48c65b]
+	undetected_chromedriver!GetHandleVerifier [0x14f4282+127482]
+	undetected_chromedriver!GetHandleVerifier [0x14faf93+12e193]
+	undetected_chromedriver!(No symbol) [0x12fb278]
+	undetected_chromedriver!(No symbol) [0x10fe480]
+	undetected_chromedriver!(No symbol) [0x10fdb72]
+	undetected_chromedriver!GetHandleVerifier [0x18b4201+4e7401]
+	KERNEL32!BaseThreadInitThunk [0x7550fcc9+19]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d82ae+11e]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d827e+ee]
+
+2026-09-12 05:35:13,261 [WARNING] [SCREENSHOT] Failed to capture screenshot: Message: invalid session id
+Stacktrace:
+	undetected_chromedriver!GetHandleVerifier [0x13d1c33+4e33]
+	undetected_chromedriver!(No symbol) [0x12ed154]
+	undetected_chromedriver!(No symbol) [0x112beee]
+	undetected_chromedriver!(No symbol) [0x116b137]
+	undetected_chromedriver!(No symbol) [0x1199966]
+	undetected_chromedriver!(No symbol) [0x1194c63]
+	undetected_chromedriver!(No symbol) [0x1194630]
+	undetected_chromedriver!(No symbol) [0x10fed01]
+	undetected_chromedriver!(No symbol) [0x10ff2a3]
+	undetected_chromedriver!(No symbol) [0x10ff7ed]
+	undetected_chromedriver!GetHandleVerifier [0x183797a+46ab7a]
+	undetected_chromedriver!GetHandleVerifier [0x185945b+48c65b]
+	undetected_chromedriver!GetHandleVerifier [0x14f4282+127482]
+	undetected_chromedriver!GetHandleVerifier [0x14faf93+12e193]
+	undetected_chromedriver!(No symbol) [0x12fb278]
+	undetected_chromedriver!(No symbol) [0x10fe480]
+	undetected_chromedriver!(No symbol) [0x10fdb72]
+	undetected_chromedriver!GetHandleVerifier [0x18b4201+4e7401]
+	KERNEL32!BaseThreadInitThunk [0x7550fcc9+19]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d82ae+11e]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d827e+ee]
+
+2026-09-12 05:35:13,261 [INFO] kazoulayacine012@gmail.com | Sent:1 | Failed:14 | follow | user=z3nozoldyck | ok=False
+2026-09-12 05:35:13,261 [INFO] kazoulayacine012@gmail.com | Sent:1 | Failed:15 | send_failed | user=z3nozoldyck
+2026-09-12 05:36:17,940 [WARNING] [SEND] Error messaging masterthespianduchovny (https://www.tumblr.com/masterthespianduchovny): Message: invalid session id
+Stacktrace:
+	undetected_chromedriver!GetHandleVerifier [0x13d1c33+4e33]
+	undetected_chromedriver!(No symbol) [0x12ed154]
+	undetected_chromedriver!(No symbol) [0x112beee]
+	undetected_chromedriver!(No symbol) [0x116b137]
+	undetected_chromedriver!(No symbol) [0x1199966]
+	undetected_chromedriver!(No symbol) [0x1194c63]
+	undetected_chromedriver!(No symbol) [0x1194630]
+	undetected_chromedriver!(No symbol) [0x10fed01]
+	undetected_chromedriver!(No symbol) [0x10ff2a3]
+	undetected_chromedriver!(No symbol) [0x10ff7ed]
+	undetected_chromedriver!GetHandleVerifier [0x183797a+46ab7a]
+	undetected_chromedriver!GetHandleVerifier [0x185945b+48c65b]
+	undetected_chromedriver!GetHandleVerifier [0x14f4282+127482]
+	undetected_chromedriver!GetHandleVerifier [0x14faf93+12e193]
+	undetected_chromedriver!(No symbol) [0x12fb278]
+	undetected_chromedriver!(No symbol) [0x10fe480]
+	undetected_chromedriver!(No symbol) [0x10fdb72]
+	undetected_chromedriver!GetHandleVerifier [0x18b4201+4e7401]
+	KERNEL32!BaseThreadInitThunk [0x7550fcc9+19]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d82ae+11e]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d827e+ee]
+
+2026-09-12 05:36:17,942 [WARNING] [SCREENSHOT] Failed to capture screenshot: Message: invalid session id
+Stacktrace:
+	undetected_chromedriver!GetHandleVerifier [0x13d1c33+4e33]
+	undetected_chromedriver!(No symbol) [0x12ed154]
+	undetected_chromedriver!(No symbol) [0x112beee]
+	undetected_chromedriver!(No symbol) [0x116b137]
+	undetected_chromedriver!(No symbol) [0x1199966]
+	undetected_chromedriver!(No symbol) [0x1194c63]
+	undetected_chromedriver!(No symbol) [0x1194630]
+	undetected_chromedriver!(No symbol) [0x10fed01]
+	undetected_chromedriver!(No symbol) [0x10ff2a3]
+	undetected_chromedriver!(No symbol) [0x10ff7ed]
+	undetected_chromedriver!GetHandleVerifier [0x183797a+46ab7a]
+	undetected_chromedriver!GetHandleVerifier [0x185945b+48c65b]
+	undetected_chromedriver!GetHandleVerifier [0x14f4282+127482]
+	undetected_chromedriver!GetHandleVerifier [0x14faf93+12e193]
+	undetected_chromedriver!(No symbol) [0x12fb278]
+	undetected_chromedriver!(No symbol) [0x10fe480]
+	undetected_chromedriver!(No symbol) [0x10fdb72]
+	undetected_chromedriver!GetHandleVerifier [0x18b4201+4e7401]
+	KERNEL32!BaseThreadInitThunk [0x7550fcc9+19]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d82ae+11e]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d827e+ee]
+
+2026-09-12 05:36:17,942 [INFO] kazoulayacine012@gmail.com | Sent:1 | Failed:16 | send_failed | user=masterthespianduchovny
+2026-09-12 05:37:25,574 [WARNING] [SEND] Error messaging tynoahs (https://www.tumblr.com/tynoahs): Message: invalid session id
+Stacktrace:
+	undetected_chromedriver!GetHandleVerifier [0x13d1c33+4e33]
+	undetected_chromedriver!(No symbol) [0x12ed154]
+	undetected_chromedriver!(No symbol) [0x112beee]
+	undetected_chromedriver!(No symbol) [0x116b137]
+	undetected_chromedriver!(No symbol) [0x1199966]
+	undetected_chromedriver!(No symbol) [0x1194c63]
+	undetected_chromedriver!(No symbol) [0x1194630]
+	undetected_chromedriver!(No symbol) [0x10fed01]
+	undetected_chromedriver!(No symbol) [0x10ff2a3]
+	undetected_chromedriver!(No symbol) [0x10ff7ed]
+	undetected_chromedriver!GetHandleVerifier [0x183797a+46ab7a]
+	undetected_chromedriver!GetHandleVerifier [0x185945b+48c65b]
+	undetected_chromedriver!GetHandleVerifier [0x14f4282+127482]
+	undetected_chromedriver!GetHandleVerifier [0x14faf93+12e193]
+	undetected_chromedriver!(No symbol) [0x12fb278]
+	undetected_chromedriver!(No symbol) [0x10fe480]
+	undetected_chromedriver!(No symbol) [0x10fdb72]
+	undetected_chromedriver!GetHandleVerifier [0x18b4201+4e7401]
+	KERNEL32!BaseThreadInitThunk [0x7550fcc9+19]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d82ae+11e]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d827e+ee]
+
+2026-09-12 05:37:25,576 [WARNING] [SCREENSHOT] Failed to capture screenshot: Message: invalid session id
+Stacktrace:
+	undetected_chromedriver!GetHandleVerifier [0x13d1c33+4e33]
+	undetected_chromedriver!(No symbol) [0x12ed154]
+	undetected_chromedriver!(No symbol) [0x112beee]
+	undetected_chromedriver!(No symbol) [0x116b137]
+	undetected_chromedriver!(No symbol) [0x1199966]
+	undetected_chromedriver!(No symbol) [0x1194c63]
+	undetected_chromedriver!(No symbol) [0x1194630]
+	undetected_chromedriver!(No symbol) [0x10fed01]
+	undetected_chromedriver!(No symbol) [0x10ff2a3]
+	undetected_chromedriver!(No symbol) [0x10ff7ed]
+	undetected_chromedriver!GetHandleVerifier [0x183797a+46ab7a]
+	undetected_chromedriver!GetHandleVerifier [0x185945b+48c65b]
+	undetected_chromedriver!GetHandleVerifier [0x14f4282+127482]
+	undetected_chromedriver!GetHandleVerifier [0x14faf93+12e193]
+	undetected_chromedriver!(No symbol) [0x12fb278]
+	undetected_chromedriver!(No symbol) [0x10fe480]
+	undetected_chromedriver!(No symbol) [0x10fdb72]
+	undetected_chromedriver!GetHandleVerifier [0x18b4201+4e7401]
+	KERNEL32!BaseThreadInitThunk [0x7550fcc9+19]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d82ae+11e]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d827e+ee]
+
+2026-09-12 05:37:25,576 [INFO] kazoulayacine012@gmail.com | Sent:1 | Failed:17 | send_failed | user=tynoahs
+2026-09-12 05:38:38,496 [WARNING] [SEND] Error messaging w1sh1ng0nth3st4rs (https://www.tumblr.com/w1sh1ng0nth3st4rs): Message: invalid session id
+Stacktrace:
+	undetected_chromedriver!GetHandleVerifier [0x13d1c33+4e33]
+	undetected_chromedriver!(No symbol) [0x12ed154]
+	undetected_chromedriver!(No symbol) [0x112beee]
+	undetected_chromedriver!(No symbol) [0x116b137]
+	undetected_chromedriver!(No symbol) [0x1199966]
+	undetected_chromedriver!(No symbol) [0x1194c63]
+	undetected_chromedriver!(No symbol) [0x1194630]
+	undetected_chromedriver!(No symbol) [0x10fed01]
+	undetected_chromedriver!(No symbol) [0x10ff2a3]
+	undetected_chromedriver!(No symbol) [0x10ff7ed]
+	undetected_chromedriver!GetHandleVerifier [0x183797a+46ab7a]
+	undetected_chromedriver!GetHandleVerifier [0x185945b+48c65b]
+	undetected_chromedriver!GetHandleVerifier [0x14f4282+127482]
+	undetected_chromedriver!GetHandleVerifier [0x14faf93+12e193]
+	undetected_chromedriver!(No symbol) [0x12fb278]
+	undetected_chromedriver!(No symbol) [0x10fe480]
+	undetected_chromedriver!(No symbol) [0x10fdb72]
+	undetected_chromedriver!GetHandleVerifier [0x18b4201+4e7401]
+	KERNEL32!BaseThreadInitThunk [0x7550fcc9+19]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d82ae+11e]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d827e+ee]
+
+2026-09-12 05:38:38,498 [WARNING] [SCREENSHOT] Failed to capture screenshot: Message: invalid session id
+Stacktrace:
+	undetected_chromedriver!GetHandleVerifier [0x13d1c33+4e33]
+	undetected_chromedriver!(No symbol) [0x12ed154]
+	undetected_chromedriver!(No symbol) [0x112beee]
+	undetected_chromedriver!(No symbol) [0x116b137]
+	undetected_chromedriver!(No symbol) [0x1199966]
+	undetected_chromedriver!(No symbol) [0x1194c63]
+	undetected_chromedriver!(No symbol) [0x1194630]
+	undetected_chromedriver!(No symbol) [0x10fed01]
+	undetected_chromedriver!(No symbol) [0x10ff2a3]
+	undetected_chromedriver!(No symbol) [0x10ff7ed]
+	undetected_chromedriver!GetHandleVerifier [0x183797a+46ab7a]
+	undetected_chromedriver!GetHandleVerifier [0x185945b+48c65b]
+	undetected_chromedriver!GetHandleVerifier [0x14f4282+127482]
+	undetected_chromedriver!GetHandleVerifier [0x14faf93+12e193]
+	undetected_chromedriver!(No symbol) [0x12fb278]
+	undetected_chromedriver!(No symbol) [0x10fe480]
+	undetected_chromedriver!(No symbol) [0x10fdb72]
+	undetected_chromedriver!GetHandleVerifier [0x18b4201+4e7401]
+	KERNEL32!BaseThreadInitThunk [0x7550fcc9+19]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d82ae+11e]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d827e+ee]
+
+2026-09-12 05:38:38,498 [INFO] kazoulayacine012@gmail.com | Sent:1 | Failed:18 | send_failed | user=w1sh1ng0nth3st4rs
+2026-09-12 05:39:42,500 [WARNING] [SEND] Error messaging violent-sneezes (https://www.tumblr.com/violent-sneezes): Message: invalid session id
+Stacktrace:
+	undetected_chromedriver!GetHandleVerifier [0x13d1c33+4e33]
+	undetected_chromedriver!(No symbol) [0x12ed154]
+	undetected_chromedriver!(No symbol) [0x112beee]
+	undetected_chromedriver!(No symbol) [0x116b137]
+	undetected_chromedriver!(No symbol) [0x1199966]
+	undetected_chromedriver!(No symbol) [0x1194c63]
+	undetected_chromedriver!(No symbol) [0x1194630]
+	undetected_chromedriver!(No symbol) [0x10fed01]
+	undetected_chromedriver!(No symbol) [0x10ff2a3]
+	undetected_chromedriver!(No symbol) [0x10ff7ed]
+	undetected_chromedriver!GetHandleVerifier [0x183797a+46ab7a]
+	undetected_chromedriver!GetHandleVerifier [0x185945b+48c65b]
+	undetected_chromedriver!GetHandleVerifier [0x14f4282+127482]
+	undetected_chromedriver!GetHandleVerifier [0x14faf93+12e193]
+	undetected_chromedriver!(No symbol) [0x12fb278]
+	undetected_chromedriver!(No symbol) [0x10fe480]
+	undetected_chromedriver!(No symbol) [0x10fdb72]
+	undetected_chromedriver!GetHandleVerifier [0x18b4201+4e7401]
+	KERNEL32!BaseThreadInitThunk [0x7550fcc9+19]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d82ae+11e]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d827e+ee]
+
+2026-09-12 05:39:42,502 [WARNING] [SCREENSHOT] Failed to capture screenshot: Message: invalid session id
+Stacktrace:
+	undetected_chromedriver!GetHandleVerifier [0x13d1c33+4e33]
+	undetected_chromedriver!(No symbol) [0x12ed154]
+	undetected_chromedriver!(No symbol) [0x112beee]
+	undetected_chromedriver!(No symbol) [0x116b137]
+	undetected_chromedriver!(No symbol) [0x1199966]
+	undetected_chromedriver!(No symbol) [0x1194c63]
+	undetected_chromedriver!(No symbol) [0x1194630]
+	undetected_chromedriver!(No symbol) [0x10fed01]
+	undetected_chromedriver!(No symbol) [0x10ff2a3]
+	undetected_chromedriver!(No symbol) [0x10ff7ed]
+	undetected_chromedriver!GetHandleVerifier [0x183797a+46ab7a]
+	undetected_chromedriver!GetHandleVerifier [0x185945b+48c65b]
+	undetected_chromedriver!GetHandleVerifier [0x14f4282+127482]
+	undetected_chromedriver!GetHandleVerifier [0x14faf93+12e193]
+	undetected_chromedriver!(No symbol) [0x12fb278]
+	undetected_chromedriver!(No symbol) [0x10fe480]
+	undetected_chromedriver!(No symbol) [0x10fdb72]
+	undetected_chromedriver!GetHandleVerifier [0x18b4201+4e7401]
+	KERNEL32!BaseThreadInitThunk [0x7550fcc9+19]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d82ae+11e]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d827e+ee]
+
+2026-09-12 05:39:42,502 [INFO] kazoulayacine012@gmail.com | Sent:1 | Failed:18 | follow | user=violent-sneezes | ok=False
+2026-09-12 05:39:42,502 [INFO] kazoulayacine012@gmail.com | Sent:1 | Failed:19 | send_failed | user=violent-sneezes
+2026-09-12 05:41:39,614 [WARNING] [SEND] Error messaging girl-who-likes-stuff (https://www.tumblr.com/girl-who-likes-stuff): Message: invalid session id
+Stacktrace:
+	undetected_chromedriver!GetHandleVerifier [0x13d1c33+4e33]
+	undetected_chromedriver!(No symbol) [0x12ed154]
+	undetected_chromedriver!(No symbol) [0x112beee]
+	undetected_chromedriver!(No symbol) [0x116b137]
+	undetected_chromedriver!(No symbol) [0x1199966]
+	undetected_chromedriver!(No symbol) [0x1194c63]
+	undetected_chromedriver!(No symbol) [0x1194630]
+	undetected_chromedriver!(No symbol) [0x10fed01]
+	undetected_chromedriver!(No symbol) [0x10ff2a3]
+	undetected_chromedriver!(No symbol) [0x10ff7ed]
+	undetected_chromedriver!GetHandleVerifier [0x183797a+46ab7a]
+	undetected_chromedriver!GetHandleVerifier [0x185945b+48c65b]
+	undetected_chromedriver!GetHandleVerifier [0x14f4282+127482]
+	undetected_chromedriver!GetHandleVerifier [0x14faf93+12e193]
+	undetected_chromedriver!(No symbol) [0x12fb278]
+	undetected_chromedriver!(No symbol) [0x10fe480]
+	undetected_chromedriver!(No symbol) [0x10fdb72]
+	undetected_chromedriver!GetHandleVerifier [0x18b4201+4e7401]
+	KERNEL32!BaseThreadInitThunk [0x7550fcc9+19]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d82ae+11e]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d827e+ee]
+
+2026-09-12 05:41:39,615 [WARNING] [SCREENSHOT] Failed to capture screenshot: Message: invalid session id
+Stacktrace:
+	undetected_chromedriver!GetHandleVerifier [0x13d1c33+4e33]
+	undetected_chromedriver!(No symbol) [0x12ed154]
+	undetected_chromedriver!(No symbol) [0x112beee]
+	undetected_chromedriver!(No symbol) [0x116b137]
+	undetected_chromedriver!(No symbol) [0x1199966]
+	undetected_chromedriver!(No symbol) [0x1194c63]
+	undetected_chromedriver!(No symbol) [0x1194630]
+	undetected_chromedriver!(No symbol) [0x10fed01]
+	undetected_chromedriver!(No symbol) [0x10ff2a3]
+	undetected_chromedriver!(No symbol) [0x10ff7ed]
+	undetected_chromedriver!GetHandleVerifier [0x183797a+46ab7a]
+	undetected_chromedriver!GetHandleVerifier [0x185945b+48c65b]
+	undetected_chromedriver!GetHandleVerifier [0x14f4282+127482]
+	undetected_chromedriver!GetHandleVerifier [0x14faf93+12e193]
+	undetected_chromedriver!(No symbol) [0x12fb278]
+	undetected_chromedriver!(No symbol) [0x10fe480]
+	undetected_chromedriver!(No symbol) [0x10fdb72]
+	undetected_chromedriver!GetHandleVerifier [0x18b4201+4e7401]
+	KERNEL32!BaseThreadInitThunk [0x7550fcc9+19]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d82ae+11e]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d827e+ee]
+
+2026-09-12 05:41:39,616 [INFO] kazoulayacine012@gmail.com | Sent:1 | Failed:20 | send_failed | user=girl-who-likes-stuff
+2026-09-12 05:43:35,203 [WARNING] [SEND] Error messaging sacabambaspis22 (https://www.tumblr.com/sacabambaspis22): Message: invalid session id
+Stacktrace:
+	undetected_chromedriver!GetHandleVerifier [0x13d1c33+4e33]
+	undetected_chromedriver!(No symbol) [0x12ed154]
+	undetected_chromedriver!(No symbol) [0x112beee]
+	undetected_chromedriver!(No symbol) [0x116b137]
+	undetected_chromedriver!(No symbol) [0x1199966]
+	undetected_chromedriver!(No symbol) [0x1194c63]
+	undetected_chromedriver!(No symbol) [0x1194630]
+	undetected_chromedriver!(No symbol) [0x10fed01]
+	undetected_chromedriver!(No symbol) [0x10ff2a3]
+	undetected_chromedriver!(No symbol) [0x10ff7ed]
+	undetected_chromedriver!GetHandleVerifier [0x183797a+46ab7a]
+	undetected_chromedriver!GetHandleVerifier [0x185945b+48c65b]
+	undetected_chromedriver!GetHandleVerifier [0x14f4282+127482]
+	undetected_chromedriver!GetHandleVerifier [0x14faf93+12e193]
+	undetected_chromedriver!(No symbol) [0x12fb278]
+	undetected_chromedriver!(No symbol) [0x10fe480]
+	undetected_chromedriver!(No symbol) [0x10fdb72]
+	undetected_chromedriver!GetHandleVerifier [0x18b4201+4e7401]
+	KERNEL32!BaseThreadInitThunk [0x7550fcc9+19]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d82ae+11e]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d827e+ee]
+
+2026-09-12 05:43:35,205 [WARNING] [SCREENSHOT] Failed to capture screenshot: Message: invalid session id
+Stacktrace:
+	undetected_chromedriver!GetHandleVerifier [0x13d1c33+4e33]
+	undetected_chromedriver!(No symbol) [0x12ed154]
+	undetected_chromedriver!(No symbol) [0x112beee]
+	undetected_chromedriver!(No symbol) [0x116b137]
+	undetected_chromedriver!(No symbol) [0x1199966]
+	undetected_chromedriver!(No symbol) [0x1194c63]
+	undetected_chromedriver!(No symbol) [0x1194630]
+	undetected_chromedriver!(No symbol) [0x10fed01]
+	undetected_chromedriver!(No symbol) [0x10ff2a3]
+	undetected_chromedriver!(No symbol) [0x10ff7ed]
+	undetected_chromedriver!GetHandleVerifier [0x183797a+46ab7a]
+	undetected_chromedriver!GetHandleVerifier [0x185945b+48c65b]
+	undetected_chromedriver!GetHandleVerifier [0x14f4282+127482]
+	undetected_chromedriver!GetHandleVerifier [0x14faf93+12e193]
+	undetected_chromedriver!(No symbol) [0x12fb278]
+	undetected_chromedriver!(No symbol) [0x10fe480]
+	undetected_chromedriver!(No symbol) [0x10fdb72]
+	undetected_chromedriver!GetHandleVerifier [0x18b4201+4e7401]
+	KERNEL32!BaseThreadInitThunk [0x7550fcc9+19]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d82ae+11e]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d827e+ee]
+
+2026-09-12 05:43:35,205 [INFO] kazoulayacine012@gmail.com | Sent:1 | Failed:21 | send_failed | user=sacabambaspis22
+2026-09-12 05:44:45,766 [WARNING] [SEND] Error messaging sp0ngyth4ng (https://www.tumblr.com/sp0ngyth4ng): Message: invalid session id
+Stacktrace:
+	undetected_chromedriver!GetHandleVerifier [0x13d1c33+4e33]
+	undetected_chromedriver!(No symbol) [0x12ed154]
+	undetected_chromedriver!(No symbol) [0x112beee]
+	undetected_chromedriver!(No symbol) [0x116b137]
+	undetected_chromedriver!(No symbol) [0x1199966]
+	undetected_chromedriver!(No symbol) [0x1194c63]
+	undetected_chromedriver!(No symbol) [0x1194630]
+	undetected_chromedriver!(No symbol) [0x10fed01]
+	undetected_chromedriver!(No symbol) [0x10ff2a3]
+	undetected_chromedriver!(No symbol) [0x10ff7ed]
+	undetected_chromedriver!GetHandleVerifier [0x183797a+46ab7a]
+	undetected_chromedriver!GetHandleVerifier [0x185945b+48c65b]
+	undetected_chromedriver!GetHandleVerifier [0x14f4282+127482]
+	undetected_chromedriver!GetHandleVerifier [0x14faf93+12e193]
+	undetected_chromedriver!(No symbol) [0x12fb278]
+	undetected_chromedriver!(No symbol) [0x10fe480]
+	undetected_chromedriver!(No symbol) [0x10fdb72]
+	undetected_chromedriver!GetHandleVerifier [0x18b4201+4e7401]
+	KERNEL32!BaseThreadInitThunk [0x7550fcc9+19]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d82ae+11e]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d827e+ee]
+
+2026-09-12 05:44:45,768 [WARNING] [SCREENSHOT] Failed to capture screenshot: Message: invalid session id
+Stacktrace:
+	undetected_chromedriver!GetHandleVerifier [0x13d1c33+4e33]
+	undetected_chromedriver!(No symbol) [0x12ed154]
+	undetected_chromedriver!(No symbol) [0x112beee]
+	undetected_chromedriver!(No symbol) [0x116b137]
+	undetected_chromedriver!(No symbol) [0x1199966]
+	undetected_chromedriver!(No symbol) [0x1194c63]
+	undetected_chromedriver!(No symbol) [0x1194630]
+	undetected_chromedriver!(No symbol) [0x10fed01]
+	undetected_chromedriver!(No symbol) [0x10ff2a3]
+	undetected_chromedriver!(No symbol) [0x10ff7ed]
+	undetected_chromedriver!GetHandleVerifier [0x183797a+46ab7a]
+	undetected_chromedriver!GetHandleVerifier [0x185945b+48c65b]
+	undetected_chromedriver!GetHandleVerifier [0x14f4282+127482]
+	undetected_chromedriver!GetHandleVerifier [0x14faf93+12e193]
+	undetected_chromedriver!(No symbol) [0x12fb278]
+	undetected_chromedriver!(No symbol) [0x10fe480]
+	undetected_chromedriver!(No symbol) [0x10fdb72]
+	undetected_chromedriver!GetHandleVerifier [0x18b4201+4e7401]
+	KERNEL32!BaseThreadInitThunk [0x7550fcc9+19]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d82ae+11e]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d827e+ee]
+
+2026-09-12 05:44:45,768 [INFO] kazoulayacine012@gmail.com | Sent:1 | Failed:22 | send_failed | user=sp0ngyth4ng
+2026-09-12 07:46:43,566 [WARNING] [SEND] Error messaging readandwatched (https://www.tumblr.com/readandwatched): Message: invalid session id
+Stacktrace:
+	undetected_chromedriver!GetHandleVerifier [0x13d1c33+4e33]
+	undetected_chromedriver!(No symbol) [0x12ed154]
+	undetected_chromedriver!(No symbol) [0x112beee]
+	undetected_chromedriver!(No symbol) [0x116b137]
+	undetected_chromedriver!(No symbol) [0x1199966]
+	undetected_chromedriver!(No symbol) [0x1194c63]
+	undetected_chromedriver!(No symbol) [0x1194630]
+	undetected_chromedriver!(No symbol) [0x10fed01]
+	undetected_chromedriver!(No symbol) [0x10ff2a3]
+	undetected_chromedriver!(No symbol) [0x10ff7ed]
+	undetected_chromedriver!GetHandleVerifier [0x183797a+46ab7a]
+	undetected_chromedriver!GetHandleVerifier [0x185945b+48c65b]
+	undetected_chromedriver!GetHandleVerifier [0x14f4282+127482]
+	undetected_chromedriver!GetHandleVerifier [0x14faf93+12e193]
+	undetected_chromedriver!(No symbol) [0x12fb278]
+	undetected_chromedriver!(No symbol) [0x10fe480]
+	undetected_chromedriver!(No symbol) [0x10fdb72]
+	undetected_chromedriver!GetHandleVerifier [0x18b4201+4e7401]
+	KERNEL32!BaseThreadInitThunk [0x7550fcc9+19]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d82ae+11e]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d827e+ee]
+
+2026-09-12 07:46:43,574 [WARNING] [SCREENSHOT] Failed to capture screenshot: Message: invalid session id
+Stacktrace:
+	undetected_chromedriver!GetHandleVerifier [0x13d1c33+4e33]
+	undetected_chromedriver!(No symbol) [0x12ed154]
+	undetected_chromedriver!(No symbol) [0x112beee]
+	undetected_chromedriver!(No symbol) [0x116b137]
+	undetected_chromedriver!(No symbol) [0x1199966]
+	undetected_chromedriver!(No symbol) [0x1194c63]
+	undetected_chromedriver!(No symbol) [0x1194630]
+	undetected_chromedriver!(No symbol) [0x10fed01]
+	undetected_chromedriver!(No symbol) [0x10ff2a3]
+	undetected_chromedriver!(No symbol) [0x10ff7ed]
+	undetected_chromedriver!GetHandleVerifier [0x183797a+46ab7a]
+	undetected_chromedriver!GetHandleVerifier [0x185945b+48c65b]
+	undetected_chromedriver!GetHandleVerifier [0x14f4282+127482]
+	undetected_chromedriver!GetHandleVerifier [0x14faf93+12e193]
+	undetected_chromedriver!(No symbol) [0x12fb278]
+	undetected_chromedriver!(No symbol) [0x10fe480]
+	undetected_chromedriver!(No symbol) [0x10fdb72]
+	undetected_chromedriver!GetHandleVerifier [0x18b4201+4e7401]
+	KERNEL32!BaseThreadInitThunk [0x7550fcc9+19]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d82ae+11e]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d827e+ee]
+
+2026-09-12 07:46:43,575 [INFO] kazoulayacine012@gmail.com | Sent:1 | Failed:22 | follow | user=readandwatched | ok=False
+2026-09-12 07:46:43,575 [INFO] kazoulayacine012@gmail.com | Sent:1 | Failed:23 | send_failed | user=readandwatched
+2026-09-12 07:48:00,328 [WARNING] [SEND] Error messaging okforthey (https://www.tumblr.com/okforthey): Message: invalid session id
+Stacktrace:
+	undetected_chromedriver!GetHandleVerifier [0x13d1c33+4e33]
+	undetected_chromedriver!(No symbol) [0x12ed154]
+	undetected_chromedriver!(No symbol) [0x112beee]
+	undetected_chromedriver!(No symbol) [0x116b137]
+	undetected_chromedriver!(No symbol) [0x1199966]
+	undetected_chromedriver!(No symbol) [0x1194c63]
+	undetected_chromedriver!(No symbol) [0x1194630]
+	undetected_chromedriver!(No symbol) [0x10fed01]
+	undetected_chromedriver!(No symbol) [0x10ff2a3]
+	undetected_chromedriver!(No symbol) [0x10ff7ed]
+	undetected_chromedriver!GetHandleVerifier [0x183797a+46ab7a]
+	undetected_chromedriver!GetHandleVerifier [0x185945b+48c65b]
+	undetected_chromedriver!GetHandleVerifier [0x14f4282+127482]
+	undetected_chromedriver!GetHandleVerifier [0x14faf93+12e193]
+	undetected_chromedriver!(No symbol) [0x12fb278]
+	undetected_chromedriver!(No symbol) [0x10fe480]
+	undetected_chromedriver!(No symbol) [0x10fdb72]
+	undetected_chromedriver!GetHandleVerifier [0x18b4201+4e7401]
+	KERNEL32!BaseThreadInitThunk [0x7550fcc9+19]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d82ae+11e]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d827e+ee]
+
+2026-09-12 07:48:00,330 [WARNING] [SCREENSHOT] Failed to capture screenshot: Message: invalid session id
+Stacktrace:
+	undetected_chromedriver!GetHandleVerifier [0x13d1c33+4e33]
+	undetected_chromedriver!(No symbol) [0x12ed154]
+	undetected_chromedriver!(No symbol) [0x112beee]
+	undetected_chromedriver!(No symbol) [0x116b137]
+	undetected_chromedriver!(No symbol) [0x1199966]
+	undetected_chromedriver!(No symbol) [0x1194c63]
+	undetected_chromedriver!(No symbol) [0x1194630]
+	undetected_chromedriver!(No symbol) [0x10fed01]
+	undetected_chromedriver!(No symbol) [0x10ff2a3]
+	undetected_chromedriver!(No symbol) [0x10ff7ed]
+	undetected_chromedriver!GetHandleVerifier [0x183797a+46ab7a]
+	undetected_chromedriver!GetHandleVerifier [0x185945b+48c65b]
+	undetected_chromedriver!GetHandleVerifier [0x14f4282+127482]
+	undetected_chromedriver!GetHandleVerifier [0x14faf93+12e193]
+	undetected_chromedriver!(No symbol) [0x12fb278]
+	undetected_chromedriver!(No symbol) [0x10fe480]
+	undetected_chromedriver!(No symbol) [0x10fdb72]
+	undetected_chromedriver!GetHandleVerifier [0x18b4201+4e7401]
+	KERNEL32!BaseThreadInitThunk [0x7550fcc9+19]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d82ae+11e]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d827e+ee]
+
+2026-09-12 07:48:00,330 [INFO] kazoulayacine012@gmail.com | Sent:1 | Failed:24 | send_failed | user=okforthey
+2026-09-12 07:49:56,556 [WARNING] [SEND] Error messaging demopronouncedlikedaymoh (https://www.tumblr.com/demopronouncedlikedaymoh): Message: invalid session id
+Stacktrace:
+	undetected_chromedriver!GetHandleVerifier [0x13d1c33+4e33]
+	undetected_chromedriver!(No symbol) [0x12ed154]
+	undetected_chromedriver!(No symbol) [0x112beee]
+	undetected_chromedriver!(No symbol) [0x116b137]
+	undetected_chromedriver!(No symbol) [0x1199966]
+	undetected_chromedriver!(No symbol) [0x1194c63]
+	undetected_chromedriver!(No symbol) [0x1194630]
+	undetected_chromedriver!(No symbol) [0x10fed01]
+	undetected_chromedriver!(No symbol) [0x10ff2a3]
+	undetected_chromedriver!(No symbol) [0x10ff7ed]
+	undetected_chromedriver!GetHandleVerifier [0x183797a+46ab7a]
+	undetected_chromedriver!GetHandleVerifier [0x185945b+48c65b]
+	undetected_chromedriver!GetHandleVerifier [0x14f4282+127482]
+	undetected_chromedriver!GetHandleVerifier [0x14faf93+12e193]
+	undetected_chromedriver!(No symbol) [0x12fb278]
+	undetected_chromedriver!(No symbol) [0x10fe480]
+	undetected_chromedriver!(No symbol) [0x10fdb72]
+	undetected_chromedriver!GetHandleVerifier [0x18b4201+4e7401]
+	KERNEL32!BaseThreadInitThunk [0x7550fcc9+19]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d82ae+11e]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d827e+ee]
+
+2026-09-12 07:49:56,559 [WARNING] [SCREENSHOT] Failed to capture screenshot: Message: invalid session id
+Stacktrace:
+	undetected_chromedriver!GetHandleVerifier [0x13d1c33+4e33]
+	undetected_chromedriver!(No symbol) [0x12ed154]
+	undetected_chromedriver!(No symbol) [0x112beee]
+	undetected_chromedriver!(No symbol) [0x116b137]
+	undetected_chromedriver!(No symbol) [0x1199966]
+	undetected_chromedriver!(No symbol) [0x1194c63]
+	undetected_chromedriver!(No symbol) [0x1194630]
+	undetected_chromedriver!(No symbol) [0x10fed01]
+	undetected_chromedriver!(No symbol) [0x10ff2a3]
+	undetected_chromedriver!(No symbol) [0x10ff7ed]
+	undetected_chromedriver!GetHandleVerifier [0x183797a+46ab7a]
+	undetected_chromedriver!GetHandleVerifier [0x185945b+48c65b]
+	undetected_chromedriver!GetHandleVerifier [0x14f4282+127482]
+	undetected_chromedriver!GetHandleVerifier [0x14faf93+12e193]
+	undetected_chromedriver!(No symbol) [0x12fb278]
+	undetected_chromedriver!(No symbol) [0x10fe480]
+	undetected_chromedriver!(No symbol) [0x10fdb72]
+	undetected_chromedriver!GetHandleVerifier [0x18b4201+4e7401]
+	KERNEL32!BaseThreadInitThunk [0x7550fcc9+19]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d82ae+11e]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d827e+ee]
+
+2026-09-12 07:49:56,560 [INFO] kazoulayacine012@gmail.com | Sent:1 | Failed:25 | send_failed | user=demopronouncedlikedaymoh
+2026-09-12 07:51:53,061 [WARNING] [SEND] Error messaging fandomjumper247 (https://www.tumblr.com/fandomjumper247): Message: invalid session id
+Stacktrace:
+	undetected_chromedriver!GetHandleVerifier [0x13d1c33+4e33]
+	undetected_chromedriver!(No symbol) [0x12ed154]
+	undetected_chromedriver!(No symbol) [0x112beee]
+	undetected_chromedriver!(No symbol) [0x116b137]
+	undetected_chromedriver!(No symbol) [0x1199966]
+	undetected_chromedriver!(No symbol) [0x1194c63]
+	undetected_chromedriver!(No symbol) [0x1194630]
+	undetected_chromedriver!(No symbol) [0x10fed01]
+	undetected_chromedriver!(No symbol) [0x10ff2a3]
+	undetected_chromedriver!(No symbol) [0x10ff7ed]
+	undetected_chromedriver!GetHandleVerifier [0x183797a+46ab7a]
+	undetected_chromedriver!GetHandleVerifier [0x185945b+48c65b]
+	undetected_chromedriver!GetHandleVerifier [0x14f4282+127482]
+	undetected_chromedriver!GetHandleVerifier [0x14faf93+12e193]
+	undetected_chromedriver!(No symbol) [0x12fb278]
+	undetected_chromedriver!(No symbol) [0x10fe480]
+	undetected_chromedriver!(No symbol) [0x10fdb72]
+	undetected_chromedriver!GetHandleVerifier [0x18b4201+4e7401]
+	KERNEL32!BaseThreadInitThunk [0x7550fcc9+19]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d82ae+11e]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d827e+ee]
+
+2026-09-12 07:51:53,066 [WARNING] [SCREENSHOT] Failed to capture screenshot: Message: invalid session id
+Stacktrace:
+	undetected_chromedriver!GetHandleVerifier [0x13d1c33+4e33]
+	undetected_chromedriver!(No symbol) [0x12ed154]
+	undetected_chromedriver!(No symbol) [0x112beee]
+	undetected_chromedriver!(No symbol) [0x116b137]
+	undetected_chromedriver!(No symbol) [0x1199966]
+	undetected_chromedriver!(No symbol) [0x1194c63]
+	undetected_chromedriver!(No symbol) [0x1194630]
+	undetected_chromedriver!(No symbol) [0x10fed01]
+	undetected_chromedriver!(No symbol) [0x10ff2a3]
+	undetected_chromedriver!(No symbol) [0x10ff7ed]
+	undetected_chromedriver!GetHandleVerifier [0x183797a+46ab7a]
+	undetected_chromedriver!GetHandleVerifier [0x185945b+48c65b]
+	undetected_chromedriver!GetHandleVerifier [0x14f4282+127482]
+	undetected_chromedriver!GetHandleVerifier [0x14faf93+12e193]
+	undetected_chromedriver!(No symbol) [0x12fb278]
+	undetected_chromedriver!(No symbol) [0x10fe480]
+	undetected_chromedriver!(No symbol) [0x10fdb72]
+	undetected_chromedriver!GetHandleVerifier [0x18b4201+4e7401]
+	KERNEL32!BaseThreadInitThunk [0x7550fcc9+19]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d82ae+11e]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d827e+ee]
+
+2026-09-12 07:51:53,066 [INFO] kazoulayacine012@gmail.com | Sent:1 | Failed:26 | send_failed | user=fandomjumper247
+2026-09-12 07:53:56,016 [WARNING] [SEND] Error messaging derp2015 (https://www.tumblr.com/derp2015): Message: invalid session id
+Stacktrace:
+	undetected_chromedriver!GetHandleVerifier [0x13d1c33+4e33]
+	undetected_chromedriver!(No symbol) [0x12ed154]
+	undetected_chromedriver!(No symbol) [0x112beee]
+	undetected_chromedriver!(No symbol) [0x116b137]
+	undetected_chromedriver!(No symbol) [0x1199966]
+	undetected_chromedriver!(No symbol) [0x1194c63]
+	undetected_chromedriver!(No symbol) [0x1194630]
+	undetected_chromedriver!(No symbol) [0x10fed01]
+	undetected_chromedriver!(No symbol) [0x10ff2a3]
+	undetected_chromedriver!(No symbol) [0x10ff7ed]
+	undetected_chromedriver!GetHandleVerifier [0x183797a+46ab7a]
+	undetected_chromedriver!GetHandleVerifier [0x185945b+48c65b]
+	undetected_chromedriver!GetHandleVerifier [0x14f4282+127482]
+	undetected_chromedriver!GetHandleVerifier [0x14faf93+12e193]
+	undetected_chromedriver!(No symbol) [0x12fb278]
+	undetected_chromedriver!(No symbol) [0x10fe480]
+	undetected_chromedriver!(No symbol) [0x10fdb72]
+	undetected_chromedriver!GetHandleVerifier [0x18b4201+4e7401]
+	KERNEL32!BaseThreadInitThunk [0x7550fcc9+19]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d82ae+11e]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d827e+ee]
+
+2026-09-12 07:53:56,019 [WARNING] [SCREENSHOT] Failed to capture screenshot: Message: invalid session id
+Stacktrace:
+	undetected_chromedriver!GetHandleVerifier [0x13d1c33+4e33]
+	undetected_chromedriver!(No symbol) [0x12ed154]
+	undetected_chromedriver!(No symbol) [0x112beee]
+	undetected_chromedriver!(No symbol) [0x116b137]
+	undetected_chromedriver!(No symbol) [0x1199966]
+	undetected_chromedriver!(No symbol) [0x1194c63]
+	undetected_chromedriver!(No symbol) [0x1194630]
+	undetected_chromedriver!(No symbol) [0x10fed01]
+	undetected_chromedriver!(No symbol) [0x10ff2a3]
+	undetected_chromedriver!(No symbol) [0x10ff7ed]
+	undetected_chromedriver!GetHandleVerifier [0x183797a+46ab7a]
+	undetected_chromedriver!GetHandleVerifier [0x185945b+48c65b]
+	undetected_chromedriver!GetHandleVerifier [0x14f4282+127482]
+	undetected_chromedriver!GetHandleVerifier [0x14faf93+12e193]
+	undetected_chromedriver!(No symbol) [0x12fb278]
+	undetected_chromedriver!(No symbol) [0x10fe480]
+	undetected_chromedriver!(No symbol) [0x10fdb72]
+	undetected_chromedriver!GetHandleVerifier [0x18b4201+4e7401]
+	KERNEL32!BaseThreadInitThunk [0x7550fcc9+19]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d82ae+11e]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d827e+ee]
+
+2026-09-12 07:53:56,020 [INFO] kazoulayacine012@gmail.com | Sent:1 | Failed:26 | follow | user=derp2015 | ok=False
+2026-09-12 07:53:56,020 [INFO] kazoulayacine012@gmail.com | Sent:1 | Failed:27 | send_failed | user=derp2015
+2026-09-12 07:55:40,971 [WARNING] [SEND] Error messaging fnige (https://www.tumblr.com/fnige): Message: invalid session id
+Stacktrace:
+	undetected_chromedriver!GetHandleVerifier [0x13d1c33+4e33]
+	undetected_chromedriver!(No symbol) [0x12ed154]
+	undetected_chromedriver!(No symbol) [0x112beee]
+	undetected_chromedriver!(No symbol) [0x116b137]
+	undetected_chromedriver!(No symbol) [0x1199966]
+	undetected_chromedriver!(No symbol) [0x1194c63]
+	undetected_chromedriver!(No symbol) [0x1194630]
+	undetected_chromedriver!(No symbol) [0x10fed01]
+	undetected_chromedriver!(No symbol) [0x10ff2a3]
+	undetected_chromedriver!(No symbol) [0x10ff7ed]
+	undetected_chromedriver!GetHandleVerifier [0x183797a+46ab7a]
+	undetected_chromedriver!GetHandleVerifier [0x185945b+48c65b]
+	undetected_chromedriver!GetHandleVerifier [0x14f4282+127482]
+	undetected_chromedriver!GetHandleVerifier [0x14faf93+12e193]
+	undetected_chromedriver!(No symbol) [0x12fb278]
+	undetected_chromedriver!(No symbol) [0x10fe480]
+	undetected_chromedriver!(No symbol) [0x10fdb72]
+	undetected_chromedriver!GetHandleVerifier [0x18b4201+4e7401]
+	KERNEL32!BaseThreadInitThunk [0x7550fcc9+19]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d82ae+11e]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d827e+ee]
+
+2026-09-12 07:55:40,975 [WARNING] [SCREENSHOT] Failed to capture screenshot: Message: invalid session id
+Stacktrace:
+	undetected_chromedriver!GetHandleVerifier [0x13d1c33+4e33]
+	undetected_chromedriver!(No symbol) [0x12ed154]
+	undetected_chromedriver!(No symbol) [0x112beee]
+	undetected_chromedriver!(No symbol) [0x116b137]
+	undetected_chromedriver!(No symbol) [0x1199966]
+	undetected_chromedriver!(No symbol) [0x1194c63]
+	undetected_chromedriver!(No symbol) [0x1194630]
+	undetected_chromedriver!(No symbol) [0x10fed01]
+	undetected_chromedriver!(No symbol) [0x10ff2a3]
+	undetected_chromedriver!(No symbol) [0x10ff7ed]
+	undetected_chromedriver!GetHandleVerifier [0x183797a+46ab7a]
+	undetected_chromedriver!GetHandleVerifier [0x185945b+48c65b]
+	undetected_chromedriver!GetHandleVerifier [0x14f4282+127482]
+	undetected_chromedriver!GetHandleVerifier [0x14faf93+12e193]
+	undetected_chromedriver!(No symbol) [0x12fb278]
+	undetected_chromedriver!(No symbol) [0x10fe480]
+	undetected_chromedriver!(No symbol) [0x10fdb72]
+	undetected_chromedriver!GetHandleVerifier [0x18b4201+4e7401]
+	KERNEL32!BaseThreadInitThunk [0x7550fcc9+19]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d82ae+11e]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d827e+ee]
+
+2026-09-12 07:55:40,975 [INFO] kazoulayacine012@gmail.com | Sent:1 | Failed:28 | send_failed | user=fnige
+2026-09-12 07:56:40,270 [INFO] [ENGINE] Stop requested. Waiting for current action to wrap up...
+2026-09-12 07:56:40,575 [INFO] kazoulayacine012@gmail.com | ===SUMMARY=== | Sent:1 | Failed:28 | completed
+2026-09-12 07:56:40,580 [WARNING] [AUTH] Logout did not complete cleanly (Message: invalid session id
+Stacktrace:
+	undetected_chromedriver!GetHandleVerifier [0x13d1c33+4e33]
+	undetected_chromedriver!(No symbol) [0x12ed154]
+	undetected_chromedriver!(No symbol) [0x112beee]
+	undetected_chromedriver!(No symbol) [0x116b137]
+	undetected_chromedriver!(No symbol) [0x1199966]
+	undetected_chromedriver!(No symbol) [0x1194c63]
+	undetected_chromedriver!(No symbol) [0x1194630]
+	undetected_chromedriver!(No symbol) [0x10fed01]
+	undetected_chromedriver!(No symbol) [0x10ff2a3]
+	undetected_chromedriver!(No symbol) [0x10ff7ed]
+	undetected_chromedriver!GetHandleVerifier [0x183797a+46ab7a]
+	undetected_chromedriver!GetHandleVerifier [0x185945b+48c65b]
+	undetected_chromedriver!GetHandleVerifier [0x14f4282+127482]
+	undetected_chromedriver!GetHandleVerifier [0x14faf93+12e193]
+	undetected_chromedriver!(No symbol) [0x12fb278]
+	undetected_chromedriver!(No symbol) [0x10fe480]
+	undetected_chromedriver!(No symbol) [0x10fdb72]
+	undetected_chromedriver!GetHandleVerifier [0x18b4201+4e7401]
+	KERNEL32!BaseThreadInitThunk [0x7550fcc9+19]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d82ae+11e]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x775d827e+ee]
+).
+2026-09-12 07:56:44,272 [INFO] [ENGINE] Bot engine stopped cleanly.

@@ -10,6 +10,7 @@ Main application container featuring:
 """
 
 import os
+import sys
 import queue
 import tkinter as tk
 from tkinter import ttk, messagebox
@@ -34,6 +35,20 @@ class TumblrBotApp(tk.Tk):
         self.title("Tumblr Outreach Bot v2.0 — Stealth Edition")
         self.geometry("1100x740")
         self.minsize(920, 620)
+
+        # Set window icon if available
+        candidates = [
+            os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "assets", "app_icon.ico"),
+            os.path.join(getattr(sys, "_MEIPASS", ""), "assets", "app_icon.ico"),
+            os.path.join(os.path.dirname(sys.executable), "assets", "app_icon.ico"),
+        ]
+        for icon_path in candidates:
+            if icon_path and os.path.exists(icon_path):
+                try:
+                    self.iconbitmap(icon_path)
+                    break
+                except Exception:
+                    pass
 
         # ── 1. Initialize State & Managers ──
         self.settings_mgr = SettingsManager()

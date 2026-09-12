@@ -12,7 +12,10 @@ import json
 import shutil
 
 # Ensure base directory is in sys.path
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+if getattr(sys, "frozen", False):
+    BASE_DIR = os.path.dirname(sys.executable)
+else:
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 if BASE_DIR not in sys.path:
     sys.path.insert(0, BASE_DIR)
 
@@ -84,8 +87,8 @@ def bootstrap_data():
 
 def main():
     """Main program entry point."""
-    # Force UTF-8 encoding on Windows console
-    if sys.stdout.encoding and sys.stdout.encoding.lower() != "utf-8":
+    # Force UTF-8 encoding on Windows console (if stdout is attached)
+    if sys.stdout is not None and getattr(sys.stdout, "encoding", None) and sys.stdout.encoding.lower() != "utf-8":
         try:
             sys.stdout.reconfigure(encoding="utf-8")
         except Exception:
@@ -98,4 +101,6 @@ def main():
 
 
 if __name__ == "__main__":
+    import multiprocessing
+    multiprocessing.freeze_support()
     main()

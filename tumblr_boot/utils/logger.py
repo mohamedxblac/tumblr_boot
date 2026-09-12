@@ -49,9 +49,10 @@ class BotLogger:
         file_handler.setFormatter(formatter)
         self.logger.addHandler(file_handler)
 
-        stream_handler = logging.StreamHandler(sys.stdout)
-        stream_handler.setFormatter(formatter)
-        self.logger.addHandler(stream_handler)
+        if sys.stdout is not None:
+            stream_handler = logging.StreamHandler(sys.stdout)
+            stream_handler.setFormatter(formatter)
+            self.logger.addHandler(stream_handler)
 
     def attach_gui_queue(self, q: queue.Queue):
         if self._gui_handler:
