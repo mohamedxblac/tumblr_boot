@@ -1,11 +1,8 @@
 # -*- coding: utf-8 -*-
 import time
-import random
 from typing import Optional
 
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
@@ -26,37 +23,6 @@ CHALLENGE_MARKERS = (
     "complete the captcha",
     "suspicious activity",
 )
-
-
-# كتابة النص حرفاً بحرف مع تأخير زمني عشوائي لمحاكاة الكتابة البشرية
-def human_type(element, text: str, min_d: float = 0.03, max_d: float = 0.08):
-    try:
-        element.click()
-        time.sleep(0.25)
-        element.send_keys(Keys.CONTROL + "a")
-        time.sleep(0.1)
-        element.send_keys(Keys.BACKSPACE)
-        time.sleep(0.15)
-        for ch in text:
-            element.send_keys(ch)
-            time.sleep(random.uniform(min_d, max_d))
-        time.sleep(0.3)
-    except Exception as e:
-        logger.debug(f"[HUMAN_TYPE] Fallback typing due to: {e}")
-        element.send_keys(text)
-
-
-def _type_and_verify(element, value: str) -> None:
-    """Enter a value and verify that the DOM received it without logging it."""
-    human_type(element, value)
-    if element.get_attribute("value") == value:
-        return
-
-    element.click()
-    element.send_keys(Keys.CONTROL + "a")
-    element.send_keys(value)
-    if element.get_attribute("value") != value:
-        raise RuntimeError("The login form did not retain the entered field value")
 
 
 def _login_page_outcome(driver):
@@ -160,75 +126,27 @@ def dismiss_consent_screen_if_present(driver) -> bool:
     return False
 
 
-# تسجيل الدخول إلى حساب تمبلر والتحقق من فتح لوحة التحكم بنجاح
-def login(driver, email: str, password: str, max_retries: int = 2) -> bool:
-    for attempt in range(1, max_retries + 1):
-        started_at = time.monotonic()
-        try:
-            logger.info(f"[AUTH] Attempting login for {email} (attempt {attempt}/{max_retries})...")
-            driver.get("https://www.tumblr.com/login")
-            WebDriverWait(driver, 10).until(
-                lambda d: d.execute_script("return document.readyState") in ("interactive", "complete")
-            )
-            dismiss_consent_screen_if_present(driver)
-
-            email_el = WebDriverWait(driver, 15).until(
-                EC.element_to_be_clickable((By.NAME, "email"))
-            )
-            _type_and_verify(email_el, email)
-
-            pwd_el = WebDriverWait(driver, 15).until(
-                EC.element_to_be_clickable((By.NAME, "password"))
-            )
-            _type_and_verify(pwd_el, password)
-
-            login_btn = None
-            for sel in [
-                "./ancestor::form[1]//button[@type='submit']",
-                "//button[@type='submit' and contains(translate(., 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'),'log in')]",
-            ]:
-                try:
-                    b = pwd_el.find_element(By.XPATH, sel) if sel.startswith(".") else driver.find_element(By.XPATH, sel)
-                    if b.is_displayed():
-                        login_btn = b
-                        break
-                except Exception:
-                    continue
-
-            if login_btn:
-                ActionChains(driver).move_to_element(login_btn).pause(0.3).click().perform()
-            else:
-                pwd_el.send_keys(Keys.ENTER)
-
-            outcome = WebDriverWait(driver, 20).until(_login_page_outcome)
-            elapsed = time.monotonic() - started_at
-            if outcome == "success":
-                logger.info(f"[AUTH] Login SUCCESSFUL: {email} ({elapsed:.1f}s)")
-                return True
-
-            if outcome == "credentials_rejected":
-                logger.error(
-                    f"[AUTH] Tumblr rejected the submitted credentials for {email} "
-                    f"after the form values were verified ({elapsed:.1f}s)."
-                )
-                break
-
-            if outcome == "challenge":
-                logger.error(f"[AUTH] Tumblr presented a human-verification challenge for {email}.")
-                break
-
-        except Exception as e:
-            elapsed = time.monotonic() - started_at
-            logger.warning(
-                f"[AUTH] Login attempt {attempt} failed for {email} after {elapsed:.1f}s: "
-                f"{type(e).__name__}: {e}"
-            )
-            dismiss_consent_screen_if_present(driver)
-            if attempt < max_retries:
-                time.sleep(1.5)
+# التحقق فقط من نتيجة تسجيل الدخول الذي نفذه AutoHotkey؛ لا تُكتب البيانات عبر Selenium.
+def login(driver, email: str, password: Optional[str] = None, max_retries: int = 1) -> bool:
+    del password, max_retries
+    started_at = time.monotonic()
+    try:
+        outcome = WebDriverWait(driver, 30).until(_login_page_outcome)
+        elapsed = time.monotonic() - started_at
+        if outcome == "success":
+            logger.info(f"[AUTH] Desktop login SUCCESSFUL: {email} ({elapsed:.1f}s)")
+            return True
+        if outcome == "credentials_rejected":
+            logger.error(f"[AUTH] Tumblr rejected the desktop login credentials for {email}.")
+        elif outcome == "challenge":
+            logger.error(f"[AUTH] Tumblr presented a human-verification challenge for {email}.")
+    except Exception as e:
+        logger.warning(
+            f"[AUTH] Could not confirm the AutoHotkey login for {email}: {type(e).__name__}: {e}"
+        )
 
     BrowserFactory.capture_screenshot(driver, prefix=f"login_fail_{email.split('@')[0]}")
-    logger.error(f"[AUTH] All login attempts failed for {email}")
+    logger.error(f"[AUTH] Desktop login failed for {email}")
     return False
 
 

@@ -142,7 +142,13 @@ class BotEngine:
             tab_type = settings.get("tab_type", "likes").strip().lower()
             max_per_account = int(settings.get("max_success_per_account", 30))
             session_cap = int(settings.get("session_success_cap", 15))
-            parallel_accounts = max(1, min(10, int(settings.get("parallel_accounts", 1))))
+            requested_parallel = max(1, min(10, int(settings.get("parallel_accounts", 1))))
+            parallel_accounts = 1
+            if requested_parallel != 1:
+                logger.warning(
+                    "[ENGINE] Desktop login uses the fixed Chrome debugging port 9222; "
+                    "accounts will run one at a time."
+                )
             no_msg_limit = int(settings.get("no_message_limit", 10))
             action_delay = float(settings.get("action_delay", 0.5))
             typing_min_delay = max(0.01, float(settings.get("typing_min_delay", 0.05)))
@@ -339,7 +345,11 @@ class BotEngine:
             })
 
             fp = generate_stealth_fingerprint() if enable_fp_rotation else None
-            driver, profile_dir, used_fp = BrowserFactory.create_browser(fingerprint=fp)
+            driver, profile_dir, used_fp = BrowserFactory.create_browser(
+                fingerprint=fp,
+                email=email,
+                password=password,
+            )
 
             if not login(driver, email, password):
                 account_note = "login_failed"

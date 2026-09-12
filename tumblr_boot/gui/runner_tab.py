@@ -44,11 +44,11 @@ class RunnerTab(ttk.Frame):
         self.stop_btn = ttk.Button(ctrl_frame, text="Stop Bot", command=self.on_stop, state="disabled")
         self.stop_btn.pack(side="left", padx=6)
 
-        ttk.Label(ctrl_frame, text="Parallel tabs/accounts:").pack(side="left", padx=(24, 5))
+        ttk.Label(ctrl_frame, text="Desktop login sessions:").pack(side="left", padx=(24, 5))
         self.parallel_spinbox = ttk.Spinbox(
             ctrl_frame,
             from_=1,
-            to=10,
+            to=1,
             increment=1,
             textvariable=self.parallel_var,
             width=5,
@@ -57,7 +57,7 @@ class RunnerTab(ttk.Frame):
         self.parallel_spinbox.pack(side="left", padx=(0, 5))
         ttk.Label(
             ctrl_frame,
-            text="(1–10, applied on Start)",
+            text="(fixed at 1 for port 9222)",
             foreground="#6c7086",
         ).pack(side="left")
 
@@ -174,8 +174,8 @@ class RunnerTab(ttk.Frame):
         except ValueError:
             messagebox.showerror("Invalid Parallel Count", "Parallel tabs/accounts must be a whole number.")
             return
-        if not 1 <= parallel_accounts <= 10:
-            messagebox.showerror("Invalid Parallel Count", "Choose a number from 1 to 10.")
+        if parallel_accounts != 1:
+            messagebox.showerror("Invalid Session Count", "Desktop login on port 9222 requires exactly one session.")
             return
         self.engine.settings_mgr.update_settings({"parallel_accounts": parallel_accounts})
         self.engine.start()
