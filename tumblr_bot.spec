@@ -45,7 +45,6 @@ all_hiddenimports = (
         'core.contact_history',
         'core.engine',
         'core.messenger',
-        'core.navigation',
         'core.persistence',
         'core.scraper',
         'gui',

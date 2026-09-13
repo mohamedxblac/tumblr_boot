@@ -265,6 +265,14 @@ class TumblrBotApp(tk.Tk):
                     self.tab_accounts.refresh_accounts()
                     self.tab_stats.refresh_stats()
 
+                elif evt_type == "login_stats":
+                    self.tab_stats.update_login_stats(
+                        success=evt.get("success", 0),
+                        failed=evt.get("failed", 0),
+                        processed=evt.get("processed", 0),
+                        total=evt.get("total", 0),
+                    )
+
                 elif evt_type == "countdown":
                     label = evt.get("label", "")
                     rem = evt.get("remaining", 0)

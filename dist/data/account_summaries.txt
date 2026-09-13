@@ -1,3 +1,4 @@
-2026-09-12 07:56:40 | kazoulayacine012@gmail.com | Sent:1 | Failed:28 | completed
-2026-09-13 01:15:02 | kazoulayacine012@gmail.com | Sent:1 | Failed:0 | login_failed
-2026-09-13 01:28:16 | kazoulayacine012@gmail.com | Sent:4 | Failed:1 | completed
+2026-09-13 02:00:21 | norman.dmavaughanbn@gmail.com | Sent:0 | Failed:0 | login_failed
+2026-09-13 02:00:30 | mathaniand.iakofrthb@gmail.com | Sent:0 | Failed:0 | login_failed
+2026-09-13 02:01:28 | mathaniandiak.ofrthb@gmail.com | Sent:0 | Failed:1 | completed
+2026-09-13 02:01:29 | kazoulayacine012@gmail.com | Sent:0 | Failed:1 | completed

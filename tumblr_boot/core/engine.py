@@ -37,6 +37,12 @@ class BotEngine:
         self._scrape_lock = threading.Lock()
         self._active_lock = threading.Lock()
         self._active_accounts = set()
+        self._login_stats_lock = threading.Lock()
+        self._login_success_count = 0
+        self._login_failure_count = 0
+        self._login_total_accounts = 0
+        self._session_login_failed_accounts = set()
+        self._session_login_results = {}
 
     @property
     def is_running(self) -> bool:
@@ -50,6 +56,48 @@ class BotEngine:
         if self.gui_queue:
             self.gui_queue.put({"type": event_type, **data})
 
+    def _reset_login_stats(self, total_accounts: int):
+        with self._login_stats_lock:
+            self._login_success_count = 0
+            self._login_failure_count = 0
+            self._login_total_accounts = total_accounts
+            self._session_login_failed_accounts.clear()
+            self._session_login_results.clear()
+            snapshot = {
+                "success": 0,
+                "failed": 0,
+                "processed": 0,
+                "total": total_accounts,
+            }
+        self.post_gui_update("login_stats", snapshot)
+
+    def _record_login_result(self, email: str, success: bool):
+        with self._login_stats_lock:
+            account_key = email.strip().lower()
+            previous = self._session_login_results.get(account_key)
+            if previous is not None and previous != success:
+                if previous:
+                    self._login_success_count -= 1
+                else:
+                    self._login_failure_count -= 1
+            if previous is None or previous != success:
+                if success:
+                    self._login_success_count += 1
+                else:
+                    self._login_failure_count += 1
+            self._session_login_results[account_key] = success
+            if success:
+                self._session_login_failed_accounts.discard(account_key)
+            else:
+                self._session_login_failed_accounts.add(account_key)
+            snapshot = {
+                "success": self._login_success_count,
+                "failed": self._login_failure_count,
+                "processed": self._login_success_count + self._login_failure_count,
+                "total": self._login_total_accounts,
+            }
+        self.post_gui_update("login_stats", snapshot)
+
     def start(self):
         if self._is_running:
             logger.warning("[ENGINE] Bot is already running.")
@@ -58,6 +106,7 @@ class BotEngine:
         self._stop_event.clear()
         self._pause_event.clear()
         self._is_running = True
+        self._reset_login_stats(len(self.settings_mgr.get_accounts()))
 
         self._thread = threading.Thread(target=self._run_loop, name="BotEngineWorker", daemon=True)
         self._thread.start()
@@ -142,13 +191,7 @@ class BotEngine:
             tab_type = settings.get("tab_type", "likes").strip().lower()
             max_per_account = int(settings.get("max_success_per_account", 30))
             session_cap = int(settings.get("session_success_cap", 15))
-            requested_parallel = max(1, min(10, int(settings.get("parallel_accounts", 1))))
-            parallel_accounts = 1
-            if requested_parallel != 1:
-                logger.warning(
-                    "[ENGINE] Desktop login uses the fixed Chrome debugging port 9222; "
-                    "accounts will run one at a time."
-                )
+            parallel_accounts = max(1, min(10, int(settings.get("parallel_accounts", 1))))
             no_msg_limit = int(settings.get("no_message_limit", 10))
             action_delay = float(settings.get("action_delay", 0.5))
             typing_min_delay = max(0.01, float(settings.get("typing_min_delay", 0.05)))
@@ -209,6 +252,7 @@ class BotEngine:
                     (i, accounts[i])
                     for i in range(start_acc_idx, len(accounts))
                     if int(progress.get(accounts[i]["email"], 0)) < max_per_account
+                    and accounts[i]["email"].strip().lower() not in self._session_login_failed_accounts
                 ]
 
                 if not pending_accounts:
@@ -276,6 +320,7 @@ class BotEngine:
                 still_pending = [
                     a for a in accounts
                     if int(progress.get(a["email"], 0)) < max_per_account
+                    and a["email"].strip().lower() not in self._session_login_failed_accounts
                 ]
                 if not still_pending or self._stop_event.is_set():
                     break
@@ -337,6 +382,7 @@ class BotEngine:
 
         driver = None
         profile_dir = None
+        login_result_recorded = False
 
         try:
             self.post_gui_update("status_info", {
@@ -352,10 +398,15 @@ class BotEngine:
             )
 
             if not login(driver, email, password):
+                self._record_login_result(email, success=False)
+                login_result_recorded = True
                 account_note = "login_failed"
                 logger.log_event(email, total_ok, fail_count, note=account_note)
                 logger.log_summary(email, total_ok, fail_count, note=account_note)
                 return
+
+            self._record_login_result(email, success=True)
+            login_result_recorded = True
 
             self.post_gui_update("status_info", {
                 "status": "Logged In",
@@ -566,6 +617,9 @@ class BotEngine:
         except ContactHistoryError:
             raise
         except Exception as e:
+            if not login_result_recorded:
+                self._record_login_result(email, success=False)
+                login_result_recorded = True
             logger.error(f"[ENGINE] Session exception for {email}: {e}")
             logger.log_summary(email, total_ok, fail_count, note=f"session_exception: {e}")
             if driver:

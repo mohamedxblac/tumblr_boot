@@ -44,6 +44,18 @@ class StatsTab(ttk.Frame):
         self.card_queue = self._create_kpi_card(cards_frame, "In Target Queue", "0", "#89b4fa")
         self.card_accs = self._create_kpi_card(cards_frame, "Configured Accounts", "0", "#f9e2af")
 
+        login_cards = ttk.Frame(self)
+        login_cards.pack(fill="x", pady=(0, 14))
+        self.card_login_success = self._create_kpi_card(
+            login_cards, "Login Success — Current Run", "0", "#a6e3a1"
+        )
+        self.card_login_failed = self._create_kpi_card(
+            login_cards, "Login Failed — Current Run", "0", "#f38ba8"
+        )
+        self.card_login_processed = self._create_kpi_card(
+            login_cards, "Accounts Checked — Current Run", "0 / 0", "#89dceb"
+        )
+
         # ── Per-Account Progress Table ──
         table_frame = ttk.LabelFrame(self, text="Account Performance Breakdown", padding=8)
         table_frame.pack(fill="both", expand=True, pady=(0, 10))
@@ -122,6 +134,12 @@ class StatsTab(ttk.Frame):
             pct = f"{(sent / max_quota) * 100:.1f}%" if max_quota > 0 else "0%"
             status = "Target Finished" if sent >= max_quota else "Active"
             self.tree.insert("", "end", values=(email, sent, max_quota, pct, status))
+
+    def update_login_stats(self, success: int, failed: int, processed: int, total: int):
+        """Update volatile login counters for the current Start/Stop run."""
+        self.card_login_success.configure(text=str(success))
+        self.card_login_failed.configure(text=str(failed))
+        self.card_login_processed.configure(text=f"{processed} / {total}")
 
     def on_reset_progress(self):
         if messagebox.askyesno("Confirm Reset", "Reset all account progress counters to zero?"):

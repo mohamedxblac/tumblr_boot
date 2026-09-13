@@ -4,6 +4,7 @@
 import json
 import os
 import shutil
+import socket
 import subprocess
 import tempfile
 import threading
@@ -16,15 +17,13 @@ import undetected_chromedriver as uc
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 
-from config.settings import BASE_DIR, SCREENSHOTS_DIR
+from config.settings import SCREENSHOTS_DIR
 from utils.logger import logger
 
 
 DEBUG_HOST = "127.0.0.1"
-DEBUG_PORT = 9222
-DEBUG_ADDRESS = f"{DEBUG_HOST}:{DEBUG_PORT}"
 LOGIN_URL = "https://www.tumblr.com/login"
-PROFILE_DIR = os.path.join(BASE_DIR, "chrome_debug_profile")
+PROFILE_PREFIX = "tumblr_bot_profile_"
 
 STEALTH_INJECTION_JS = """
 (function() {
@@ -118,6 +117,8 @@ def _build_login_script(
     profile_dir: str,
     signal_path: str,
     stop_path: str,
+    debug_host: str,
+    debug_port: int,
 ) -> str:
     """Build the tested keyboard-driven login flow; Selenium is not used here."""
     values = {
@@ -143,8 +144,14 @@ chromeWindow := ""
 
 CloseBotChrome(*) {{
     global chromeWindow
-    if chromeWindow != ""
-        try WinClose chromeWindow
+    if chromeWindow != "" {{
+        try {{
+            targetPid := WinGetPID(chromeWindow)
+            WinClose chromeWindow
+            if !WinWaitClose(chromeWindow,, 5)
+                ProcessClose targetPid
+        }}
+    }}
 }}
 
 OnExit CloseBotChrome
@@ -156,6 +163,18 @@ CheckForStop() {{
 }}
 
 SetTimer CheckForStop, 250
+
+FindNewChromeWindow(knownWindows, timeoutMs) {{
+    deadline := A_TickCount + timeoutMs
+    while A_TickCount < deadline {{
+        for hwnd in WinGetList("ahk_exe chrome.exe") {{
+            if !knownWindows.Has(hwnd)
+                return hwnd
+        }}
+        Sleep 100
+    }}
+    return 0
+}}
 
 FillAndSubmit() {{
     global email, password
@@ -173,17 +192,23 @@ FillAndSubmit() {{
 }}
 
 chromeCmd := Chr(34) . chromePath . Chr(34)
-    . " --remote-debugging-address={DEBUG_HOST}"
-    . " --remote-debugging-port={DEBUG_PORT}"
+    . " --remote-debugging-address={debug_host}"
+    . " --remote-debugging-port={debug_port}"
+    . " --disable-background-mode --no-first-run"
     . " --user-data-dir=" . Chr(34) . profileDir . Chr(34)
     . " " . Chr(34) . loginUrl . Chr(34)
+
+knownChromeWindows := Map()
+for hwnd in WinGetList("ahk_exe chrome.exe")
+    knownChromeWindows[hwnd] := true
 
 Run chromeCmd,,, &chromePid
 chromeWindow := "ahk_pid " . chromePid
 if !WinWait(chromeWindow,, 15) {{
-    chromeWindow := "Tumblr ahk_exe chrome.exe"
-    if !WinWait(chromeWindow,, 10)
+    newChromeHwnd := FindNewChromeWindow(knownChromeWindows, 10000)
+    if !newChromeHwnd
         ExitApp 2
+    chromeWindow := "ahk_id " . newChromeHwnd
 }}
 
 Sleep 5000
@@ -201,10 +226,17 @@ F2::
 '''
 
 
-def _debugger_is_ready(timeout: float = 0.5) -> bool:
+def _allocate_debug_port() -> int:
+    """Ask Windows for an unused localhost port for this Chrome instance."""
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as probe:
+        probe.bind((DEBUG_HOST, 0))
+        return int(probe.getsockname()[1])
+
+
+def _debugger_is_ready(address: str, timeout: float = 0.5) -> bool:
     try:
         with urllib.request.urlopen(
-            f"http://{DEBUG_ADDRESS}/json/version", timeout=timeout
+            f"http://{address}/json/version", timeout=timeout
         ) as response:
             payload = json.loads(response.read().decode("utf-8"))
         return bool(payload.get("webSocketDebuggerUrl"))
@@ -224,13 +256,47 @@ def _wait_for_file(path: str, process: subprocess.Popen, timeout: float) -> None
     raise TimeoutError("AutoHotkey did not finish the desktop login input in time.")
 
 
-def _wait_for_debugger(timeout: float = 15.0) -> None:
+def _wait_for_debugger(address: str, timeout: float = 15.0) -> None:
     deadline = time.monotonic() + timeout
     while time.monotonic() < deadline:
-        if _debugger_is_ready():
+        if _debugger_is_ready(address):
             return
         time.sleep(0.2)
-    raise TimeoutError(f"Chrome did not open its debugging endpoint on {DEBUG_ADDRESS}.")
+    raise TimeoutError(f"Chrome did not open its debugging endpoint on {address}.")
+
+
+def _wait_for_debugger_shutdown(address: Optional[str], timeout: float = 8.0) -> None:
+    if not address:
+        return
+    deadline = time.monotonic() + timeout
+    while time.monotonic() < deadline:
+        if not _debugger_is_ready(address, timeout=0.2):
+            return
+        time.sleep(0.2)
+
+
+def _remove_session_profile(profile_dir: Optional[str]) -> bool:
+    """Delete only profiles created by this module inside the system temp directory."""
+    if not profile_dir:
+        return True
+    profile = Path(profile_dir).resolve()
+    temp_root = Path(tempfile.gettempdir()).resolve()
+    if profile.parent != temp_root or not profile.name.startswith(PROFILE_PREFIX):
+        logger.error(f"[BROWSER] Refusing to delete an unrecognized profile path: {profile}")
+        return False
+
+    for attempt in range(6):
+        try:
+            if profile.exists():
+                shutil.rmtree(profile)
+            logger.info(f"[BROWSER] Session cookies and profile data removed: {profile}")
+            return True
+        except OSError as error:
+            if attempt == 5:
+                logger.warning(f"[BROWSER] Could not fully remove session profile {profile}: {error}")
+                return False
+            time.sleep(0.5)
+    return False
 
 
 def _stop_controller(controller: Optional[subprocess.Popen], stop_path: Optional[str]) -> None:
@@ -278,15 +344,11 @@ class BrowserFactory:
         }
 
         with BrowserFactory._launch_lock:
-            if _debugger_is_ready():
-                raise RuntimeError(
-                    f"Port {DEBUG_PORT} is already used by a Chrome debugging session. "
-                    "Close that Chrome window, then press Start again."
-                )
-
             ahk_executable = find_autohotkey_executable()
             chrome_executable = find_chrome_executable()
-            os.makedirs(PROFILE_DIR, exist_ok=True)
+            profile_dir = tempfile.mkdtemp(prefix=PROFILE_PREFIX)
+            debug_port = _allocate_debug_port()
+            debug_address = f"{DEBUG_HOST}:{debug_port}"
 
             script_fd, script_path = tempfile.mkstemp(prefix="tumblr_desktop_login_", suffix=".ahk")
             os.close(script_fd)
@@ -304,9 +366,11 @@ class BrowserFactory:
                     email,
                     password,
                     chrome_executable,
-                    PROFILE_DIR,
+                    profile_dir,
                     signal_path,
                     stop_path,
+                    DEBUG_HOST,
+                    debug_port,
                 )
                 Path(script_path).write_text(script_text, encoding="utf-8-sig")
 
@@ -322,10 +386,10 @@ class BrowserFactory:
                     f"[AUTH] Chrome opened by AutoHotkey for {email}; waiting for desktop input..."
                 )
                 _wait_for_file(signal_path, controller, timeout=25.0)
-                _wait_for_debugger(timeout=15.0)
+                _wait_for_debugger(debug_address, timeout=15.0)
 
                 options = webdriver.ChromeOptions()
-                options.debugger_address = DEBUG_ADDRESS
+                options.debugger_address = debug_address
                 options.page_load_strategy = "eager"
 
                 patcher = uc.Patcher()
@@ -369,10 +433,11 @@ class BrowserFactory:
                 driver._tumblr_ahk_script = script_path
                 driver._tumblr_ahk_signal = signal_path
                 driver._tumblr_ahk_stop = stop_path
+                driver._tumblr_debug_address = debug_address
                 logger.info(
-                    f"[BROWSER] Selenium attached to the AutoHotkey Chrome session on {DEBUG_ADDRESS}."
+                    f"[BROWSER] Selenium attached to the AutoHotkey Chrome session on {debug_address}."
                 )
-                return driver, PROFILE_DIR, used_profile
+                return driver, profile_dir, used_profile
             except Exception:
                 if driver:
                     try:
@@ -380,6 +445,8 @@ class BrowserFactory:
                     except Exception:
                         pass
                 _stop_controller(controller, stop_path)
+                _wait_for_debugger_shutdown(debug_address)
+                _remove_session_profile(profile_dir)
                 for temporary_path in (script_path, signal_path, stop_path):
                     try:
                         os.unlink(temporary_path)
@@ -389,8 +456,8 @@ class BrowserFactory:
 
     @staticmethod
     def close_browser(driver: Optional[webdriver.Chrome], profile_dir: Optional[str] = None):
-        del profile_dir  # The fixed profile is intentionally retained between runs.
         controller = getattr(driver, "_tumblr_ahk_controller", None) if driver else None
+        debug_address = getattr(driver, "_tumblr_debug_address", None) if driver else None
         temporary_paths = (
             getattr(driver, "_tumblr_ahk_script", None) if driver else None,
             getattr(driver, "_tumblr_ahk_signal", None) if driver else None,
@@ -405,6 +472,7 @@ class BrowserFactory:
                 logger.debug(f"[BROWSER] Error during driver.quit: {e}")
 
         _stop_controller(controller, stop_path)
+        _wait_for_debugger_shutdown(debug_address)
 
         for temporary_path in temporary_paths:
             if temporary_path:
@@ -412,6 +480,7 @@ class BrowserFactory:
                     os.unlink(temporary_path)
                 except OSError:
                     pass
+        _remove_session_profile(profile_dir)
         time.sleep(1.0)
 
     @staticmethod
