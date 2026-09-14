@@ -85,14 +85,14 @@ class SettingsTab(ttk.Frame):
         card3 = ttk.LabelFrame(scrollable_frame, text="Human Delays & Jitter (Seconds)", padding=12)
         card3.pack(fill="x", pady=6, padx=4)
 
-        self._add_row(card3, "action_delay", "Delay Between UI Actions (sec):", "0.5", is_float=True)
-        self._add_row(card3, "typing_min_delay", "Typing Min Delay Per Character:", "0.05", is_float=True)
-        self._add_row(card3, "typing_max_delay", "Typing Max Delay Per Character:", "0.14", is_float=True)
-        self._add_row(card3, "min_between_users", "Min Delay Between Users (sec):", "60", is_float=True)
-        self._add_row(card3, "max_between_users", "Max Delay Between Users (sec):", "130", is_float=True)
-        self._add_row(card3, "line_delay", "Line Delay (Between message parts):", "7.55", is_float=True)
-        self._add_row(card3, "after_send_delay", "Delay After Send (sec):", "2.2", is_float=True)
-        self._add_row(card3, "after_success_delay", "Delay After Success (sec):", "2.2", is_float=True)
+        self._add_row(card3, "action_delay", "Delay Between UI Actions (sec):", "0.15", is_float=True)
+        self._add_row(card3, "typing_min_delay", "Typing Min Delay Per Character:", "0.01", is_float=True)
+        self._add_row(card3, "typing_max_delay", "Typing Max Delay Per Character:", "0.03", is_float=True)
+        self._add_row(card3, "min_between_users", "Min Delay Between Users (sec):", "2", is_float=True)
+        self._add_row(card3, "max_between_users", "Max Delay Between Users (sec):", "5", is_float=True)
+        self._add_row(card3, "line_delay", "Line Delay (Between message parts):", "0.65", is_float=True)
+        self._add_row(card3, "after_send_delay", "Delay After Send (sec):", "0.35", is_float=True)
+        self._add_row(card3, "after_success_delay", "Delay After Success (sec):", "0.2", is_float=True)
         self._add_row(card3, "sleep_between_rounds_hrs", "Sleep Between Full Rounds (Hours):", "12", is_float=True)
 
         # ── 4. Scraper & Behavior ──

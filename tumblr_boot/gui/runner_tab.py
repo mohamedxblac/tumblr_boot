@@ -48,7 +48,7 @@ class RunnerTab(ttk.Frame):
         self.parallel_spinbox = ttk.Spinbox(
             ctrl_frame,
             from_=1,
-            to=10,
+            to=9,
             increment=1,
             textvariable=self.parallel_var,
             width=5,
@@ -66,12 +66,18 @@ class RunnerTab(ttk.Frame):
 
         timing_fields = (
             ("action_delay", "Between actions", 0.1),
+            ("typing_min_delay", "Typing min/char", 0.01),
+            ("typing_max_delay", "Typing max/char", 0.01),
             ("line_delay", "Between message parts", 0.5),
-            ("min_between_users", "Users min", 1.0),
-            ("max_between_users", "Users max", 1.0),
+            ("min_between_users", "User transition min", 0.5),
+            ("max_between_users", "User transition max", 0.5),
         )
-        for key, label, increment in timing_fields:
-            ttk.Label(timing_frame, text=f"{label}:").pack(side="left", padx=(4, 3))
+        for index, (key, label, increment) in enumerate(timing_fields):
+            row = index // 3
+            column = (index % 3) * 2
+            ttk.Label(timing_frame, text=f"{label}:").grid(
+                row=row, column=column, sticky="w", padx=(4, 3), pady=3
+            )
             var = tk.StringVar()
             ttk.Spinbox(
                 timing_frame,
@@ -81,19 +87,19 @@ class RunnerTab(ttk.Frame):
                 textvariable=var,
                 width=7,
                 style="Timing.TSpinbox",
-            ).pack(side="left", padx=(0, 8))
+            ).grid(row=row, column=column + 1, sticky="w", padx=(0, 12), pady=3)
             self.timing_vars[key] = var
 
         ttk.Button(
             timing_frame,
             text="Apply Timing",
             command=self.save_timing_values,
-        ).pack(side="left", padx=6)
+        ).grid(row=0, column=6, rowspan=2, padx=8)
         ttk.Label(
             timing_frame,
             text="Applied on next Start",
             foreground="#6c7086",
-        ).pack(side="left", padx=4)
+        ).grid(row=0, column=7, rowspan=2, sticky="w", padx=4)
 
         # ── 2. Live Dashboard Status Cards ──
         status_card = ttk.LabelFrame(self, text="Live Operation Dashboard", padding=10)
@@ -195,10 +201,12 @@ class RunnerTab(ttk.Frame):
     def load_timing_values(self):
         settings = self.engine.settings_mgr.get_settings()
         defaults = {
-            "action_delay": 0.5,
-            "line_delay": 7.55,
-            "min_between_users": 60,
-            "max_between_users": 130,
+            "action_delay": 0.15,
+            "typing_min_delay": 0.01,
+            "typing_max_delay": 0.03,
+            "line_delay": 0.65,
+            "min_between_users": 2,
+            "max_between_users": 5,
         }
         for key, var in self.timing_vars.items():
             var.set(str(settings.get(key, defaults[key])))
@@ -216,6 +224,9 @@ class RunnerTab(ttk.Frame):
             return
         if updates["min_between_users"] > updates["max_between_users"]:
             messagebox.showerror("Invalid Timing", "Users min cannot be greater than users max.")
+            return
+        if updates["typing_min_delay"] > updates["typing_max_delay"]:
+            messagebox.showerror("Invalid Timing", "Typing min cannot be greater than typing max.")
             return
 
         self.engine.settings_mgr.update_settings(updates)

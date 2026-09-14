@@ -149,16 +149,63 @@ def login(driver, email: str, password: Optional[str] = None, max_retries: int =
 
 
 # تسجيل الخروج من الحساب الحالي لإنهاء الجلسة بأمان
-def logout(driver):
+def logout(driver) -> bool:
     try:
-        driver.get("https://www.tumblr.com/settings/account")
-        time.sleep(2)
+        if "/login" in driver.current_url.lower():
+            return True
+        driver.get("https://www.tumblr.com/dashboard")
         dismiss_consent_screen_if_present(driver)
-        btn = WebDriverWait(driver, 10).until(
-            EC.element_to_be_clickable((By.XPATH, "//button[contains(text(),'Log out')]"))
+
+        logout_xpath = (
+            "//*[@role='button' or self::button or self::a]"
+            "[contains(translate(normalize-space(.), "
+            "'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), 'log out') "
+            "or contains(normalize-space(.), 'تسجيل الخروج')]"
         )
-        btn.click()
-        time.sleep(3)
+
+        def visible_logout(current_driver):
+            for element in current_driver.find_elements(By.XPATH, logout_xpath):
+                if element.is_displayed() and element.is_enabled():
+                    return element
+            return False
+
+        logout_button = visible_logout(driver)
+        if not logout_button:
+            account_button = WebDriverWait(driver, 8).until(
+                EC.element_to_be_clickable((By.XPATH, (
+                    "//*[@role='button' or self::button or self::a]"
+                    "[contains(translate(normalize-space(.), "
+                    "'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), 'account') "
+                    "or @aria-label='Account' or @aria-label='Accounts' "
+                    "or contains(normalize-space(.), 'حساب')]"
+                )))
+            )
+            account_button.click()
+            logout_button = WebDriverWait(driver, 5).until(visible_logout)
+        logout_button.click()
+
+        confirm = WebDriverWait(driver, 4).until(
+            EC.element_to_be_clickable((By.XPATH, (
+                "//div[@role='dialog']//*[@role='button' or self::button]"
+                "[translate(normalize-space(.), 'ok', 'OK')='OK' "
+                "or normalize-space(.)='موافق']"
+            )))
+        )
+        confirm.click()
+
+        try:
+            WebDriverWait(driver, 3).until(
+                lambda current: "/login" in current.current_url.lower()
+            )
+        except Exception:
+            # Verify the session by opening login: a remaining session would
+            # redirect back to the dashboard.
+            driver.get("https://www.tumblr.com/login")
+            WebDriverWait(driver, 5).until(
+                lambda current: "/login" in current.current_url.lower()
+            )
         logger.info("[AUTH] Logged out successfully.")
+        return True
     except Exception as e:
         logger.warning(f"[AUTH] Logout did not complete cleanly ({e}).")
+        return False

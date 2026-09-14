@@ -83,12 +83,14 @@ class DesktopLoginTests(unittest.TestCase):
         calls = []
         fake_driver = Mock(spec=BidiDriver)
         with (
+            patch.object(browser, "logger"),
             patch.object(browser.BrowserFactory, "finish_batch", side_effect=lambda: calls.append("finish")),
             patch.object(browser, "find_firefox_executable", return_value=r"C:\Firefox\firefox.exe"),
             patch.object(browser, "find_autohotkey_executable", return_value=r"C:\AHK\AutoHotkey64.exe"),
             patch.object(browser, "find_uia_library", return_value=r"C:\Project\UIA.ahk"),
             patch.object(browser, "find_default_profile", return_value=r"C:\Profile"),
             patch.object(browser.manager, "ensure_plain_firefox_running", side_effect=lambda *_: calls.append("plain")),
+            patch.object(browser, "_clear_container_sessions_before_login", side_effect=lambda *_: calls.append("clear")),
             patch.object(browser, "_run_native_logins", side_effect=lambda *_: calls.append("native")),
             patch.object(browser, "snapshot_tumblr_cookies", side_effect=lambda _: (['id'], [(1,)])),
             patch.object(browser, "_close_firefox_after_login", side_effect=lambda *_: calls.append("close")),
@@ -106,7 +108,10 @@ class DesktopLoginTests(unittest.TestCase):
 
         self.assertEqual(
             calls,
-            ["finish", "plain", "native", "close", "stopped", "remote", "reopen", "connect"],
+            [
+                "finish", "plain", "close", "stopped", "clear", "plain",
+                "native", "close", "stopped", "remote", "reopen", "connect",
+            ],
         )
         self.assertIs(browser.BrowserFactory._prepared_drivers["user@example.test"], fake_driver)
 

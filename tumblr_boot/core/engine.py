@@ -193,23 +193,26 @@ class BotEngine:
             session_cap = int(settings.get("session_success_cap", 15))
             parallel_accounts = max(1, min(9, int(settings.get("parallel_accounts", 1))))
             no_msg_limit = int(settings.get("no_message_limit", 10))
-            action_delay = float(settings.get("action_delay", 0.5))
-            typing_min_delay = max(0.01, float(settings.get("typing_min_delay", 0.05)))
+            action_delay = float(settings.get("action_delay", 0.15))
+            typing_min_delay = max(0.0, float(settings.get("typing_min_delay", 0.01)))
             typing_max_delay = max(
                 typing_min_delay,
-                float(settings.get("typing_max_delay", 0.14)),
+                float(settings.get("typing_max_delay", 0.03)),
             )
-            line_delay = float(settings.get("line_delay", 7.55))
-            after_send_delay = float(settings.get("after_send_delay", 2.2))
-            after_success_delay = float(settings.get("after_success_delay", 2.2))
-            min_between = float(settings.get("min_between_users", 60))
-            max_between = float(settings.get("max_between_users", 130))
+            line_delay = float(settings.get("line_delay", 0.65))
+            after_send_delay = float(settings.get("after_send_delay", 0.35))
+            after_success_delay = float(settings.get("after_success_delay", 0.2))
+            min_between = float(settings.get("min_between_users", 2))
+            max_between = float(settings.get("max_between_users", 5))
             notes_max = int(settings.get("notes_max_users", 3000))
             follow_every = int(settings.get("follow_every_n", 4))
             scrape_threshold = int(settings.get("scrape_threshold", 15))
             scrape_timeout = int(settings.get("scrape_timeout_sec", 150))
             enable_fp_rotation = bool(settings.get("enable_fingerprint_rotation", True))
             start_acc_idx = int(settings.get("start_account_index", 0))
+            enable_auto_retry = bool(settings.get("enable_auto_retry", True))
+            max_retries = max(1, int(settings.get("max_retries", 3)))
+            retry_delay = max(0.0, float(settings.get("retry_delay_sec", 5)))
 
             if not post_url:
                 logger.error("[ENGINE] No Target Post URL specified! Please set one in Settings.")
@@ -269,26 +272,67 @@ class BotEngine:
                     f"across {worker_count} parallel browser(s)..."
                 )
 
-                # Login is deliberately separated from browser automation.
-                # Each batch signs in natively first; only then does Python
-                # create one BiDi session and operate its container tabs.
-                for batch_start in range(0, len(pending_accounts), worker_count):
-                    if self._stop_event.is_set():
-                        break
-                    batch = pending_accounts[batch_start:batch_start + worker_count]
+                # Feed all pending candidates to native login, but stop opening
+                # container tabs as soon as the requested number has signed in.
+                # A failed candidate is replaced in the same slot by the next.
+                candidate_accounts = [acc for _, acc in pending_accounts]
+                prepared_accounts = []
+                failed_accounts = []
+                preparation_attempts = max_retries if enable_auto_retry else 1
+                for attempt in range(1, preparation_attempts + 1):
                     self.post_gui_update("status_info", {
                         "status": "Native Firefox Login",
-                        "detail": f"Signing in {len(batch)} account(s) before Python control starts"
+                        "detail": (
+                            f"Filling {worker_count} login slot(s) from "
+                            f"{len(candidate_accounts)} candidate account(s)"
+                        )
                     })
-                    BrowserFactory.prepare_accounts([acc for _, acc in batch])
                     try:
-                        with ThreadPoolExecutor(
-                            max_workers=len(batch),
-                            thread_name_prefix="TumblrAccount",
-                        ) as executor:
-                            futures = []
-                            for _, acc in batch:
-                                futures.append(executor.submit(
+                        prepared_accounts, failed_accounts = BrowserFactory.prepare_accounts(
+                            candidate_accounts,
+                            max_successes=worker_count,
+                        )
+                        break
+                    except Exception as error:
+                        BrowserFactory.finish_batch()
+                        logger.error(
+                            f"[ENGINE] Login preparation attempt {attempt}/"
+                            f"{preparation_attempts} failed: {error}"
+                        )
+                        if attempt >= preparation_attempts:
+                            self.post_gui_update("error", {
+                                "message": (
+                                    "Firefox login preparation failed after retries: "
+                                    f"{error}"
+                                )
+                            })
+                            break
+                        if not self._sleep_with_checks(
+                            retry_delay,
+                            label=f"Retrying Firefox login ({attempt + 1}/{preparation_attempts})",
+                        ):
+                            break
+
+                for account in failed_accounts:
+                    email = str(account.get("email", "")).strip()
+                    if email:
+                        self._record_login_result(email, success=False)
+                        total_ok = int(progress.get(email, 0))
+                        logger.log_summary(email, total_ok, 0, note="native_login_failed")
+
+                if not prepared_accounts or self._stop_event.is_set():
+                    BrowserFactory.finish_batch()
+                    if not prepared_accounts:
+                        logger.warning("[ENGINE] No account was available for message processing.")
+                    break
+
+                try:
+                    with ThreadPoolExecutor(
+                        max_workers=len(prepared_accounts),
+                        thread_name_prefix="TumblrAccount",
+                    ) as executor:
+                        futures = {
+                            executor.submit(
                                     self._run_account_worker,
                                     total_accounts=len(pending_accounts),
                                     acc=acc,
@@ -317,20 +361,28 @@ class BotEngine:
                                     typing_max_delay=typing_max_delay,
                                     message_rotator=message_rotator,
                                     greeting_rotator=greeting_rotator,
-                                ))
+                                ): acc
+                            for acc in prepared_accounts
+                        }
 
-                            for future in as_completed(futures):
-                                try:
-                                    future.result()
-                                except ContactHistoryError:
-                                    self._stop_event.set()
-                                    for pending in futures:
-                                        pending.cancel()
-                                    raise
-                    finally:
-                        # End the automation session before a later batch needs
-                        # to type another set of credentials through Firefox UI.
-                        BrowserFactory.finish_batch()
+                        for future in as_completed(futures):
+                            account = futures[future]
+                            try:
+                                future.result()
+                            except ContactHistoryError:
+                                self._stop_event.set()
+                                for pending in futures:
+                                    pending.cancel()
+                                raise
+                            except Exception as error:
+                                # One damaged/minimized/closed tab must not stop
+                                # the remaining logged-in accounts in the batch.
+                                logger.error(
+                                    f"[ENGINE] Worker exception for "
+                                    f"{account.get('email', '')}: {error}"
+                                )
+                finally:
+                    BrowserFactory.finish_batch()
 
                 start_acc_idx = 0
 
@@ -630,8 +682,8 @@ class BotEngine:
         scrape_threshold: int,
         scrape_timeout: int,
         enable_fp_rotation: bool,
-        typing_min_delay: float = 0.05,
-        typing_max_delay: float = 0.14,
+        typing_min_delay: float = 0.01,
+        typing_max_delay: float = 0.03,
         message_rotator: Optional[NonRepeatingTemplateRotator] = None,
         greeting_rotator: Optional[NonRepeatingTemplateRotator] = None,
     ):
@@ -732,7 +784,6 @@ class BotEngine:
                 account_note = "no_uncontacted_users_left"
                 logger.log_event(email, total_ok, fail_count, note=account_note)
                 logger.log_summary(email, total_ok, fail_count, note=account_note)
-                logout(driver)
                 return
 
             logger.info(f"[{email}] Ready! Processing up to {session_cap} users in this session...")
@@ -866,7 +917,10 @@ class BotEngine:
                         note=f"sent_ok | user={username} | session={session_ok}/{session_cap} | total={total_ok}/{max_per_account}"
                     )
 
-                    time.sleep(after_success_delay)
+                    if not self._sleep_with_checks(
+                        after_success_delay, label=f"Sent to @{username}"
+                    ):
+                        break
                     delay = random.uniform(min_between, max_between)
                     if not self._sleep_with_checks(delay, label=f"Next user (@{username})"):
                         break
@@ -878,7 +932,6 @@ class BotEngine:
                         break
 
             logger.log_summary(email, total_ok, fail_count, note=account_note)
-            logout(driver)
 
         except ContactHistoryError:
             raise
@@ -891,5 +944,10 @@ class BotEngine:
             if driver:
                 BrowserFactory.capture_screenshot(driver, prefix=f"crash_{email.split('@')[0]}")
         finally:
+            if driver:
+                try:
+                    logout(driver)
+                except Exception as error:
+                    logger.warning(f"[ENGINE] Cleanup logout failed for {email}: {error}")
             BrowserFactory.close_browser(driver, profile_dir)
-            time.sleep(2.0)
+            time.sleep(0.2)

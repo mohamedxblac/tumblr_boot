@@ -62,22 +62,21 @@ class NonRepeatingTemplateRotator:
 
 
 # متابعة حساب المستخدم المستهدف إذا كان زر المتابعة متاحاً
-def follow_user(driver, action_delay: float = 0.5) -> bool:
-    for sel in [
-        "button[aria-label='Follow']",
-        "button[aria-label='Follow @']",
-        "button[data-testid='follow-button']",
-    ]:
-        try:
-            btn = WebDriverWait(driver, 3).until(EC.element_to_be_clickable((By.CSS_SELECTOR, sel)))
-            driver.execute_script("arguments[0].click();", btn)
-            time.sleep(action_delay)
-            return True
-        except Exception:
-            continue
+def follow_user(driver, action_delay: float = 0.15) -> bool:
+    try:
+        btn = WebDriverWait(driver, 2).until(EC.element_to_be_clickable((
+            By.CSS_SELECTOR,
+            "button[aria-label='Follow'], button[aria-label='Follow @'], "
+            "button[data-testid='follow-button']",
+        )))
+        driver.execute_script("arguments[0].click();", btn)
+        time.sleep(action_delay)
+        return True
+    except Exception:
+        pass
 
     try:
-        btn = WebDriverWait(driver, 3).until(
+        btn = WebDriverWait(driver, 1.5).until(
             EC.element_to_be_clickable((By.XPATH, "//button[contains(.,'Follow')]"))
         )
         driver.execute_script("arguments[0].click();", btn)
@@ -91,25 +90,34 @@ def follow_user(driver, action_delay: float = 0.5) -> bool:
 def type_message_safely(
     element,
     text: str,
-    action_delay: float = 0.5,
-    typing_min_delay: float = 0.05,
-    typing_max_delay: float = 0.14,
+    action_delay: float = 0.15,
+    typing_min_delay: float = 0.01,
+    typing_max_delay: float = 0.03,
 ):
-    typing_min_delay = max(0.01, float(typing_min_delay))
+    typing_min_delay = max(0.0, float(typing_min_delay))
     typing_max_delay = max(typing_min_delay, float(typing_max_delay))
     lines = text.split("\n")
     for i, line in enumerate(lines):
+        chunk = []
+        chunk_delay = 0.0
         for character in line:
-            element.send_keys(character)
-            delay = random.uniform(typing_min_delay, typing_max_delay)
+            chunk.append(character)
+            chunk_delay += random.uniform(typing_min_delay, typing_max_delay)
             if character in ".,!?;:":
-                delay += random.uniform(0.08, 0.28)
-            elif character == " ":
-                delay += random.uniform(0.01, 0.06)
-            time.sleep(delay)
+                chunk_delay += random.uniform(0.01, 0.04)
+            if len(chunk) >= 8 or character in ".,!?;:":
+                element.send_keys("".join(chunk))
+                if chunk_delay:
+                    time.sleep(chunk_delay)
+                chunk = []
+                chunk_delay = 0.0
+        if chunk:
+            element.send_keys("".join(chunk))
+            if chunk_delay:
+                time.sleep(chunk_delay)
         if i < len(lines) - 1:
             element.send_keys(Keys.SHIFT, Keys.ENTER)
-            time.sleep(max(action_delay, random.uniform(0.15, 0.45)))
+            time.sleep(max(action_delay, random.uniform(0.05, 0.12)))
 
 
 # تجهيز أجزاء الرسالة الثلاثة: التحية البسيطة، التحية باسم المستخدم، ونص الرسالة
@@ -130,16 +138,29 @@ def send_message_to_user(
     username: str,
     messages: List[str],
     do_follow: bool = False,
-    action_delay: float = 0.5,
-    line_delay: float = 7.55,
-    after_send_delay: float = 2.2,
-    typing_min_delay: float = 0.05,
-    typing_max_delay: float = 0.14,
+    action_delay: float = 0.15,
+    line_delay: float = 0.65,
+    after_send_delay: float = 0.35,
+    typing_min_delay: float = 0.01,
+    typing_max_delay: float = 0.03,
 ) -> Tuple[Union[bool, str], bool]:
     user_url = f"https://www.tumblr.com/{username}"
     try:
-        driver.get(user_url)
-        time.sleep(4.5)
+        navigation_error = None
+        for attempt in range(2):
+            try:
+                driver.get(user_url)
+                navigation_error = None
+                break
+            except Exception as error:
+                navigation_error = error
+                logger.warning(
+                    f"[SEND] Navigation attempt {attempt + 1}/2 failed for "
+                    f"{username}: {error}"
+                )
+                time.sleep(0.4)
+        if navigation_error is not None:
+            raise navigation_error
         dismiss_consent_screen_if_present(driver)
 
         followed = False
@@ -151,42 +172,46 @@ def send_message_to_user(
         except Exception:
             pass
 
-        clicked = False
-        for sel in [
+        button_selectors = [
             "a.tx-icon-button.message-button",
             "button[aria-label='Message']",
             "//button[contains(., 'Message')]",
             "//a[contains(@aria-label,'Message')]",
             "a[href*='/message/']",
-        ]:
-            try:
-                btn = (
-                    driver.find_element(By.XPATH, sel)
-                    if sel.startswith("//")
-                    else driver.find_element(By.CSS_SELECTOR, sel)
-                )
-                if btn.is_displayed():
-                    driver.execute_script("arguments[0].click();", btn)
-                    clicked = True
-                    break
-            except Exception:
-                continue
+        ]
+
+        def find_message_button(current_driver):
+            for selector in button_selectors:
+                try:
+                    button = (
+                        current_driver.find_element(By.XPATH, selector)
+                        if selector.startswith("//")
+                        else current_driver.find_element(By.CSS_SELECTOR, selector)
+                    )
+                    if button.is_displayed() and button.is_enabled():
+                        return button
+                except Exception:
+                    continue
+            return False
+
+        try:
+            btn = WebDriverWait(driver, 4).until(find_message_button)
+            driver.execute_script("arguments[0].click();", btn)
+            clicked = True
+        except Exception:
+            clicked = False
 
         if not clicked:
             return ("no_message_button", followed)
 
-        input_box = None
-        for sel in ["textarea", "div[contenteditable='true']", "[role='textbox']"]:
-            try:
-                input_box = WebDriverWait(driver, 6).until(
-                    EC.element_to_be_clickable((By.CSS_SELECTOR, sel))
-                )
-                if input_box:
-                    break
-            except Exception:
-                continue
-
-        if not input_box:
+        try:
+            input_box = WebDriverWait(driver, 5).until(
+                EC.element_to_be_clickable((
+                    By.CSS_SELECTOR,
+                    "textarea, div[contenteditable='true'], [role='textbox']",
+                ))
+            )
+        except Exception:
             return ("no_message_button", followed)
 
         for msg in messages:
@@ -200,7 +225,7 @@ def send_message_to_user(
             )
             # A short thinking pause prevents even a very short salutation from
             # being submitted immediately after its final keystroke.
-            time.sleep(max(action_delay, random.uniform(0.55, 1.15)))
+            time.sleep(max(action_delay, random.uniform(0.08, 0.18)))
             input_box.send_keys(Keys.ENTER)
             # Use one submit action. Clicking Send again can submit twice when
             # the input has not yet cleared after Enter.

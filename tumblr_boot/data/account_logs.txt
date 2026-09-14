@@ -728,3 +728,72 @@ Stacktrace:
 2026-09-14 19:16:38,719 [INFO] a.lymanyaljdyd79@gmail.com | ===SUMMARY=== | Sent:2 | Failed:1 | completed
 2026-09-14 19:16:38,720 [WARNING] [AUTH] Logout did not complete cleanly (received 1000 (OK); then sent 1000 (OK)).
 2026-09-14 19:16:41,023 [INFO] [ENGINE] Bot engine stopped cleanly.
+2026-09-15 02:12:58,728 [INFO] [ENGINE] Bot engine started.
+2026-09-15 02:12:58,738 [INFO] [ENGINE] Starting round with 20 pending accounts across 3 parallel browser(s)...
+2026-09-15 02:12:59,537 [INFO] [BROWSER] Starting Firefox normally for AutoHotkey-only login.
+2026-09-15 02:13:00,047 [INFO] [BROWSER] Starting AutoHotkey-only login for 20 account(s). Firefox has no remote-control option.
+2026-09-15 02:13:31,702 [ERROR] [ENGINE] Login preparation attempt 1/3 failed: Could not log out the existing account in container 1.
+2026-09-15 02:13:37,376 [INFO] [BROWSER] Starting Firefox normally for AutoHotkey-only login.
+2026-09-15 02:13:37,887 [INFO] [BROWSER] Starting AutoHotkey-only login for 20 account(s). Firefox has no remote-control option.
+2026-09-15 02:14:15,830 [ERROR] [ENGINE] Login preparation attempt 2/3 failed: Could not log out the existing account in container 1.
+2026-09-15 02:14:17,195 [INFO] [ENGINE] Stop requested. Waiting for current action to wrap up...
+2026-09-15 02:14:17,332 [WARNING] [ENGINE] No account was available for message processing.
+2026-09-15 02:14:17,333 [INFO] [ENGINE] Bot engine stopped cleanly.
+2026-09-15 02:19:19,350 [INFO] [ENGINE] Bot engine started.
+2026-09-15 02:19:19,358 [INFO] [ENGINE] Starting round with 20 pending accounts across 3 parallel browser(s)...
+2026-09-15 02:19:20,243 [INFO] [BROWSER] Starting Firefox normally for AutoHotkey-only login.
+2026-09-15 02:19:21,660 [INFO] [BROWSER] Starting AutoHotkey-only login for 20 account(s). Firefox has no remote-control option.
+2026-09-15 02:19:53,897 [ERROR] [ENGINE] Login preparation attempt 1/3 failed: Could not log out the existing account in container 1.
+2026-09-15 02:19:59,605 [INFO] [BROWSER] Starting Firefox normally for AutoHotkey-only login.
+2026-09-15 02:20:00,170 [INFO] [BROWSER] Starting AutoHotkey-only login for 20 account(s). Firefox has no remote-control option.
+2026-09-15 02:20:31,837 [ERROR] [ENGINE] Login preparation attempt 2/3 failed: Could not log out the existing account in container 1.
+2026-09-15 02:20:37,535 [INFO] [BROWSER] Starting Firefox normally for AutoHotkey-only login.
+2026-09-15 02:20:38,088 [INFO] [BROWSER] Starting AutoHotkey-only login for 20 account(s). Firefox has no remote-control option.
+2026-09-15 02:21:52,853 [ERROR] [ENGINE] Login preparation attempt 3/3 failed: Could not log out the existing account in container 1.
+2026-09-15 02:21:52,854 [WARNING] [ENGINE] No account was available for message processing.
+2026-09-15 02:21:52,854 [INFO] [ENGINE] Bot engine stopped cleanly.
+2026-09-15 02:24:49,188 [INFO] [ENGINE] Bot engine started.
+2026-09-15 02:24:49,197 [INFO] [ENGINE] Starting round with 20 pending accounts across 3 parallel browser(s)...
+2026-09-15 02:24:49,988 [INFO] [BROWSER] Starting Firefox normally for AutoHotkey-only login.
+2026-09-15 02:24:50,536 [INFO] [BROWSER] Starting AutoHotkey-only login for 20 account(s). Firefox has no remote-control option.
+2026-09-15 02:25:21,382 [WARNING] [BROWSER] No candidate account completed native login.
+2026-09-15 02:25:40,702 [INFO] [ENGINE] Stop requested. Waiting for current action to wrap up...
+2026-09-15 02:25:41,769 [WARNING] [BROWSER] Could not fully reset Firefox after an error: AutoHotkey stopped (exit code 2).
+2026-09-15 02:25:41,770 [ERROR] [ENGINE] Login preparation attempt 1/3 failed: AutoHotkey stopped (exit code 2).
+2026-09-15 02:25:41,770 [WARNING] [ENGINE] No account was available for message processing.
+2026-09-15 02:25:41,771 [INFO] [ENGINE] Bot engine stopped cleanly.
+2026-09-15 02:32:35,956 [INFO] [ENGINE] Bot engine started.
+2026-09-15 02:32:35,967 [INFO] [ENGINE] Starting round with 20 pending accounts across 3 parallel browser(s)...
+2026-09-15 02:32:36,783 [INFO] [BROWSER] Starting Firefox normally for AutoHotkey-only login.
+2026-09-15 02:32:37,395 [INFO] [BROWSER] Clearing previous sessions from 3 container slot(s).
+2026-09-15 02:32:41,275 [INFO] [BIDI] Starting the user's normal Firefox profile.
+2026-09-15 02:32:44,871 [INFO] [BIDI] Connected directly to Firefox 155.0.1.
+2026-09-15 02:32:51,315 [INFO] [BIDI] Container shortcut 1 opened in context 45766487-c67b-470f-9876-efb1339d3fb5 (userContext=f5a1600e-55e0-49af-b5c1-67ea9d798c00).
+2026-09-15 02:32:51,329 [INFO] [BIDI] Cleared all cookies from the selected Firefox container.
+2026-09-15 02:32:52,196 [INFO] [BROWSER] Container slot 1 session was cleared and verified.
+2026-09-15 02:32:58,556 [INFO] [BIDI] Container shortcut 2 opened in context 741dbdeb-8823-438a-9875-fd78e71be30d (userContext=976b351f-1c06-42db-96cf-71753c058ddb).
+2026-09-15 02:32:58,584 [INFO] [BIDI] Cleared all cookies from the selected Firefox container.
+2026-09-15 02:32:59,112 [INFO] [BROWSER] Container slot 2 session was cleared and verified.
+2026-09-15 02:33:05,545 [INFO] [BIDI] Container shortcut 3 opened in context 1ff43c92-768e-4dbd-847b-c4b70af83163 (userContext=67ec9905-0b52-4cae-a5da-7d9226c46398).
+2026-09-15 02:33:05,579 [INFO] [BIDI] Cleared all cookies from the selected Firefox container.
+2026-09-15 02:33:06,275 [INFO] [BROWSER] Container slot 3 session was cleared and verified.
+2026-09-15 02:33:09,064 [INFO] [BROWSER] Starting Firefox normally for AutoHotkey-only login.
+2026-09-15 02:33:09,589 [INFO] [BROWSER] Starting AutoHotkey-only login for 20 account(s). Firefox has no remote-control option.
+2026-09-15 02:34:25,605 [WARNING] [BROWSER] Could not fully reset Firefox after an error: AutoHotkey stopped (exit code 2).
+2026-09-15 02:34:25,606 [ERROR] [ENGINE] Login preparation attempt 1/3 failed: Login was not confirmed for account 1. Current address:
+2026-09-15 02:34:31,334 [INFO] [BROWSER] Starting Firefox normally for AutoHotkey-only login.
+2026-09-15 02:34:31,866 [INFO] [BROWSER] Clearing previous sessions from 3 container slot(s).
+2026-09-15 02:34:35,767 [INFO] [BIDI] Starting the user's normal Firefox profile.
+2026-09-15 02:34:39,301 [INFO] [BIDI] Connected directly to Firefox 155.0.1.
+2026-09-15 02:34:45,672 [INFO] [BIDI] Container shortcut 1 opened in context 84c9b6b4-0078-415e-af58-28bd6a05f079 (userContext=d0bd2a39-7933-44b9-84b1-e78d11d8057c).
+2026-09-15 02:34:45,688 [INFO] [BIDI] Cleared all cookies from the selected Firefox container.
+2026-09-15 02:34:47,224 [INFO] [BROWSER] Container slot 1 session was cleared and verified.
+2026-09-15 02:34:53,545 [INFO] [BIDI] Container shortcut 2 opened in context 9dfd4262-d9a9-468f-8cd2-1771d5cfd569 (userContext=374e5d47-b302-42bd-9cd3-371d4a1585b4).
+2026-09-15 02:34:53,548 [INFO] [BIDI] Cleared all cookies from the selected Firefox container.
+2026-09-15 02:34:54,065 [INFO] [BROWSER] Container slot 2 session was cleared and verified.
+2026-09-15 02:35:00,384 [INFO] [BIDI] Container shortcut 3 opened in context 2d3b6cce-bf8b-4030-8fb4-81493263e305 (userContext=57f9230d-4286-404a-a190-64dac86c3b75).
+2026-09-15 02:35:00,389 [INFO] [BIDI] Cleared all cookies from the selected Firefox container.
+2026-09-15 02:35:00,934 [INFO] [BROWSER] Container slot 3 session was cleared and verified.
+2026-09-15 02:35:03,773 [INFO] [BROWSER] Starting Firefox normally for AutoHotkey-only login.
+2026-09-15 02:35:04,313 [INFO] [BROWSER] Starting AutoHotkey-only login for 20 account(s). Firefox has no remote-control option.
+2026-09-15 02:35:54,606 [INFO] [ENGINE] Stop requested. Waiting for current action to wrap up...

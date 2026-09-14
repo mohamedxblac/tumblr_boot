@@ -2,8 +2,8 @@
 """Two-phase control of normal Firefox Multi-Account Container tabs.
 
 Credentials are entered through Firefox's native accessibility UI before a
-WebDriver BiDi session exists. Python connects only after every login in the
-current batch has finished.
+WebDriver BiDi session exists. Failed candidates are replaced until the desired
+number of container sessions is ready, then Python connects to those tabs.
 """
 
 import hashlib
@@ -102,7 +102,12 @@ def _ahk_string(value: str) -> str:
     return f'"{cleaned}"'
 
 
-def _build_native_login_script(accounts: list[dict], uia_path: str, status_path: str) -> str:
+def _build_native_login_script(
+    accounts: list[dict],
+    uia_path: str,
+    status_path: str,
+    max_successes: Optional[int] = None,
+) -> str:
     account_rows = []
     for slot, account in enumerate(accounts, start=1):
         account_rows.append(
@@ -113,6 +118,7 @@ def _build_native_login_script(accounts: list[dict], uia_path: str, status_path:
     rows = ",\n".join(account_rows)
     include_path = str(uia_path).replace("`", "``")
     status = _ahk_string(status_path)
+    target_slots = max(1, min(MAX_CONTAINER_SLOTS, int(max_successes or len(accounts))))
     return f'''#Requires AutoHotkey v2.0
 #SingleInstance Force
 #Include {include_path}
@@ -126,6 +132,7 @@ StatusFile := {status}
 Accounts := [
 {rows}
 ]
+TargetSlots := {target_slots}
 
 if A_Args.Length > 0 && A_Args[1] = "--validate"
     ExitApp(0)
@@ -140,66 +147,114 @@ try {{
     ; registering its keyboard commands before the first shortcut is sent.
     Sleep(6500)
 
+    Successful := 0
+    OpenSlot := 0
+    InitialTabClosed := false
+    StatusText := "OK`n"
+
     for Index, Account in Accounts {{
+        if Successful >= TargetSlots
+            break
+        CurrentSlot := Successful + 1
         if !ActivateFirefox()
-            throw Error("Firefox lost focus before container " Account.Shortcut ".")
-        SendEvent("{{Ctrl down}}{{Shift down}}{{" Account.Shortcut "}}{{Shift up}}{{Ctrl up}}")
-        Sleep(2600)
-        if Index = 1 {{
+            throw Error("Firefox lost focus before container " CurrentSlot ".")
+        if OpenSlot != CurrentSlot {{
+            SendEvent("{{Ctrl down}}{{Shift down}}{{" CurrentSlot "}}{{Shift up}}{{Ctrl up}}")
+            Sleep(2600)
+            OpenSlot := CurrentSlot
+        }}
+        if !InitialTabClosed {{
             ; Remove Firefox's initial ordinary tab. The remaining container
             ; tabs then have stable positions 1..N for native message actions.
             SendEvent("^1")
             Sleep(500)
             SendEvent("^w")
             Sleep(1200)
+            InitialTabClosed := true
         }}
         NavigateExact(LoginUrl)
-        Sleep(7500)
+        Sleep(4200)
 
         CurrentUrl := ReadAddressBar()
-        if !RegExMatch(CurrentUrl, "i)^https://(www\\.)?tumblr\\.com/(dashboard(?:[/?#]|$))") {{
-            if !RegExMatch(CurrentUrl, "i)^https://(www\\.)?tumblr\\.com/login(?:[/?#]|$)")
-                throw Error("Tumblr login did not open in container " Account.Shortcut
-                    . ". Current address: " CurrentUrl)
-            Fields := WaitForTumblrFields(22)
-            if !Fields
-                throw Error("Tumblr login fields were not found in container " Account.Shortcut ".")
-            Fields.Email.SetFocus()
-            Sleep(350)
-            if !UIA.CompareElements(UIA.GetFocusedElement(), Fields.Email)
-                throw Error("The email field did not receive focus for account " Index ".")
-            SendEvent("^a")
-            SendText(Account.Email)
-            Sleep(500)
-
-            Fields := WaitForTumblrFields(6)
-            if !Fields
-                throw Error("Tumblr changed the form before password entry for account " Index ".")
-            Fields.Password.SetFocus()
-            Sleep(350)
-            if !UIA.CompareElements(UIA.GetFocusedElement(), Fields.Password)
-                throw Error("The password field did not receive focus for account " Index ".")
-            SendEvent("^a")
-            SendText(Account.Password)
-            Sleep(500)
-            Fields.Submit.Click()
-            Sleep(9500)
+        ; A container can retain an older session. Never type new credentials
+        ; until that session has been explicitly signed out.
+        if !RegExMatch(CurrentUrl, "i)^https://(www\\.)?tumblr\\.com/login(?:[/?#]|$)") {{
+            ; Tumblr can redirect an existing session to Dashboard, Explore,
+            ; Trending, or another authenticated page. Any such redirect means
+            ; the container must be logged out before credentials are entered.
+            if !LogoutCurrentAccount() {{
+                StatusText .= "FAILED|" Index "|logout_failed`n"
+                ; Do not keep typing /login for more candidates into a
+                ; container whose previous session could not be cleared.
+                break
+            }}
         }}
 
-        MarkerUrl := "https://www.tumblr.com/dashboard?__tumblr_bot_slot=" Account.Shortcut
-            . "#tumblr-bot-slot-" Account.Shortcut
+        Fields := WaitForTumblrFields(18)
+        if !Fields {{
+            StatusText .= "FAILED|" Index "|fields_not_found`n"
+            continue
+        }}
+        if !ActivateFirefox()
+            throw Error("Firefox was minimized or lost focus before email entry.")
+        Fields.Email.SetFocus()
+        Sleep(180)
+        if !UIA.CompareElements(UIA.GetFocusedElement(), Fields.Email)
+            throw Error("The email field did not receive focus for account " Index ".")
+        SendEvent("^a")
+        SendText(Account.Email)
+        Sleep(180)
+
+        Fields := WaitForTumblrFields(5)
+        if !Fields {{
+            StatusText .= "FAILED|" Index "|form_changed`n"
+            continue
+        }}
+        if !ActivateFirefox()
+            throw Error("Firefox was minimized or lost focus before password entry.")
+        Fields.Password.SetFocus()
+        Sleep(180)
+        if !UIA.CompareElements(UIA.GetFocusedElement(), Fields.Password)
+            throw Error("The password field did not receive focus for account " Index ".")
+        SendEvent("^a")
+        SendText(Account.Password)
+        Sleep(180)
+        if !ActivateFirefox()
+            throw Error("Firefox was minimized or lost focus before login submission.")
+        Fields.Submit.Click()
+        Sleep(7000)
+
+        CurrentUrl := ReadAddressBar()
+        if !RegExMatch(CurrentUrl, "i)^https://(www\\.)?tumblr\\.com/dashboard(?:[/?#]|$)") {{
+            StatusText .= "FAILED|" Index "|login_not_confirmed`n"
+            continue
+        }}
+
+        MarkerUrl := "https://www.tumblr.com/dashboard?__tumblr_bot_slot=" CurrentSlot
+            . "#tumblr-bot-slot-" CurrentSlot
         NavigateExact(MarkerUrl)
-        Sleep(6000)
+        Sleep(4200)
+        StatusText .= "SUCCESS|" Index "|" CurrentSlot "`n"
+        Successful += 1
+        OpenSlot := 0
     }}
 
-    for Index, Account in Accounts {{
+    ; Do not leave a failed replacement attempt as an extra open tab.
+    if OpenSlot {{
+        if ActivateFirefox() {{
+            SendEvent("^w")
+            Sleep(800)
+        }}
+    }}
+
+    for Index in Range(Successful) {{
         SendEvent("^" Index)
-        Sleep(900)
+        Sleep(500)
         CurrentUrl := ReadAddressBar()
         if !RegExMatch(CurrentUrl, "i)^https://(www\\.)?tumblr\\.com/dashboard(?:[/?#]|$)")
             throw Error("Login was not confirmed for account " Index ". Current address: " CurrentUrl)
     }}
-    FileAppend("OK", StatusFile, "UTF-8")
+    FileAppend(StatusText, StatusFile, "UTF-8")
     ExitApp(0)
 }}
 catch as Err {{
@@ -208,7 +263,7 @@ catch as Err {{
 }}
 
 ActivateFirefox() {{
-    global FirefoxHwnd
+    global FirefoxHwnd, LoginUrl
     if !FirefoxHwnd || !WinExist("ahk_id " FirefoxHwnd)
         FirefoxHwnd := WinExist("ahk_exe firefox.exe")
     if !FirefoxHwnd
@@ -216,6 +271,80 @@ ActivateFirefox() {{
     try WinRestore("ahk_id " FirefoxHwnd)
     WinActivate("ahk_id " FirefoxHwnd)
     return !!WinWaitActive("ahk_id " FirefoxHwnd,, 6)
+}}
+
+LogoutCurrentAccount() {{
+    global FirefoxHwnd, LoginUrl
+    NavigateExact("https://www.tumblr.com/dashboard")
+    Sleep(3500)
+    if !ActivateFirefox()
+        return false
+    try {{
+        FirefoxElement := UIA.ElementFromHandle(FirefoxHwnd)
+        LogoutButton := FirefoxElement.ElementExist({{Name: "Log out", cs: false}})
+        if !LogoutButton
+            LogoutButton := FirefoxElement.ElementExist({{Name: "Logout", cs: false}})
+        if !LogoutButton
+            LogoutButton := FirefoxElement.ElementExist({{Name: "تسجيل الخروج", cs: false}})
+        if !LogoutButton || LogoutButton.IsOffscreen {{
+            AccountButton := FirefoxElement.ElementExist({{Name: "Account", cs: false}})
+            if !AccountButton
+                AccountButton := FirefoxElement.ElementExist({{Name: "Accounts", cs: false}})
+            if !AccountButton
+                AccountButton := FirefoxElement.ElementExist({{Name: "حساب", cs: false}})
+            if !AccountButton
+                AccountButton := FirefoxElement.ElementExist({{Name: "الحساب", cs: false}})
+            if !AccountButton
+                AccountButton := FirefoxElement.ElementExist({{Name: "حسابات", cs: false}})
+            if !AccountButton
+                return false
+            AccountButton.Click()
+            Sleep(900)
+
+            FirefoxElement := UIA.ElementFromHandle(FirefoxHwnd)
+            LogoutButton := FirefoxElement.ElementExist({{Name: "Log out", cs: false}})
+            if !LogoutButton
+                LogoutButton := FirefoxElement.ElementExist({{Name: "Logout", cs: false}})
+            if !LogoutButton
+                LogoutButton := FirefoxElement.ElementExist({{Name: "تسجيل الخروج", cs: false}})
+        }}
+        if !LogoutButton
+            return false
+        LogoutButton.Click()
+        Sleep(900)
+
+        ; Confirm the modal shown by Tumblr after choosing Log out.
+        FirefoxElement := UIA.ElementFromHandle(FirefoxHwnd)
+        ConfirmButton := FirefoxElement.ElementExist({{Type: "Button", Name: "OK", cs: false}})
+        if !ConfirmButton
+            ConfirmButton := FirefoxElement.ElementExist({{Type: "Button", Name: "Ok", cs: false}})
+        if !ConfirmButton
+            ConfirmButton := FirefoxElement.ElementExist({{Type: "Button", Name: "موافق", cs: false}})
+        if !ConfirmButton
+            return false
+        ConfirmButton.Click()
+        Sleep(2200)
+
+        CurrentUrl := ReadAddressBar()
+        if RegExMatch(CurrentUrl, "i)^https://(www\\.)?tumblr\\.com/login(?:[/?#]|$)")
+            return true
+
+        ; Some layouts do not navigate after OK. Open Login only once as a
+        ; final verification; an uncleared session would redirect away again.
+        NavigateExact(LoginUrl)
+        Sleep(2800)
+        return RegExMatch(ReadAddressBar(), "i)^https://(www\\.)?tumblr\\.com/login(?:[/?#]|$)")
+    }}
+    catch {{
+        return false
+    }}
+}}
+
+Range(Count) {{
+    Values := []
+    Loop Count
+        Values.Push(A_Index)
+    return Values
 }}
 
 NavigateExact(Url) {{
@@ -273,14 +402,25 @@ WaitForTumblrFields(TimeoutSeconds) {{
 '''
 
 
-def _run_native_logins(accounts: list[dict], ahk_executable: str, uia_path: str) -> None:
+def _run_native_logins(
+    accounts: list[dict],
+    ahk_executable: str,
+    uia_path: str,
+    max_successes: Optional[int] = None,
+) -> tuple[dict[int, int], set[int]]:
+    """Return successful account-index/slot mappings and attempted failures."""
     script_fd, script_path = tempfile.mkstemp(prefix="tumblr_native_login_", suffix=".ahk")
     status_fd, status_path = tempfile.mkstemp(prefix="tumblr_native_login_", suffix=".status")
     os.close(script_fd)
     os.close(status_fd)
     try:
         os.unlink(status_path)
-        script = _build_native_login_script(accounts, uia_path, status_path)
+        script = _build_native_login_script(
+            accounts,
+            uia_path,
+            status_path,
+            max_successes=max_successes,
+        )
         Path(script_path).write_text(script, encoding="utf-8-sig")
         result = subprocess.run(
             [ahk_executable, script_path],
@@ -293,8 +433,27 @@ def _run_native_logins(accounts: list[dict], ahk_executable: str, uia_path: str)
         detail = ""
         if os.path.isfile(status_path):
             detail = Path(status_path).read_text(encoding="utf-8-sig", errors="replace").strip()
-        if result.returncode != 0 or detail != "OK":
+        lines = [line.strip() for line in detail.splitlines() if line.strip()]
+        if result.returncode != 0 or not lines or lines[0] != "OK":
             raise BidiError(detail or f"Native Firefox login stopped (exit code {result.returncode}).")
+        successes: dict[int, int] = {}
+        failures: set[int] = set()
+        for line in lines[1:]:
+            parts = line.split("|", 2)
+            if len(parts) < 3:
+                continue
+            try:
+                account_index = int(parts[1]) - 1
+            except ValueError:
+                continue
+            if parts[0] == "SUCCESS":
+                try:
+                    successes[account_index] = int(parts[2])
+                except ValueError:
+                    continue
+            elif parts[0] == "FAILED":
+                failures.add(account_index)
+        return successes, failures
     except subprocess.TimeoutExpired as error:
         raise BidiError("Native Firefox login timed out before all accounts finished.") from error
     finally:
@@ -402,6 +561,66 @@ ExitApp(0)
     )
 
 
+def _clear_container_sessions_before_login(
+    slot_count: int,
+    firefox_executable: str,
+    profile_dir: str,
+    ahk_executable: str,
+) -> None:
+    """Clear cookies and Tumblr web storage in the requested containers.
+
+    This remote-control phase ends before any credentials are entered. Firefox
+    is then restarted normally for the native AutoHotkey login phase.
+    """
+    drivers: list[BidiDriver] = []
+    try:
+        manager.ensure_firefox_running(firefox_executable, profile_dir)
+        manager.connect_session()
+        for slot in range(1, slot_count + 1):
+            context = manager.open_container_tab(ahk_executable, slot)
+            driver = BidiDriver(manager, context, slot)
+            drivers.append(driver)
+
+            manager.clear_container_cookies(context)
+            driver.get("https://www.tumblr.com/login")
+            if "/login" not in driver.current_url.lower():
+                raise BidiError(
+                    f"Container slot {slot} still redirects away from Login after cleanup."
+                )
+
+            # Now that Login is open on the logged-out Tumblr origin, clear
+            # any remaining local/session/cache storage for that container.
+            try:
+                driver.execute_script("""
+                    try { localStorage.clear(); } catch (error) {}
+                    try { sessionStorage.clear(); } catch (error) {}
+                    if (typeof caches !== 'undefined') {
+                        return caches.keys().then(keys =>
+                            Promise.all(keys.map(key => caches.delete(key)))
+                        );
+                    }
+                    return true;
+                """)
+            except Exception as error:
+                logger.warning(
+                    f"[BROWSER] Could not clear Tumblr web storage in slot {slot}: {error}"
+                )
+
+            logger.info(f"[BROWSER] Container slot {slot} session was cleared and verified.")
+    finally:
+        for driver in drivers:
+            try:
+                driver.quit()
+            except Exception:
+                pass
+        manager.disconnect_session()
+        try:
+            _close_firefox_after_login(ahk_executable)
+            manager.wait_until_firefox_stops()
+        except Exception as error:
+            logger.warning(f"[BROWSER] Firefox cleanup phase did not close cleanly: {error}")
+
+
 class BrowserFactory:
     """Prepare native logins, then expose their tabs through one BiDi session."""
 
@@ -415,11 +634,19 @@ class BrowserFactory:
         yield
 
     @classmethod
-    def prepare_accounts(cls, accounts: list[dict]) -> None:
+    def prepare_accounts(
+        cls,
+        accounts: list[dict],
+        max_successes: Optional[int] = None,
+    ) -> tuple[list[dict], list[dict]]:
+        """Prepare only the requested number of successful container sessions.
+
+        Failed credentials are replaced by later candidates in the same slot, so
+        no extra container tabs are opened after the requested count is reached.
+        """
         if not accounts:
-            return
-        if len(accounts) > MAX_CONTAINER_SLOTS:
-            raise ValueError(f"At most {MAX_CONTAINER_SLOTS} accounts can run in one batch.")
+            return [], []
+        requested = max(1, min(MAX_CONTAINER_SLOTS, int(max_successes or len(accounts))))
         normalized = [str(account.get("email", "")).strip().lower() for account in accounts]
         if any(not email for email in normalized) or len(set(normalized)) != len(normalized):
             raise ValueError("Every account in a Firefox batch must have a unique email address.")
@@ -433,11 +660,55 @@ class BrowserFactory:
             profile_dir = find_default_profile()
             manager.ensure_plain_firefox_running(firefox, profile_dir)
             logger.info(
+                f"[BROWSER] Clearing previous sessions from {requested} container slot(s)."
+            )
+            _close_firefox_after_login(autohotkey)
+            manager.wait_until_firefox_stops()
+            _clear_container_sessions_before_login(
+                requested,
+                firefox,
+                profile_dir,
+                autohotkey,
+            )
+            manager.ensure_plain_firefox_running(firefox, profile_dir)
+            logger.info(
                 f"[BROWSER] Starting AutoHotkey-only login for {len(accounts)} account(s). "
                 "Firefox has no remote-control option."
             )
             try:
-                _run_native_logins(accounts, autohotkey, find_uia_library())
+                login_result = _run_native_logins(
+                    accounts,
+                    autohotkey,
+                    find_uia_library(),
+                    requested,
+                )
+                # Backward-compatible fallback for mocked/legacy callers.
+                if login_result is None:
+                    successful_slots = {
+                        index: index + 1
+                        for index in range(min(requested, len(accounts)))
+                    }
+                    failed_indexes = set()
+                else:
+                    successful_slots, failed_indexes = login_result
+
+                prepared_accounts = [
+                    accounts[index]
+                    for index, _slot in sorted(
+                        successful_slots.items(), key=lambda item: item[1]
+                    )
+                ]
+                failed_accounts = [
+                    accounts[index]
+                    for index in sorted(failed_indexes)
+                    if 0 <= index < len(accounts)
+                ]
+                if not prepared_accounts:
+                    logger.warning("[BROWSER] No candidate account completed native login.")
+                    _close_firefox_after_login(autohotkey)
+                    manager.wait_until_firefox_stops()
+                    return [], failed_accounts
+
                 cookie_snapshot = snapshot_tumblr_cookies(profile_dir)
                 logger.info(
                     f"[BROWSER] Captured {len(cookie_snapshot[1])} Tumblr container "
@@ -451,20 +722,33 @@ class BrowserFactory:
                     "Firefox profile after the clean shutdown."
                 )
                 manager.ensure_firefox_running(firefox, profile_dir)
-                _reopen_logged_container_tabs(len(accounts), autohotkey)
+                _reopen_logged_container_tabs(len(prepared_accounts), autohotkey)
                 logger.info(
                     "[BROWSER] Reopened the saved container sessions; attaching "
                     "Python after login without submitting credentials again."
                 )
                 manager.connect_session()
-                contexts = manager.map_marked_container_tabs(list(range(1, len(accounts) + 1)))
+                contexts = manager.map_marked_container_tabs(
+                    list(range(1, len(prepared_accounts) + 1))
+                )
                 cls._prepared_drivers = {
-                    normalized[slot - 1]: BidiDriver(manager, contexts[slot], slot)
-                    for slot in range(1, len(accounts) + 1)
+                    str(account.get("email", "")).strip().lower(): BidiDriver(
+                        manager, contexts[slot], slot
+                    )
+                    for slot, account in enumerate(prepared_accounts, start=1)
                 }
+                return prepared_accounts, failed_accounts
             except Exception:
                 cls._prepared_drivers.clear()
                 manager.disconnect_session()
+                try:
+                    _close_firefox_after_login(autohotkey)
+                    manager.wait_until_firefox_stops()
+                except Exception as cleanup_error:
+                    logger.warning(
+                        f"[BROWSER] Could not fully reset Firefox after an error: "
+                        f"{cleanup_error}"
+                    )
                 raise
 
     @classmethod

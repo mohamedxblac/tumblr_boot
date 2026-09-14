@@ -407,6 +407,13 @@ ExitApp(0)
         except Exception as error:
             logger.warning(f"[BIDI] Could not clear old container cookies: {error}")
 
+    def clear_container_cookies(self, context: str) -> None:
+        """Delete every cookie in one Firefox Container storage partition."""
+        self.command("storage.deleteCookies", {
+            "partition": {"type": "context", "context": context},
+        })
+        logger.info("[BIDI] Cleared all cookies from the selected Firefox container.")
+
     def close_context(self, context: str) -> None:
         if context not in self._active_contexts:
             return
