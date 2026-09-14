@@ -58,3 +58,154 @@
 2026-09-13 02:01:29,358 [INFO] kazoulayacine012@gmail.com | ===SUMMARY=== | Sent:0 | Failed:1 | completed
 2026-09-13 02:01:38,080 [WARNING] [AUTH] Logout did not complete cleanly (('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))).
 2026-09-13 02:01:38,088 [WARNING] [SEND] Error messaging actionjacksonlovesbbq (https://www.tumblr.com/actionjacksonlovesbbq): ('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))
+2026-09-14 05:23:14,317 [INFO] [ENGINE] Bot engine started.
+2026-09-14 05:23:14,325 [INFO] [ENGINE] Starting round with 21 pending accounts across 3 parallel browser(s)...
+2026-09-14 05:23:14,692 [INFO] [AUTH] Chrome opened by AutoHotkey for kazoulayacine012@gmail.com; waiting for desktop input...
+2026-09-14 05:23:32,063 [INFO] [BROWSER] Selenium attached to the AutoHotkey Chrome session on 127.0.0.1:51116.
+2026-09-14 05:23:32,090 [INFO] [AUTH] Desktop login SUCCESSFUL: kazoulayacine012@gmail.com (0.0s)
+2026-09-14 05:23:32,149 [INFO] [BROWSER] Logged-in browser moved to background for kazoulayacine012@gmail.com.
+2026-09-14 05:23:32,155 [INFO] [kazoulayacine012@gmail.com] Ready! Processing up to 15 users in this session...
+2026-09-14 05:23:32,219 [INFO] [AUTH] Chrome opened by AutoHotkey for alymanyaljdyd79@gmail.com; waiting for desktop input...
+2026-09-14 05:23:41,254 [INFO] [BROWSER] Selenium attached to the AutoHotkey Chrome session on 127.0.0.1:51235.
+2026-09-14 05:24:07,854 [WARNING] [AUTH] Could not confirm the AutoHotkey login for alymanyaljdyd79@gmail.com: InvalidSessionIdException: Message: invalid session id: session deleted as the browser has closed the connection
+from disconnected: not connected to DevTools
+  (Session info: chrome=153.0.8010.36)
+Stacktrace:
+	undetected_chromedriver!GetHandleVerifier [0xcc1c33+4e33]
+	undetected_chromedriver!(No symbol) [0xbdd154]
+	undetected_chromedriver!(No symbol) [0xa1c0b0]
+	undetected_chromedriver!(No symbol) [0xa0b2ee]
+	undetected_chromedriver!(No symbol) [0xa29ad9]
+	undetected_chromedriver!(No symbol) [0xa908fc]
+	undetected_chromedriver!(No symbol) [0xaa8a39]
+	undetected_chromedriver!(No symbol) [0xa89846]
+	undetected_chromedriver!(No symbol) [0xa5be6a]
+	undetected_chromedriver!(No symbol) [0xa5cb44]
+	undetected_chromedriver!GetHandleVerifier [0x112797a+46ab7a]
+	undetected_chromedriver!GetHandleVerifier [0x114945b+48c65b]
+	undetected_chromedriver!GetHandleVerifier [0xde4282+127482]
+	undetected_chromedriver!GetHandleVerifier [0xdeaf93+12e193]
+	undetected_chromedriver!(No symbol) [0xbeb278]
+	undetected_chromedriver!(No symbol) [0xbe65a8]
+	undetected_chromedriver!(No symbol) [0xbe6755]
+	undetected_chromedriver!(No symbol) [0xbd2b97]
+	KERNEL32!BaseThreadInitThunk [0x7728fcc9+19]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x77af82ae+11e]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x77af827e+ee]
+
+2026-09-14 05:24:07,857 [WARNING] [SCREENSHOT] Failed to capture screenshot: Message: invalid session id
+Stacktrace:
+	undetected_chromedriver!GetHandleVerifier [0xcc1c33+4e33]
+	undetected_chromedriver!(No symbol) [0xbdd154]
+	undetected_chromedriver!(No symbol) [0xa1beee]
+	undetected_chromedriver!(No symbol) [0xa5b137]
+	undetected_chromedriver!(No symbol) [0xa89966]
+	undetected_chromedriver!(No symbol) [0xa84c63]
+	undetected_chromedriver!(No symbol) [0xa84630]
+	undetected_chromedriver!(No symbol) [0x9eed01]
+	undetected_chromedriver!(No symbol) [0x9ef2a3]
+	undetected_chromedriver!(No symbol) [0x9ef7ed]
+	undetected_chromedriver!GetHandleVerifier [0x112797a+46ab7a]
+	undetected_chromedriver!GetHandleVerifier [0x114945b+48c65b]
+	undetected_chromedriver!GetHandleVerifier [0xde4282+127482]
+	undetected_chromedriver!GetHandleVerifier [0xdeaf93+12e193]
+	undetected_chromedriver!(No symbol) [0xbeb278]
+	undetected_chromedriver!(No symbol) [0x9ee480]
+	undetected_chromedriver!(No symbol) [0x9edb72]
+	undetected_chromedriver!GetHandleVerifier [0x11a4201+4e7401]
+	KERNEL32!BaseThreadInitThunk [0x7728fcc9+19]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x77af82ae+11e]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x77af827e+ee]
+
+2026-09-14 05:24:07,857 [ERROR] [AUTH] Desktop login failed for alymanyaljdyd79@gmail.com
+2026-09-14 05:24:07,857 [INFO] alymanyaljdyd79@gmail.com | Sent:0 | Failed:0 | login_failed
+2026-09-14 05:24:07,857 [INFO] alymanyaljdyd79@gmail.com | ===SUMMARY=== | Sent:0 | Failed:0 | login_failed
+2026-09-14 05:24:07,910 [INFO] [AUTH] Chrome opened by AutoHotkey for a.lymanyaljdyd79@gmail.com; waiting for desktop input...
+2026-09-14 05:24:09,117 [WARNING] [SEND] Error messaging katertotcasserole (https://www.tumblr.com/katertotcasserole): Message: no such window: target window already closed
+from unknown error: web view not found
+  (Session info: chrome=153.0.8010.36)
+Stacktrace:
+	undetected_chromedriver!GetHandleVerifier [0xcc1c33+4e33]
+	undetected_chromedriver!(No symbol) [0xbdd154]
+	undetected_chromedriver!(No symbol) [0xa1c0b0]
+	undetected_chromedriver!(No symbol) [0x9fb073]
+	undetected_chromedriver!(No symbol) [0xa9070b]
+	undetected_chromedriver!(No symbol) [0xaa8a39]
+	undetected_chromedriver!(No symbol) [0xa89846]
+	undetected_chromedriver!(No symbol) [0xa5be6a]
+	undetected_chromedriver!(No symbol) [0xa5cb44]
+	undetected_chromedriver!GetHandleVerifier [0x112797a+46ab7a]
+	undetected_chromedriver!GetHandleVerifier [0x114945b+48c65b]
+	undetected_chromedriver!GetHandleVerifier [0xde4282+127482]
+	undetected_chromedriver!GetHandleVerifier [0xdeaf93+12e193]
+	undetected_chromedriver!(No symbol) [0xbeb278]
+	undetected_chromedriver!(No symbol) [0xbe65a8]
+	undetected_chromedriver!(No symbol) [0xbe6755]
+	undetected_chromedriver!(No symbol) [0xbd2b97]
+	KERNEL32!BaseThreadInitThunk [0x7728fcc9+19]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x77af82ae+11e]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x77af827e+ee]
+
+2026-09-14 05:24:09,137 [WARNING] [SCREENSHOT] Failed to capture screenshot: Message: no such window: target window already closed
+from unknown error: web view not found
+  (Session info: chrome=153.0.8010.36)
+Stacktrace:
+	undetected_chromedriver!GetHandleVerifier [0xcc1c33+4e33]
+	undetected_chromedriver!(No symbol) [0xbdd154]
+	undetected_chromedriver!(No symbol) [0xa1c0b0]
+	undetected_chromedriver!(No symbol) [0x9fb073]
+	undetected_chromedriver!(No symbol) [0xa9070b]
+	undetected_chromedriver!(No symbol) [0xaa8a39]
+	undetected_chromedriver!(No symbol) [0xa89846]
+	undetected_chromedriver!(No symbol) [0xa5be6a]
+	undetected_chromedriver!(No symbol) [0xa5cb44]
+	undetected_chromedriver!GetHandleVerifier [0x112797a+46ab7a]
+	undetected_chromedriver!GetHandleVerifier [0x114945b+48c65b]
+	undetected_chromedriver!GetHandleVerifier [0xde4282+127482]
+	undetected_chromedriver!GetHandleVerifier [0xdeaf93+12e193]
+	undetected_chromedriver!(No symbol) [0xbeb278]
+	undetected_chromedriver!(No symbol) [0xbe65a8]
+	undetected_chromedriver!(No symbol) [0xbe6755]
+	undetected_chromedriver!(No symbol) [0xbd2b97]
+	KERNEL32!BaseThreadInitThunk [0x7728fcc9+19]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x77af82ae+11e]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x77af827e+ee]
+
+2026-09-14 05:24:09,138 [INFO] kazoulayacine012@gmail.com | Sent:0 | Failed:1 | send_failed | user=katertotcasserole
+2026-09-14 05:24:10,767 [INFO] [BROWSER] Session cookies and profile data removed: C:\Users\mohamed\AppData\Local\Temp\tumblr_bot_profile_u56is1bo
+2026-09-14 05:24:13,287 [INFO] [ENGINE] Stop requested. Waiting for current action to wrap up...
+2026-09-14 05:24:13,643 [INFO] kazoulayacine012@gmail.com | ===SUMMARY=== | Sent:0 | Failed:1 | completed
+2026-09-14 05:24:13,646 [WARNING] [AUTH] Logout did not complete cleanly (Message: no such window: target window already closed
+from unknown error: web view not found
+  (Session info: chrome=153.0.8010.36)
+Stacktrace:
+	undetected_chromedriver!GetHandleVerifier [0xcc1c33+4e33]
+	undetected_chromedriver!(No symbol) [0xbdd154]
+	undetected_chromedriver!(No symbol) [0xa1c0b0]
+	undetected_chromedriver!(No symbol) [0x9fb073]
+	undetected_chromedriver!(No symbol) [0xa9070b]
+	undetected_chromedriver!(No symbol) [0xaa8a39]
+	undetected_chromedriver!(No symbol) [0xa89846]
+	undetected_chromedriver!(No symbol) [0xa5be6a]
+	undetected_chromedriver!(No symbol) [0xa5cb44]
+	undetected_chromedriver!GetHandleVerifier [0x112797a+46ab7a]
+	undetected_chromedriver!GetHandleVerifier [0x114945b+48c65b]
+	undetected_chromedriver!GetHandleVerifier [0xde4282+127482]
+	undetected_chromedriver!GetHandleVerifier [0xdeaf93+12e193]
+	undetected_chromedriver!(No symbol) [0xbeb278]
+	undetected_chromedriver!(No symbol) [0xbe65a8]
+	undetected_chromedriver!(No symbol) [0xbe6755]
+	undetected_chromedriver!(No symbol) [0xbd2b97]
+	KERNEL32!BaseThreadInitThunk [0x7728fcc9+19]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x77af82ae+11e]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x77af827e+ee]
+).
+2026-09-14 05:24:16,410 [INFO] [BROWSER] Session cookies and profile data removed: C:\Users\mohamed\AppData\Local\Temp\tumblr_bot_profile_ch8cdaw9
+2026-09-14 05:24:33,374 [INFO] [BROWSER] Session cookies and profile data removed: C:\Users\mohamed\AppData\Local\Temp\tumblr_bot_profile_7t3mg8n0
+2026-09-14 05:24:33,375 [ERROR] [ENGINE] Session exception for a.lymanyaljdyd79@gmail.com: AutoHotkey did not finish the desktop login input in time.
+2026-09-14 05:24:33,375 [INFO] a.lymanyaljdyd79@gmail.com | ===SUMMARY=== | Sent:0 | Failed:0 | session_exception: AutoHotkey did not finish the desktop login input in time.
+2026-09-14 05:24:33,419 [INFO] [AUTH] Chrome opened by AutoHotkey for norman.dmavaughanbn@gmail.com; waiting for desktop input...
+2026-09-14 05:24:50,314 [INFO] [BROWSER] Session cookies and profile data removed: C:\Users\mohamed\AppData\Local\Temp\tumblr_bot_profile_r6nsrvna
+2026-09-14 05:24:50,315 [ERROR] [ENGINE] Session exception for norman.dmavaughanbn@gmail.com: AutoHotkey login controller stopped with exit code 3.
+2026-09-14 05:24:50,316 [INFO] norman.dmavaughanbn@gmail.com | ===SUMMARY=== | Sent:0 | Failed:0 | session_exception: AutoHotkey login controller stopped with exit code 3.
+2026-09-14 05:24:50,362 [INFO] [AUTH] Chrome opened by AutoHotkey for mathaniand.iakofrthb@gmail.com; waiting for desktop input...

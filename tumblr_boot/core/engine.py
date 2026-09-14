@@ -391,22 +391,30 @@ class BotEngine:
             })
 
             fp = generate_stealth_fingerprint() if enable_fp_rotation else None
-            driver, profile_dir, used_fp = BrowserFactory.create_browser(
-                fingerprint=fp,
-                email=email,
-                password=password,
-            )
+            # AutoHotkey relies on the active desktop. Keep the entire login and
+            # dashboard verification inside one global slot so a second RDP
+            # window cannot steal focus before the first login has completed.
+            with BrowserFactory.desktop_login_slot():
+                driver, profile_dir, used_fp = BrowserFactory.create_browser(
+                    fingerprint=fp,
+                    email=email,
+                    password=password,
+                )
 
-            if not login(driver, email, password):
-                self._record_login_result(email, success=False)
+                if not login(driver, email, password):
+                    self._record_login_result(email, success=False)
+                    login_result_recorded = True
+                    account_note = "login_failed"
+                    logger.log_event(email, total_ok, fail_count, note=account_note)
+                    logger.log_summary(email, total_ok, fail_count, note=account_note)
+                    return
+
+                self._record_login_result(email, success=True)
                 login_result_recorded = True
-                account_note = "login_failed"
-                logger.log_event(email, total_ok, fail_count, note=account_note)
-                logger.log_summary(email, total_ok, fail_count, note=account_note)
-                return
 
-            self._record_login_result(email, success=True)
-            login_result_recorded = True
+                # Only the native login needs the foreground. Move this exact
+                # instance away before the next account acquires the RDP slot.
+                BrowserFactory.move_browser_to_background(driver, email)
 
             self.post_gui_update("status_info", {
                 "status": "Logged In",

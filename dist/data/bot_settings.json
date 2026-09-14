@@ -1,7 +1,7 @@
 {
   "max_success_per_account": 30,
   "session_success_cap": 15,
-  "parallel_accounts": 5,
+  "parallel_accounts": 3,
   "no_message_limit": 10,
   "action_delay": 0.5,
   "typing_min_delay": 0.05,

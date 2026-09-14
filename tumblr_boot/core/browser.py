@@ -10,6 +10,7 @@ import tempfile
 import threading
 import time
 import urllib.request
+from contextlib import contextmanager
 from pathlib import Path
 from typing import Optional, Tuple
 
@@ -194,7 +195,9 @@ FillAndSubmit() {{
 chromeCmd := Chr(34) . chromePath . Chr(34)
     . " --remote-debugging-address={debug_host}"
     . " --remote-debugging-port={debug_port}"
-    . " --disable-background-mode --no-first-run"
+    . " --disable-background-mode --disable-background-timer-throttling"
+    . " --disable-backgrounding-occluded-windows --disable-renderer-backgrounding"
+    . " --no-first-run"
     . " --user-data-dir=" . Chr(34) . profileDir . Chr(34)
     . " " . Chr(34) . loginUrl . Chr(34)
 
@@ -218,11 +221,6 @@ if !WinWaitActive(chromeWindow,, 10)
 Sleep 500
 FillAndSubmit()
 try FileAppend "ready", signalPath
-
-F2::
-{{
-    FillAndSubmit()
-}}
 '''
 
 
@@ -321,7 +319,14 @@ def _stop_controller(controller: Optional[subprocess.Popen], stop_path: Optional
 class BrowserFactory:
     """Own the AHK controller and the Selenium attachment for one browser session."""
 
-    _launch_lock = threading.Lock()
+    _launch_lock = threading.RLock()
+
+    @classmethod
+    @contextmanager
+    def desktop_login_slot(cls):
+        """Serialize the complete focus-sensitive login phase on RDP desktops."""
+        with cls._launch_lock:
+            yield
 
     @staticmethod
     def create_browser(
@@ -482,6 +487,26 @@ class BrowserFactory:
                     pass
         _remove_session_profile(profile_dir)
         time.sleep(1.0)
+
+    @staticmethod
+    def move_browser_to_background(driver: webdriver.Chrome, email: str = "") -> bool:
+        """Minimize a logged-in Chrome instance while keeping it renderable.
+
+        AutoHotkey needs the native window only until the login is verified.
+        Minimizing that exact instance prevents it from covering the next RDP
+        login window while Selenium continues through its debugging connection.
+        """
+        try:
+            driver.minimize_window()
+            suffix = f" for {email}" if email else ""
+            logger.info(f"[BROWSER] Logged-in browser moved to background{suffix}.")
+            return True
+        except Exception as error:
+            suffix = f" for {email}" if email else ""
+            logger.warning(
+                f"[BROWSER] Could not minimize the logged-in browser{suffix}: {error}"
+            )
+            return False
 
     @staticmethod
     def capture_screenshot(driver: Optional[webdriver.Chrome], prefix: str = "error") -> Optional[str]:

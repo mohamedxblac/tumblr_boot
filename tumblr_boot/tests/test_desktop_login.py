@@ -25,11 +25,14 @@ class DesktopLoginTests(unittest.TestCase):
         )
         self.assertIn("--remote-debugging-port=9345", script)
         self.assertIn("--user-data-dir=", script)
+        self.assertIn("--disable-background-timer-throttling", script)
+        self.assertIn("--disable-backgrounding-occluded-windows", script)
+        self.assertIn("--disable-renderer-backgrounding", script)
         self.assertIn('Send "^a{Backspace}"', script)
         self.assertIn('SendText email', script)
         self.assertIn('SendText password', script)
         self.assertIn('Send "{Enter}"', script)
-        self.assertIn("F2::", script)
+        self.assertNotIn("F2::", script)
         self.assertIn('password := "p``a`"ss"', script)
 
     @unittest.skipUnless(sys.platform == "win32", "AutoHotkey is Windows-only")
@@ -81,6 +84,16 @@ class DesktopLoginTests(unittest.TestCase):
             with patch.object(browser.tempfile, "gettempdir", return_value=root):
                 self.assertTrue(browser._remove_session_profile(str(profile)))
             self.assertFalse(profile.exists())
+
+    def test_logged_in_browser_is_minimized_for_next_rdp_login(self):
+        driver = Mock()
+        with patch.object(browser, "logger"):
+            self.assertTrue(
+                browser.BrowserFactory.move_browser_to_background(
+                    driver, "user@example.test"
+                )
+            )
+        driver.minimize_window.assert_called_once_with()
 
     def test_login_stats_count_unique_accounts_and_track_failures(self):
         bot = engine.BotEngine(Mock())
