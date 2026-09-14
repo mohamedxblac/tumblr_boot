@@ -1,49 +1,31 @@
 # -*- coding: utf-8 -*-
-"""Launch Chrome through AutoHotkey, then attach Selenium to that session."""
+"""Two-phase control of normal Firefox Multi-Account Container tabs.
 
-import json
+Credentials are entered through Firefox's native accessibility UI before a
+WebDriver BiDi session exists. Python connects only after every login in the
+current batch has finished.
+"""
+
+import hashlib
 import os
 import shutil
-import socket
 import subprocess
+import sys
 import tempfile
 import threading
 import time
-import urllib.request
 from contextlib import contextmanager
 from pathlib import Path
 from typing import Optional, Tuple
 
-import undetected_chromedriver as uc
-from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
-
 from config.settings import SCREENSHOTS_DIR
+from core.bidi import BidiDriver, BidiError, MAX_CONTAINER_SLOTS, manager
+from core.firefox_profile import (
+    find_default_profile,
+    restore_tumblr_cookies,
+    snapshot_tumblr_cookies,
+)
 from utils.logger import logger
-
-
-DEBUG_HOST = "127.0.0.1"
-LOGIN_URL = "https://www.tumblr.com/login"
-PROFILE_PREFIX = "tumblr_bot_profile_"
-
-STEALTH_INJECTION_JS = """
-(function() {
-    const fp = window.__BOT_FP__ || {};
-    if (fp.platform) {
-        Object.defineProperty(navigator, 'platform', { get: () => fp.platform, configurable: true });
-    }
-    if (fp.hardware_concurrency) {
-        Object.defineProperty(navigator, 'hardwareConcurrency', { get: () => fp.hardware_concurrency, configurable: true });
-    }
-    if (fp.device_memory) {
-        Object.defineProperty(navigator, 'deviceMemory', { get: () => fp.device_memory, configurable: true });
-    }
-    if (fp.languages) {
-        Object.defineProperty(navigator, 'languages', { get: () => fp.languages, configurable: true });
-    }
-    Object.defineProperty(navigator, 'webdriver', { get: () => false, configurable: true });
-})();
-"""
 
 
 def _first_existing_path(candidates) -> Optional[str]:
@@ -53,472 +35,508 @@ def _first_existing_path(candidates) -> Optional[str]:
     return None
 
 
+def _bundle_root() -> Path:
+    return Path(getattr(sys, "_MEIPASS", Path(__file__).resolve().parents[2]))
+
+
 def find_autohotkey_executable() -> str:
-    """Find an AutoHotkey v2 executable without invoking a shell."""
+    """Find bundled or installed AutoHotkey v2 without invoking a shell."""
     configured = os.environ.get("AUTOHOTKEY_EXE", "").strip()
-    discovered = shutil.which("AutoHotkey64.exe") or shutil.which("AutoHotkey.exe")
-    path = _first_existing_path(
-        (
-            configured,
-            os.path.join(os.environ.get("ProgramFiles", r"C:\Program Files"), "AutoHotkey", "v2", "AutoHotkey64.exe"),
-            os.path.join(os.environ.get("ProgramFiles", r"C:\Program Files"), "AutoHotkey", "UX", "AutoHotkeyUX.exe"),
-            os.path.join(os.environ.get("ProgramFiles(x86)", r"C:\Program Files (x86)"), "AutoHotkey", "v2", "AutoHotkey64.exe"),
-            discovered,
-        )
+    discovered = (
+        shutil.which("AutoHotkey64.exe")
+        or shutil.which("AutoHotkey32.exe")
+        or shutil.which("AutoHotkey.exe")
     )
+    path = _first_existing_path((
+        configured,
+        str(_bundle_root() / "tools" / "AutoHotkey64.exe"),
+        os.path.join(os.environ.get("ProgramFiles", r"C:\Program Files"), "AutoHotkey", "v2", "AutoHotkey64.exe"),
+        os.path.join(os.environ.get("ProgramFiles", r"C:\Program Files"), "AutoHotkey", "v2", "AutoHotkey32.exe"),
+        os.path.join(os.environ.get("ProgramFiles(x86)", r"C:\Program Files (x86)"), "AutoHotkey", "v2", "AutoHotkey32.exe"),
+        discovered,
+    ))
     if not path:
         raise RuntimeError(
-            "AutoHotkey v2 was not found. Install AutoHotkey v2 or set AUTOHOTKEY_EXE "
-            "to the full path of AutoHotkey64.exe."
+            "AutoHotkey v2 was not found. Install AutoHotkey v2 or set "
+            "AUTOHOTKEY_EXE to its full path."
         )
     return path
 
 
-def find_chrome_executable() -> str:
-    """Resolve the real Chrome executable used by the desktop login script."""
-    configured = os.environ.get("CHROME_EXE", "").strip()
+def find_uia_library() -> str:
+    path = _first_existing_path((str(_bundle_root() / "vendor" / "UIA-v2" / "Lib" / "UIA.ahk"),))
+    if not path:
+        raise RuntimeError("The bundled UIA-v2 library was not found.")
+    return path
+
+
+def find_firefox_executable() -> str:
+    """Resolve Firefox for the current Windows user."""
+    configured = os.environ.get("FIREFOX_EXE", "").strip()
     local_app_data = os.environ.get("LOCALAPPDATA", "")
-    discovered = shutil.which("chrome.exe")
-    try:
-        uc_discovered = uc.find_chrome_executable()
-    except Exception:
-        uc_discovered = None
-    path = _first_existing_path(
-        (
-            configured,
-            os.path.join(os.environ.get("ProgramFiles", r"C:\Program Files"), "Google", "Chrome", "Application", "chrome.exe"),
-            os.path.join(os.environ.get("ProgramFiles(x86)", r"C:\Program Files (x86)"), "Google", "Chrome", "Application", "chrome.exe"),
-            os.path.join(local_app_data, "Google", "Chrome", "Application", "chrome.exe") if local_app_data else None,
-            discovered,
-            uc_discovered,
-        )
-    )
+    discovered = shutil.which("firefox.exe") or shutil.which("firefox")
+    path = _first_existing_path((
+        configured,
+        os.path.join(os.environ.get("ProgramFiles", r"C:\Program Files"), "Mozilla Firefox", "firefox.exe"),
+        os.path.join(os.environ.get("ProgramFiles(x86)", r"C:\Program Files (x86)"), "Mozilla Firefox", "firefox.exe"),
+        os.path.join(local_app_data, "Mozilla Firefox", "firefox.exe") if local_app_data else None,
+        discovered,
+    ))
     if not path:
         raise RuntimeError(
-            "Google Chrome was not found. Install Chrome or set CHROME_EXE to its full path."
+            "Mozilla Firefox was not found. Install Firefox or set FIREFOX_EXE "
+            "to its full path."
         )
     return path
+
+
+def _container_key(email: str) -> str:
+    """Create a stable non-identifying key for logs and tests."""
+    return hashlib.sha256(email.strip().lower().encode("utf-8")).hexdigest()[:16]
 
 
 def _ahk_string(value: str) -> str:
-    """Escape arbitrary text for an AutoHotkey v2 quoted string."""
-    return (
-        str(value)
-        .replace("`", "``")
-        .replace('"', '`"')
-        .replace("\r", "`r")
-        .replace("\n", "`n")
-    )
+    """Quote untrusted text as an AutoHotkey v2 string literal."""
+    cleaned = str(value).replace("`", "``").replace('"', '`"')
+    cleaned = cleaned.replace("\r", " ").replace("\n", " ")
+    return f'"{cleaned}"'
 
 
-def _build_login_script(
-    email: str,
-    password: str,
-    chrome_path: str,
-    profile_dir: str,
-    signal_path: str,
-    stop_path: str,
-    debug_host: str,
-    debug_port: int,
-) -> str:
-    """Build the tested keyboard-driven login flow; Selenium is not used here."""
-    values = {
-        "email": _ahk_string(email),
-        "password": _ahk_string(password),
-        "chrome": _ahk_string(chrome_path),
-        "profile": _ahk_string(profile_dir),
-        "signal": _ahk_string(signal_path),
-        "stop": _ahk_string(stop_path),
-    }
+def _build_native_login_script(accounts: list[dict], uia_path: str, status_path: str) -> str:
+    account_rows = []
+    for slot, account in enumerate(accounts, start=1):
+        account_rows.append(
+            "    {Shortcut: " + _ahk_string(str(slot))
+            + ", Email: " + _ahk_string(account["email"])
+            + ", Password: " + _ahk_string(account["password"]) + "}"
+        )
+    rows = ",\n".join(account_rows)
+    include_path = str(uia_path).replace("`", "``")
+    status = _ahk_string(status_path)
     return f'''#Requires AutoHotkey v2.0
 #SingleInstance Force
+#Include {include_path}
 
-email := "{values['email']}"
-password := "{values['password']}"
-loginUrl := "{LOGIN_URL}"
-profileDir := "{values['profile']}"
-chromePath := "{values['chrome']}"
-signalPath := "{values['signal']}"
-stopPath := "{values['stop']}"
-chromePid := 0
-chromeWindow := ""
+SendMode("Event")
+SetKeyDelay(45, 45)
+SetTitleMatchMode(2)
+LoginUrl := "https://www.tumblr.com/login"
+global FirefoxHwnd := 0
+StatusFile := {status}
+Accounts := [
+{rows}
+]
 
-CloseBotChrome(*) {{
-    global chromeWindow
-    if chromeWindow != "" {{
+if A_Args.Length > 0 && A_Args[1] = "--validate"
+    ExitApp(0)
+
+try {{
+    global FirefoxHwnd := WinWait("ahk_exe firefox.exe",, 25)
+    if !FirefoxHwnd
+        throw Error("Firefox did not appear within 25 seconds.")
+    if !ActivateFirefox()
+        throw Error("Firefox could not be activated. No credentials were typed.")
+    ; On a fresh Firefox launch, wait for Multi-Account Containers to finish
+    ; registering its keyboard commands before the first shortcut is sent.
+    Sleep(6500)
+
+    for Index, Account in Accounts {{
+        if !ActivateFirefox()
+            throw Error("Firefox lost focus before container " Account.Shortcut ".")
+        SendEvent("{{Ctrl down}}{{Shift down}}{{" Account.Shortcut "}}{{Shift up}}{{Ctrl up}}")
+        Sleep(2600)
+        if Index = 1 {{
+            ; Remove Firefox's initial ordinary tab. The remaining container
+            ; tabs then have stable positions 1..N for native message actions.
+            SendEvent("^1")
+            Sleep(500)
+            SendEvent("^w")
+            Sleep(1200)
+        }}
+        NavigateExact(LoginUrl)
+        Sleep(7500)
+
+        CurrentUrl := ReadAddressBar()
+        if !RegExMatch(CurrentUrl, "i)^https://(www\\.)?tumblr\\.com/(dashboard(?:[/?#]|$))") {{
+            if !RegExMatch(CurrentUrl, "i)^https://(www\\.)?tumblr\\.com/login(?:[/?#]|$)")
+                throw Error("Tumblr login did not open in container " Account.Shortcut
+                    . ". Current address: " CurrentUrl)
+            Fields := WaitForTumblrFields(22)
+            if !Fields
+                throw Error("Tumblr login fields were not found in container " Account.Shortcut ".")
+            Fields.Email.SetFocus()
+            Sleep(350)
+            if !UIA.CompareElements(UIA.GetFocusedElement(), Fields.Email)
+                throw Error("The email field did not receive focus for account " Index ".")
+            SendEvent("^a")
+            SendText(Account.Email)
+            Sleep(500)
+
+            Fields := WaitForTumblrFields(6)
+            if !Fields
+                throw Error("Tumblr changed the form before password entry for account " Index ".")
+            Fields.Password.SetFocus()
+            Sleep(350)
+            if !UIA.CompareElements(UIA.GetFocusedElement(), Fields.Password)
+                throw Error("The password field did not receive focus for account " Index ".")
+            SendEvent("^a")
+            SendText(Account.Password)
+            Sleep(500)
+            Fields.Submit.Click()
+            Sleep(9500)
+        }}
+
+        MarkerUrl := "https://www.tumblr.com/dashboard?__tumblr_bot_slot=" Account.Shortcut
+            . "#tumblr-bot-slot-" Account.Shortcut
+        NavigateExact(MarkerUrl)
+        Sleep(6000)
+    }}
+
+    for Index, Account in Accounts {{
+        SendEvent("^" Index)
+        Sleep(900)
+        CurrentUrl := ReadAddressBar()
+        if !RegExMatch(CurrentUrl, "i)^https://(www\\.)?tumblr\\.com/dashboard(?:[/?#]|$)")
+            throw Error("Login was not confirmed for account " Index ". Current address: " CurrentUrl)
+    }}
+    FileAppend("OK", StatusFile, "UTF-8")
+    ExitApp(0)
+}}
+catch as Err {{
+    try FileAppend(Err.Message, StatusFile, "UTF-8")
+    ExitApp(1)
+}}
+
+ActivateFirefox() {{
+    global FirefoxHwnd
+    if !FirefoxHwnd || !WinExist("ahk_id " FirefoxHwnd)
+        FirefoxHwnd := WinExist("ahk_exe firefox.exe")
+    if !FirefoxHwnd
+        return false
+    try WinRestore("ahk_id " FirefoxHwnd)
+    WinActivate("ahk_id " FirefoxHwnd)
+    return !!WinWaitActive("ahk_id " FirefoxHwnd,, 6)
+}}
+
+NavigateExact(Url) {{
+    if !ActivateFirefox()
+        throw Error("Firefox lost focus before navigation.")
+    SendEvent("^l")
+    Sleep(450)
+    SendEvent("^a")
+    SendText(Url)
+    Sleep(350)
+    SendEvent("{{Enter}}")
+}}
+
+ReadAddressBar() {{
+    if !ActivateFirefox()
+        return ""
+    SavedClipboard := ClipboardAll()
+    CurrentUrl := ""
+    try {{
+        A_Clipboard := ""
+        SendEvent("^l")
+        Sleep(400)
+        SendEvent("^c")
+        if ClipWait(2)
+            CurrentUrl := A_Clipboard
+    }}
+    finally {{
+        A_Clipboard := SavedClipboard
+    }}
+    SendEvent("{{Esc}}")
+    Sleep(300)
+    return CurrentUrl
+}}
+
+WaitForTumblrFields(TimeoutSeconds) {{
+    global FirefoxHwnd
+    Deadline := A_TickCount + (TimeoutSeconds * 1000)
+    while A_TickCount < Deadline {{
         try {{
-            targetPid := WinGetPID(chromeWindow)
-            WinClose chromeWindow
-            if !WinWaitClose(chromeWindow,, 5)
-                ProcessClose targetPid
+            FirefoxElement := UIA.ElementFromHandle(FirefoxHwnd)
+            EmailField := FirefoxElement.ElementExist({{Type: "Edit", Name: "email", cs: false}})
+            PasswordField := FirefoxElement.ElementExist({{Type: "Edit", Name: "password", cs: false}})
+            SubmitButton := FirefoxElement.ElementExist({{Type: "Button", Name: "Log in", cs: false}})
+            if EmailField && PasswordField && SubmitButton
+                return {{Email: EmailField, Password: PasswordField, Submit: SubmitButton}}
         }}
-    }}
-}}
-
-OnExit CloseBotChrome
-
-CheckForStop() {{
-    global stopPath
-    if FileExist(stopPath)
-        ExitApp 0
-}}
-
-SetTimer CheckForStop, 250
-
-FindNewChromeWindow(knownWindows, timeoutMs) {{
-    deadline := A_TickCount + timeoutMs
-    while A_TickCount < deadline {{
-        for hwnd in WinGetList("ahk_exe chrome.exe") {{
-            if !knownWindows.Has(hwnd)
-                return hwnd
+        catch {{
         }}
-        Sleep 100
+        Sleep(400)
     }}
-    return 0
+    return false
 }}
 
-FillAndSubmit() {{
-    global email, password
-    Send "^a{{Backspace}}"
-    Sleep 200
-    SendText email
-    Sleep 400
-    Send "{{Tab}}"
-    Sleep 300
-    Send "^a{{Backspace}}"
-    Sleep 200
-    SendText password
-    Sleep 400
-    Send "{{Enter}}"
-}}
-
-chromeCmd := Chr(34) . chromePath . Chr(34)
-    . " --remote-debugging-address={debug_host}"
-    . " --remote-debugging-port={debug_port}"
-    . " --disable-background-mode --disable-background-timer-throttling"
-    . " --disable-backgrounding-occluded-windows --disable-renderer-backgrounding"
-    . " --no-first-run"
-    . " --user-data-dir=" . Chr(34) . profileDir . Chr(34)
-    . " " . Chr(34) . loginUrl . Chr(34)
-
-knownChromeWindows := Map()
-for hwnd in WinGetList("ahk_exe chrome.exe")
-    knownChromeWindows[hwnd] := true
-
-Run chromeCmd,,, &chromePid
-chromeWindow := "ahk_pid " . chromePid
-if !WinWait(chromeWindow,, 15) {{
-    newChromeHwnd := FindNewChromeWindow(knownChromeWindows, 10000)
-    if !newChromeHwnd
-        ExitApp 2
-    chromeWindow := "ahk_id " . newChromeHwnd
-}}
-
-Sleep 5000
-WinActivate chromeWindow
-if !WinWaitActive(chromeWindow,, 10)
-    ExitApp 3
-Sleep 500
-FillAndSubmit()
-try FileAppend "ready", signalPath
+^!Esc::ExitApp()
 '''
 
 
-def _allocate_debug_port() -> int:
-    """Ask Windows for an unused localhost port for this Chrome instance."""
-    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as probe:
-        probe.bind((DEBUG_HOST, 0))
-        return int(probe.getsockname()[1])
-
-
-def _debugger_is_ready(address: str, timeout: float = 0.5) -> bool:
+def _run_native_logins(accounts: list[dict], ahk_executable: str, uia_path: str) -> None:
+    script_fd, script_path = tempfile.mkstemp(prefix="tumblr_native_login_", suffix=".ahk")
+    status_fd, status_path = tempfile.mkstemp(prefix="tumblr_native_login_", suffix=".status")
+    os.close(script_fd)
+    os.close(status_fd)
     try:
-        with urllib.request.urlopen(
-            f"http://{address}/json/version", timeout=timeout
-        ) as response:
-            payload = json.loads(response.read().decode("utf-8"))
-        return bool(payload.get("webSocketDebuggerUrl"))
-    except Exception:
-        return False
-
-
-def _wait_for_file(path: str, process: subprocess.Popen, timeout: float) -> None:
-    deadline = time.monotonic() + timeout
-    while time.monotonic() < deadline:
-        if os.path.exists(path):
-            return
-        return_code = process.poll()
-        if return_code is not None:
-            raise RuntimeError(f"AutoHotkey login controller stopped with exit code {return_code}.")
-        time.sleep(0.1)
-    raise TimeoutError("AutoHotkey did not finish the desktop login input in time.")
-
-
-def _wait_for_debugger(address: str, timeout: float = 15.0) -> None:
-    deadline = time.monotonic() + timeout
-    while time.monotonic() < deadline:
-        if _debugger_is_ready(address):
-            return
-        time.sleep(0.2)
-    raise TimeoutError(f"Chrome did not open its debugging endpoint on {address}.")
-
-
-def _wait_for_debugger_shutdown(address: Optional[str], timeout: float = 8.0) -> None:
-    if not address:
-        return
-    deadline = time.monotonic() + timeout
-    while time.monotonic() < deadline:
-        if not _debugger_is_ready(address, timeout=0.2):
-            return
-        time.sleep(0.2)
-
-
-def _remove_session_profile(profile_dir: Optional[str]) -> bool:
-    """Delete only profiles created by this module inside the system temp directory."""
-    if not profile_dir:
-        return True
-    profile = Path(profile_dir).resolve()
-    temp_root = Path(tempfile.gettempdir()).resolve()
-    if profile.parent != temp_root or not profile.name.startswith(PROFILE_PREFIX):
-        logger.error(f"[BROWSER] Refusing to delete an unrecognized profile path: {profile}")
-        return False
-
-    for attempt in range(6):
-        try:
-            if profile.exists():
-                shutil.rmtree(profile)
-            logger.info(f"[BROWSER] Session cookies and profile data removed: {profile}")
-            return True
-        except OSError as error:
-            if attempt == 5:
-                logger.warning(f"[BROWSER] Could not fully remove session profile {profile}: {error}")
-                return False
-            time.sleep(0.5)
-    return False
-
-
-def _stop_controller(controller: Optional[subprocess.Popen], stop_path: Optional[str]) -> None:
-    """Ask AHK to exit normally so its OnExit handler can close Chrome."""
-    if not controller or controller.poll() is not None:
-        return
-    try:
-        if stop_path:
-            Path(stop_path).write_text("stop", encoding="ascii")
-        controller.wait(timeout=5)
-    except Exception:
-        try:
-            controller.terminate()
-            controller.wait(timeout=2)
-        except Exception:
+        os.unlink(status_path)
+        script = _build_native_login_script(accounts, uia_path, status_path)
+        Path(script_path).write_text(script, encoding="utf-8-sig")
+        result = subprocess.run(
+            [ahk_executable, script_path],
+            stdin=subprocess.DEVNULL,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            timeout=max(90, 55 * len(accounts)),
+            creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0),
+        )
+        detail = ""
+        if os.path.isfile(status_path):
+            detail = Path(status_path).read_text(encoding="utf-8-sig", errors="replace").strip()
+        if result.returncode != 0 or detail != "OK":
+            raise BidiError(detail or f"Native Firefox login stopped (exit code {result.returncode}).")
+    except subprocess.TimeoutExpired as error:
+        raise BidiError("Native Firefox login timed out before all accounts finished.") from error
+    finally:
+        for path in (script_path, status_path):
             try:
-                controller.kill()
-            except Exception:
+                os.unlink(path)
+            except OSError:
                 pass
 
 
+def _run_simple_ahk(script: str, ahk_executable: str, prefix: str, timeout: float) -> None:
+    script_fd, script_path = tempfile.mkstemp(prefix=prefix, suffix=".ahk")
+    status_fd, status_path = tempfile.mkstemp(prefix=prefix, suffix=".status")
+    os.close(script_fd)
+    os.close(status_fd)
+    try:
+        os.unlink(status_path)
+        script = script.replace("__STATUS__", _ahk_string(status_path))
+        Path(script_path).write_text(script, encoding="utf-8-sig")
+        result = subprocess.run(
+            [ahk_executable, script_path],
+            stdin=subprocess.DEVNULL,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            timeout=timeout,
+            creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0),
+        )
+        detail = Path(status_path).read_text(
+            encoding="utf-8-sig", errors="replace"
+        ).strip() if os.path.isfile(status_path) else ""
+        if result.returncode != 0 or detail != "OK":
+            raise BidiError(detail or f"AutoHotkey stopped (exit code {result.returncode}).")
+    finally:
+        for path in (script_path, status_path):
+            try:
+                os.unlink(path)
+            except OSError:
+                pass
+
+
+def _close_firefox_after_login(ahk_executable: str) -> None:
+    script = '''#Requires AutoHotkey v2.0
+#SingleInstance Force
+StatusFile := __STATUS__
+hwnd := WinWait("ahk_exe firefox.exe",, 10)
+if !hwnd
+    ExitApp(2)
+WinActivate("ahk_id " hwnd)
+if !WinWaitActive("ahk_id " hwnd,, 5)
+    ExitApp(3)
+WinClose("ahk_id " hwnd)
+if !WinWaitClose("ahk_id " hwnd,, 10) {
+    WinActivate("ahk_id " hwnd)
+    SendEvent("{Enter}")
+    if !WinWaitClose("ahk_id " hwnd,, 12)
+        ExitApp(4)
+}
+FileAppend("OK", StatusFile, "UTF-8")
+ExitApp(0)
+'''
+    _run_simple_ahk(script, ahk_executable, "tumblr_close_after_login_", 35)
+
+
+def _reopen_logged_container_tabs(slot_count: int, ahk_executable: str) -> None:
+    slots = ", ".join(f'"{slot}"' for slot in range(1, slot_count + 1))
+    script = f'''#Requires AutoHotkey v2.0
+#SingleInstance Force
+SendMode("Event")
+SetKeyDelay(45, 45)
+StatusFile := __STATUS__
+Slots := [{slots}]
+hwnd := WinWait("ahk_exe firefox.exe",, 25)
+if !hwnd
+    ExitApp(2)
+WinActivate("ahk_id " hwnd)
+if !WinWaitActive("ahk_id " hwnd,, 6)
+    ExitApp(3)
+Sleep(6500)
+for Index, Slot in Slots {{
+    SendEvent("{{Ctrl down}}{{Shift down}}{{" Slot "}}{{Shift up}}{{Ctrl up}}")
+    Sleep(2600)
+    if Index = 1 {{
+        SendEvent("^1")
+        Sleep(500)
+        SendEvent("^w")
+        Sleep(1200)
+    }}
+    MarkerUrl := "https://www.tumblr.com/dashboard?__tumblr_bot_slot=" Slot
+        . "#tumblr-bot-slot-" Slot
+    SendEvent("^l")
+    Sleep(450)
+    SendEvent("^a")
+    SendText(MarkerUrl)
+    SendEvent("{{Enter}}")
+    Sleep(6000)
+}}
+FileAppend("OK", StatusFile, "UTF-8")
+ExitApp(0)
+'''
+    _run_simple_ahk(
+        script,
+        ahk_executable,
+        "tumblr_reopen_logged_containers_",
+        max(70, 25 * slot_count),
+    )
+
+
 class BrowserFactory:
-    """Own the AHK controller and the Selenium attachment for one browser session."""
+    """Prepare native logins, then expose their tabs through one BiDi session."""
 
     _launch_lock = threading.RLock()
+    _prepared_drivers: dict[str, BidiDriver] = {}
 
     @classmethod
     @contextmanager
     def desktop_login_slot(cls):
-        """Serialize the complete focus-sensitive login phase on RDP desktops."""
-        with cls._launch_lock:
-            yield
+        # Compatibility for existing callers; batch preparation is serialized.
+        yield
 
-    @staticmethod
+    @classmethod
+    def prepare_accounts(cls, accounts: list[dict]) -> None:
+        if not accounts:
+            return
+        if len(accounts) > MAX_CONTAINER_SLOTS:
+            raise ValueError(f"At most {MAX_CONTAINER_SLOTS} accounts can run in one batch.")
+        normalized = [str(account.get("email", "")).strip().lower() for account in accounts]
+        if any(not email for email in normalized) or len(set(normalized)) != len(normalized):
+            raise ValueError("Every account in a Firefox batch must have a unique email address.")
+        if any(account.get("password") is None for account in accounts):
+            raise ValueError("Every Firefox account requires a password.")
+
+        with cls._launch_lock:
+            cls.finish_batch()
+            firefox = find_firefox_executable()
+            autohotkey = find_autohotkey_executable()
+            profile_dir = find_default_profile()
+            manager.ensure_plain_firefox_running(firefox, profile_dir)
+            logger.info(
+                f"[BROWSER] Starting AutoHotkey-only login for {len(accounts)} account(s). "
+                "Firefox has no remote-control option."
+            )
+            try:
+                _run_native_logins(accounts, autohotkey, find_uia_library())
+                cookie_snapshot = snapshot_tumblr_cookies(profile_dir)
+                logger.info(
+                    f"[BROWSER] Captured {len(cookie_snapshot[1])} Tumblr container "
+                    "cookies before closing the normal browser."
+                )
+                _close_firefox_after_login(autohotkey)
+                manager.wait_until_firefox_stops()
+                restored = restore_tumblr_cookies(profile_dir, cookie_snapshot)
+                logger.info(
+                    f"[BROWSER] Restored {restored} Tumblr cookies to the same "
+                    "Firefox profile after the clean shutdown."
+                )
+                manager.ensure_firefox_running(firefox, profile_dir)
+                _reopen_logged_container_tabs(len(accounts), autohotkey)
+                logger.info(
+                    "[BROWSER] Reopened the saved container sessions; attaching "
+                    "Python after login without submitting credentials again."
+                )
+                manager.connect_session()
+                contexts = manager.map_marked_container_tabs(list(range(1, len(accounts) + 1)))
+                cls._prepared_drivers = {
+                    normalized[slot - 1]: BidiDriver(manager, contexts[slot], slot)
+                    for slot in range(1, len(accounts) + 1)
+                }
+            except Exception:
+                cls._prepared_drivers.clear()
+                manager.disconnect_session()
+                raise
+
+    @classmethod
     def create_browser(
+        cls,
         fingerprint: Optional[dict] = None,
         headless: bool = False,
         *,
         email: Optional[str] = None,
         password: Optional[str] = None,
-    ) -> Tuple[webdriver.Chrome, str, dict]:
+    ) -> Tuple[BidiDriver, None, dict]:
+        del password
         if headless:
-            raise RuntimeError("Desktop login requires a visible Chrome window.")
-        if not email or password is None:
-            raise ValueError("Desktop login requires an email and password.")
-
+            raise RuntimeError("The normal Firefox container workflow must be visible.")
+        key = str(email or "").strip().lower()
+        with cls._launch_lock:
+            driver = cls._prepared_drivers.pop(key, None)
+        if driver is None:
+            raise RuntimeError(
+                "This account was not prepared by the native Firefox login phase. "
+                "Stop the run and start it again."
+            )
+        if fingerprint:
+            logger.info(
+                "[BIDI] Fingerprint rotation is skipped because the bot uses "
+                "the user's normal shared Firefox profile."
+            )
+        logger.info(
+            f"[BROWSER] Python control attached after native login for "
+            f"{email} ({_container_key(email or '')})."
+        )
         native_profile = {
-            "platform_type": "native-desktop",
+            "platform_type": "normal-firefox-native-login-then-bidi",
             "screen_width": 0,
             "screen_height": 0,
             "timezone": "system",
         }
+        return driver, None, native_profile
 
-        with BrowserFactory._launch_lock:
-            ahk_executable = find_autohotkey_executable()
-            chrome_executable = find_chrome_executable()
-            profile_dir = tempfile.mkdtemp(prefix=PROFILE_PREFIX)
-            debug_port = _allocate_debug_port()
-            debug_address = f"{DEBUG_HOST}:{debug_port}"
-
-            script_fd, script_path = tempfile.mkstemp(prefix="tumblr_desktop_login_", suffix=".ahk")
-            os.close(script_fd)
-            signal_fd, signal_path = tempfile.mkstemp(prefix="tumblr_desktop_login_", suffix=".ready")
-            os.close(signal_fd)
-            os.unlink(signal_path)
-            stop_fd, stop_path = tempfile.mkstemp(prefix="tumblr_desktop_login_", suffix=".stop")
-            os.close(stop_fd)
-            os.unlink(stop_path)
-
-            controller = None
-            driver = None
-            try:
-                script_text = _build_login_script(
-                    email,
-                    password,
-                    chrome_executable,
-                    profile_dir,
-                    signal_path,
-                    stop_path,
-                    DEBUG_HOST,
-                    debug_port,
-                )
-                Path(script_path).write_text(script_text, encoding="utf-8-sig")
-
-                creation_flags = getattr(subprocess, "CREATE_NO_WINDOW", 0)
-                controller = subprocess.Popen(
-                    [ahk_executable, script_path],
-                    stdin=subprocess.DEVNULL,
-                    stdout=subprocess.DEVNULL,
-                    stderr=subprocess.DEVNULL,
-                    creationflags=creation_flags,
-                )
-                logger.info(
-                    f"[AUTH] Chrome opened by AutoHotkey for {email}; waiting for desktop input..."
-                )
-                _wait_for_file(signal_path, controller, timeout=25.0)
-                _wait_for_debugger(debug_address, timeout=15.0)
-
-                options = webdriver.ChromeOptions()
-                options.debugger_address = debug_address
-                options.page_load_strategy = "eager"
-
-                patcher = uc.Patcher()
-                patcher.auto()
-                service = Service(executable_path=patcher.executable_path)
-                driver = webdriver.Chrome(service=service, options=options)
-                driver.set_page_load_timeout(30)
-                driver.implicitly_wait(0)
-
-                # Login itself stays completely native. Optional fingerprint
-                # rotation is installed only after attachment, for later pages.
-                used_profile = fingerprint or native_profile
-                if fingerprint:
-                    try:
-                        setup_script = (
-                            f"window.__BOT_FP__ = {json.dumps(fingerprint)};\n"
-                            + STEALTH_INJECTION_JS
-                        )
-                        driver.execute_cdp_cmd(
-                            "Page.addScriptToEvaluateOnNewDocument",
-                            {"source": setup_script},
-                        )
-                        if fingerprint.get("timezone"):
-                            driver.execute_cdp_cmd(
-                                "Emulation.setTimezoneOverride",
-                                {"timezoneId": fingerprint["timezone"]},
-                            )
-                        if fingerprint.get("user_agent"):
-                            driver.execute_cdp_cmd(
-                                "Network.setUserAgentOverride",
-                                {
-                                    "userAgent": fingerprint["user_agent"],
-                                    "acceptLanguage": "en-US,en",
-                                    "platform": fingerprint.get("platform", "Win32"),
-                                },
-                            )
-                    except Exception as e:
-                        logger.warning(f"[BROWSER] Post-login fingerprint setup was skipped: {e}")
-
-                driver._tumblr_ahk_controller = controller
-                driver._tumblr_ahk_script = script_path
-                driver._tumblr_ahk_signal = signal_path
-                driver._tumblr_ahk_stop = stop_path
-                driver._tumblr_debug_address = debug_address
-                logger.info(
-                    f"[BROWSER] Selenium attached to the AutoHotkey Chrome session on {debug_address}."
-                )
-                return driver, profile_dir, used_profile
-            except Exception:
-                if driver:
-                    try:
-                        driver.quit()
-                    except Exception:
-                        pass
-                _stop_controller(controller, stop_path)
-                _wait_for_debugger_shutdown(debug_address)
-                _remove_session_profile(profile_dir)
-                for temporary_path in (script_path, signal_path, stop_path):
-                    try:
-                        os.unlink(temporary_path)
-                    except OSError:
-                        pass
-                raise
+    @classmethod
+    def finish_batch(cls) -> None:
+        with cls._launch_lock:
+            leftovers = list(cls._prepared_drivers.values())
+            cls._prepared_drivers.clear()
+            for driver in leftovers:
+                try:
+                    driver.quit()
+                except Exception:
+                    pass
+            manager.disconnect_session()
 
     @staticmethod
-    def close_browser(driver: Optional[webdriver.Chrome], profile_dir: Optional[str] = None):
-        controller = getattr(driver, "_tumblr_ahk_controller", None) if driver else None
-        debug_address = getattr(driver, "_tumblr_debug_address", None) if driver else None
-        temporary_paths = (
-            getattr(driver, "_tumblr_ahk_script", None) if driver else None,
-            getattr(driver, "_tumblr_ahk_signal", None) if driver else None,
-            getattr(driver, "_tumblr_ahk_stop", None) if driver else None,
-        )
-        stop_path = temporary_paths[2]
-
+    def close_browser(driver: Optional[BidiDriver], profile_dir: Optional[str] = None):
+        del profile_dir
         if driver:
             try:
                 driver.quit()
-            except Exception as e:
-                logger.debug(f"[BROWSER] Error during driver.quit: {e}")
-
-        _stop_controller(controller, stop_path)
-        _wait_for_debugger_shutdown(debug_address)
-
-        for temporary_path in temporary_paths:
-            if temporary_path:
-                try:
-                    os.unlink(temporary_path)
-                except OSError:
-                    pass
-        _remove_session_profile(profile_dir)
-        time.sleep(1.0)
+            except Exception as error:
+                logger.debug(f"[BROWSER] Error while closing container tab: {error}")
+        time.sleep(0.3)
 
     @staticmethod
-    def move_browser_to_background(driver: webdriver.Chrome, email: str = "") -> bool:
-        """Minimize a logged-in Chrome instance while keeping it renderable.
-
-        AutoHotkey needs the native window only until the login is verified.
-        Minimizing that exact instance prevents it from covering the next RDP
-        login window while Selenium continues through its debugging connection.
-        """
-        try:
-            driver.minimize_window()
-            suffix = f" for {email}" if email else ""
-            logger.info(f"[BROWSER] Logged-in browser moved to background{suffix}.")
-            return True
-        except Exception as error:
-            suffix = f" for {email}" if email else ""
-            logger.warning(
-                f"[BROWSER] Could not minimize the logged-in browser{suffix}: {error}"
-            )
-            return False
-
-    @staticmethod
-    def capture_screenshot(driver: Optional[webdriver.Chrome], prefix: str = "error") -> Optional[str]:
+    def capture_screenshot(driver: Optional[BidiDriver], prefix: str = "error") -> Optional[str]:
         if not driver:
             return None
         try:
             os.makedirs(SCREENSHOTS_DIR, exist_ok=True)
-            ts = time.strftime("%Y%m%d_%H%M%S")
-            filepath = os.path.join(SCREENSHOTS_DIR, f"{prefix}_{ts}.png")
+            timestamp = time.strftime("%Y%m%d_%H%M%S")
+            filepath = os.path.join(SCREENSHOTS_DIR, f"{prefix}_{timestamp}.png")
             driver.save_screenshot(filepath)
             logger.info(f"[SCREENSHOT] Saved state capture to: {filepath}")
             return filepath
-        except Exception as e:
-            logger.warning(f"[SCREENSHOT] Failed to capture screenshot: {e}")
+        except Exception as error:
+            logger.warning(f"[SCREENSHOT] Failed to capture screenshot: {error}")
             return None

@@ -174,8 +174,8 @@ class RunnerTab(ttk.Frame):
         except ValueError:
             messagebox.showerror("Invalid Parallel Count", "Parallel tabs/accounts must be a whole number.")
             return
-        if not 1 <= parallel_accounts <= 10:
-            messagebox.showerror("Invalid Parallel Count", "Choose a number from 1 to 10.")
+        if not 1 <= parallel_accounts <= 9:
+            messagebox.showerror("Invalid Parallel Count", "Choose a number from 1 to 9.")
             return
         self.engine.settings_mgr.update_settings({"parallel_accounts": parallel_accounts})
         self.engine.start()

@@ -1,8 +1,0 @@
-2026-09-13 02:00:21 | norman.dmavaughanbn@gmail.com | Sent:0 | Failed:0 | login_failed
-2026-09-13 02:00:30 | mathaniand.iakofrthb@gmail.com | Sent:0 | Failed:0 | login_failed
-2026-09-13 02:01:28 | mathaniandiak.ofrthb@gmail.com | Sent:0 | Failed:1 | completed
-2026-09-13 02:01:29 | kazoulayacine012@gmail.com | Sent:0 | Failed:1 | completed
-2026-09-14 05:24:07 | alymanyaljdyd79@gmail.com | Sent:0 | Failed:0 | login_failed
-2026-09-14 05:24:13 | kazoulayacine012@gmail.com | Sent:0 | Failed:1 | completed
-2026-09-14 05:24:33 | a.lymanyaljdyd79@gmail.com | Sent:0 | Failed:0 | session_exception: AutoHotkey did not finish the desktop login input in time.
-2026-09-14 05:24:50 | norman.dmavaughanbn@gmail.com | Sent:0 | Failed:0 | session_exception: AutoHotkey login controller stopped with exit code 3.

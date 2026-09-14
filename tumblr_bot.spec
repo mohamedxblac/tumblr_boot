@@ -6,19 +6,34 @@ from PyInstaller.utils.hooks import collect_all
 ROOT_DIR = os.path.abspath(SPECPATH)
 BOT_DIR = os.path.join(ROOT_DIR, 'tumblr_boot')
 
-# Collect all resources and dependencies for undetected_chromedriver and selenium
-datas_uc, binaries_uc, hiddenimports_uc = collect_all('undetected_chromedriver')
-datas_sel, binaries_sel, hiddenimports_sel = collect_all('selenium')
+# Collect the direct WebSocket client used by Firefox WebDriver BiDi.
+datas_ws, binaries_ws, hiddenimports_ws = collect_all('websockets')
 
-all_datas = datas_uc + datas_sel
+all_datas = datas_ws
 icon_file = os.path.join(ROOT_DIR, 'assets', 'app_icon.ico')
 if os.path.exists(icon_file):
     all_datas.append((icon_file, 'assets'))
 
-all_binaries = binaries_uc + binaries_sel
+uia_file = os.path.join(ROOT_DIR, 'vendor', 'UIA-v2', 'Lib', 'UIA.ahk')
+uia_license = os.path.join(ROOT_DIR, 'vendor', 'UIA-v2', 'LICENSE')
+if not os.path.isfile(uia_file):
+    raise FileNotFoundError('The vendored UIA-v2 library is required for native Firefox login.')
+all_datas.append((uia_file, os.path.join('vendor', 'UIA-v2', 'Lib')))
+if os.path.isfile(uia_license):
+    all_datas.append((uia_license, os.path.join('vendor', 'UIA-v2')))
+
+all_binaries = binaries_ws
+ahk_candidates = [
+    os.path.join(os.environ.get('ProgramFiles', r'C:\Program Files'), 'AutoHotkey', 'v2', 'AutoHotkey64.exe'),
+    os.path.join(os.environ.get('ProgramFiles', r'C:\Program Files'), 'AutoHotkey', 'v2', 'AutoHotkey32.exe'),
+]
+ahk_file = next((path for path in ahk_candidates if os.path.isfile(path)), None)
+if not ahk_file:
+    raise FileNotFoundError('AutoHotkey v2 is required to build the standalone executable.')
+all_binaries.append((ahk_file, 'tools'))
+
 all_hiddenimports = (
-    hiddenimports_uc
-    + hiddenimports_sel
+    hiddenimports_ws
     + [
         'sqlite3',
         'tkinter',
@@ -41,7 +56,9 @@ all_hiddenimports = (
         'config.fingerprints',
         'core',
         'core.auth',
+        'core.bidi',
         'core.browser',
+        'core.compat',
         'core.contact_history',
         'core.engine',
         'core.messenger',

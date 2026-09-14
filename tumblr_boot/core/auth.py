@@ -2,9 +2,7 @@
 import time
 from typing import Optional
 
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
+from core.compat import By, WebDriverWait, EC
 
 from core.browser import BrowserFactory
 from utils.logger import logger
@@ -126,7 +124,7 @@ def dismiss_consent_screen_if_present(driver) -> bool:
     return False
 
 
-# التحقق فقط من نتيجة تسجيل الدخول الذي نفذه AutoHotkey؛ لا تُكتب البيانات عبر Selenium.
+# التحقق فقط من نتيجة تسجيل الدخول الذي نفذه Firefox BiDi.
 def login(driver, email: str, password: Optional[str] = None, max_retries: int = 1) -> bool:
     del password, max_retries
     started_at = time.monotonic()
@@ -142,7 +140,7 @@ def login(driver, email: str, password: Optional[str] = None, max_retries: int =
             logger.error(f"[AUTH] Tumblr presented a human-verification challenge for {email}.")
     except Exception as e:
         logger.warning(
-            f"[AUTH] Could not confirm the AutoHotkey login for {email}: {type(e).__name__}: {e}"
+            f"[AUTH] Could not confirm the BiDi login for {email}: {type(e).__name__}: {e}"
         )
 
     BrowserFactory.capture_screenshot(driver, prefix=f"login_fail_{email.split('@')[0]}")

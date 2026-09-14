@@ -77,7 +77,7 @@ class SettingsTab(ttk.Frame):
 
         self._add_row(card2, "max_success_per_account", "Max Success Per Account (Lifetime):", "30", is_int=True)
         self._add_row(card2, "session_success_cap", "Session Cap (Messages per login):", "15", is_int=True)
-        self._add_row(card2, "parallel_accounts", "Parallel Accounts (1-10):", "1", is_int=True)
+        self._add_row(card2, "parallel_accounts", "Parallel Accounts (1-9):", "1", is_int=True)
         self._add_row(card2, "no_message_limit", "Streak Limit (Closed DMs before skip):", "10", is_int=True)
         self._add_row(card2, "start_account_index", "Start From Account # (1-indexed):", "1", is_int=True)
 
@@ -111,7 +111,7 @@ class SettingsTab(ttk.Frame):
         self.fp_rotation_var = tk.BooleanVar(value=True)
         cb1 = ttk.Checkbutton(
             card5,
-            text="Enable Automatic Browser Fingerprint Rotation (User-Agent, WebGL, Canvas, Timezone)",
+            text="Enable Firefox Fingerprint Rotation (User-Agent, Platform, Language, Timezone)",
             variable=self.fp_rotation_var
         )
         cb1.pack(anchor="w", pady=4)
@@ -175,8 +175,8 @@ class SettingsTab(ttk.Frame):
                 messagebox.showerror("Validation Error", "Typing min delay cannot be greater than typing max delay.")
                 return
 
-            if not 1 <= updates["parallel_accounts"] <= 10:
-                messagebox.showerror("Validation Error", "Parallel accounts must be between 1 and 10.")
+            if not 1 <= updates["parallel_accounts"] <= 9:
+                messagebox.showerror("Validation Error", "Parallel accounts must be between 1 and 9.")
                 return
 
             delay_keys = (

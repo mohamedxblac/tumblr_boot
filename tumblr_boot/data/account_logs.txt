@@ -553,3 +553,178 @@ Stacktrace:
 2026-09-12 04:13:36,108 [ERROR] [AUTH] All login attempts failed for mathaniand.iakofrthb@gmail.com
 2026-09-12 04:13:36,108 [INFO] mathaniand.iakofrthb@gmail.com | Sent:0 | Failed:0 | login_failed
 2026-09-12 04:13:36,109 [INFO] mathaniand.iakofrthb@gmail.com | ===SUMMARY=== | Sent:0 | Failed:0 | login_failed
+2026-09-14 16:33:03,722 [INFO] [BROWSER] BiDi login submitted for user@example.test in container shortcut 3 (5d948c5573e1d347).
+2026-09-14 16:33:37,338 [INFO] [BIDI] Connected directly to Firefox 155.0.1.
+2026-09-14 16:34:11,036 [INFO] [BIDI] Connected directly to Firefox 155.0.1.
+2026-09-14 16:34:11,819 [INFO] [BIDI] Cleared old Tumblr cookies in the selected container.
+2026-09-14 16:34:18,323 [INFO] [BROWSER] BiDi login submitted for user@example.test in container shortcut 3 (5d948c5573e1d347).
+2026-09-14 16:34:44,206 [INFO] [BIDI] Starting the user's normal Firefox profile.
+2026-09-14 16:34:47,439 [INFO] [BIDI] Connected directly to Firefox 155.0.1.
+2026-09-14 16:34:54,577 [INFO] [BIDI] Container shortcut 1 opened in context 81bfeb3d-70a1-4227-9959-bfdb9431e23c (userContext=9ad2487f-908f-4a55-9762-b8a2cfe7d91f).
+2026-09-14 16:35:27,643 [INFO] [BIDI] Connected directly to Firefox 155.0.1.
+2026-09-14 16:35:34,036 [INFO] [BIDI] Container shortcut 1 opened in context 62addc89-c399-4f43-bc50-76dd8a87295c (userContext=9ad2487f-908f-4a55-9762-b8a2cfe7d91f).
+2026-09-14 16:35:34,041 [WARNING] [BIDI] Could not clear old container cookies: storage.deleteCookies: unsupported operation - System access is required. Start Firefox with "-remote-allow-system-access" to enable it.
+2026-09-14 16:37:04,274 [INFO] [BIDI] Starting the user's normal Firefox profile.
+2026-09-14 16:37:07,348 [INFO] [BIDI] Connected directly to Firefox 155.0.1.
+2026-09-14 16:37:13,936 [INFO] [BIDI] Container shortcut 1 opened in context 91c93981-1f99-42ed-b235-248983fd0625 (userContext=229c3c15-7c16-471c-b820-28c8cf253a8b).
+2026-09-14 16:37:14,488 [INFO] [BROWSER] BiDi login submitted for alymanyaljdyd79@gmail.com in container shortcut 1 (42fac269272f2f08).
+2026-09-14 16:37:15,620 [ERROR] [AUTH] Tumblr rejected the desktop login credentials for alymanyaljdyd79@gmail.com.
+2026-09-14 16:37:15,821 [WARNING] [SCREENSHOT] Failed to capture screenshot: sent 1009 (message too big) frame with 2073879 bytes exceeds limit of 1048576 bytes; no close frame received
+2026-09-14 16:37:15,821 [ERROR] [AUTH] Desktop login failed for alymanyaljdyd79@gmail.com
+2026-09-14 16:37:57,544 [INFO] [BROWSER] BiDi login submitted for user@example.test in container shortcut 3 (5d948c5573e1d347).
+2026-09-14 16:40:48,197 [INFO] [BROWSER] BiDi login submitted for user@example.test in container shortcut 3 (5d948c5573e1d347).
+2026-09-14 17:44:33,800 [INFO] [BROWSER] Python control attached after native login for user@example.test (5d948c5573e1d347).
+2026-09-14 17:44:33,805 [INFO] [BROWSER] Starting native Firefox login for 1 account(s); the BiDi automation session is still off.
+2026-09-14 17:44:33,806 [INFO] [BROWSER] Native login phase finished; connecting Python control now.
+2026-09-14 17:47:31,183 [INFO] [BROWSER] Python control attached after native login for user@example.test (5d948c5573e1d347).
+2026-09-14 17:47:31,544 [INFO] [BROWSER] Starting native Firefox login for 1 account(s); the BiDi automation session is still off.
+2026-09-14 17:47:31,545 [INFO] [BROWSER] Native login phase finished; connecting Python control now.
+2026-09-14 17:49:54,698 [INFO] [BROWSER] Python control attached after native login for user@example.test (5d948c5573e1d347).
+2026-09-14 17:49:55,051 [INFO] [BROWSER] Starting native Firefox login for 1 account(s); the BiDi automation session is still off.
+2026-09-14 17:49:55,051 [INFO] [BROWSER] Native login phase finished; connecting Python control now.
+2026-09-14 17:50:46,913 [INFO] [BIDI] Starting the user's normal Firefox profile.
+2026-09-14 17:50:48,286 [INFO] [BROWSER] Starting native Firefox login for 1 account(s); the BiDi automation session is still off.
+2026-09-14 17:51:52,528 [INFO] [BIDI] Starting the user's normal Firefox profile.
+2026-09-14 17:51:53,197 [INFO] [BROWSER] Starting native Firefox login for 1 account(s); the BiDi automation session is still off.
+2026-09-14 17:52:20,317 [INFO] [BROWSER] Native login phase finished; connecting Python control now.
+2026-09-14 17:52:20,347 [INFO] [BIDI] Connected directly to Firefox 155.0.1.
+2026-09-14 17:53:00,827 [INFO] [BIDI] Starting the user's normal Firefox profile.
+2026-09-14 17:53:01,490 [INFO] [BROWSER] Starting native Firefox login for 1 account(s); the BiDi automation session is still off.
+2026-09-14 17:53:35,153 [INFO] [BROWSER] Native login phase finished; connecting Python control now.
+2026-09-14 17:53:36,936 [INFO] [BIDI] Connected directly to Firefox 155.0.1.
+2026-09-14 17:53:49,137 [INFO] [BIDI] Mapped native login slot 1 to context 9c818b0c-9c9b-4a37-8fad-c48318f68e90 (userContext=529794bc-c6ff-42af-b687-7300528cbc83).
+2026-09-14 17:53:49,138 [INFO] [BROWSER] Python control attached after native login for alymanyaljdyd79@gmail.com (42fac269272f2f08).
+2026-09-14 17:53:51,532 [INFO] [AUTH] Desktop login SUCCESSFUL: alymanyaljdyd79@gmail.com (2.4s)
+2026-09-14 17:54:16,135 [INFO] [BROWSER] Starting native Firefox login for 3 account(s); the BiDi automation session is still off.
+2026-09-14 17:55:23,272 [INFO] [BIDI] Starting the user's normal Firefox profile.
+2026-09-14 17:55:24,627 [INFO] [BROWSER] Starting native Firefox login for 3 account(s); the BiDi automation session is still off.
+2026-09-14 17:57:08,121 [INFO] [BROWSER] Native login phase finished; connecting Python control now.
+2026-09-14 17:57:08,137 [INFO] [BIDI] Connected directly to Firefox 155.0.1.
+2026-09-14 17:57:08,170 [INFO] [BIDI] Mapped native login slot 1 to context cea5be1b-151f-4c5d-b787-c08409919c24 (userContext=f2a00ab1-4b56-4bab-9b8c-4757dc5dd84a).
+2026-09-14 17:57:08,170 [INFO] [BIDI] Mapped native login slot 2 to context 9d07ce48-e1f3-4479-bd2b-bb7c4524350c (userContext=0fa7a1af-ab56-4f49-84c5-eba9c45dd4a4).
+2026-09-14 17:57:08,170 [INFO] [BIDI] Mapped native login slot 3 to context 192c8b3e-a3ab-4ec6-86d8-b50f23a16a53 (userContext=7e8a9c61-c1d6-47ea-8c6f-e4ce51aaec59).
+2026-09-14 17:57:08,171 [INFO] [BROWSER] Python control attached after native login for alymanyaljdyd79@gmail.com (42fac269272f2f08).
+2026-09-14 17:57:08,197 [INFO] [AUTH] Desktop login SUCCESSFUL: alymanyaljdyd79@gmail.com (0.0s)
+2026-09-14 17:57:08,201 [INFO] [BROWSER] Python control attached after native login for a.lymanyaljdyd79@gmail.com (0022db02f3535ca9).
+2026-09-14 17:57:08,219 [INFO] [AUTH] Desktop login SUCCESSFUL: a.lymanyaljdyd79@gmail.com (0.0s)
+2026-09-14 17:57:08,224 [INFO] [BROWSER] Python control attached after native login for norman.dmavaughanbn@gmail.com (fa4751d2c21caa5a).
+2026-09-14 17:57:08,241 [INFO] [AUTH] Desktop login SUCCESSFUL: norman.dmavaughanbn@gmail.com (0.0s)
+2026-09-14 17:59:30,663 [INFO] [BROWSER] Python control attached after native login for user@example.test (5d948c5573e1d347).
+2026-09-14 17:59:31,014 [INFO] [BROWSER] Starting native Firefox login for 1 account(s); the BiDi automation session is still off.
+2026-09-14 17:59:31,015 [INFO] [BROWSER] Native login phase finished; connecting Python control now.
+2026-09-14 18:07:59,845 [INFO] [BROWSER] Python control attached after native login for user@example.test (5d948c5573e1d347).
+2026-09-14 18:08:00,401 [INFO] [BROWSER] Starting AutoHotkey-only login for 1 account(s). Firefox has no remote-control port or BiDi session.
+2026-09-14 18:08:00,401 [INFO] [BROWSER] Native login succeeded and Firefox closed cleanly; restarting it for post-login Python control.
+2026-09-14 18:08:49,594 [INFO] [ENGINE] Bot engine started.
+2026-09-14 18:08:49,605 [INFO] [ENGINE] Starting round with 20 pending accounts across 2 parallel browser(s)...
+2026-09-14 18:08:50,389 [INFO] [BROWSER] Starting Firefox normally for AutoHotkey-only login.
+2026-09-14 18:08:50,923 [INFO] [BROWSER] Starting AutoHotkey-only login for 2 account(s). Firefox has no remote-control port or BiDi session.
+2026-09-14 18:09:52,480 [INFO] [BROWSER] Native login succeeded and Firefox closed cleanly; restarting it for post-login Python control.
+2026-09-14 18:09:53,117 [INFO] [BIDI] Starting the user's normal Firefox profile.
+2026-09-14 18:10:07,796 [INFO] [ENGINE] Stop requested. Waiting for current action to wrap up...
+2026-09-14 18:10:11,786 [INFO] [ENGINE] Stop requested. Waiting for current action to wrap up...
+2026-09-14 18:10:14,913 [ERROR] [ENGINE] Unhandled exception in run loop: Firefox lost focus before reopening container 2.
+2026-09-14 18:10:14,913 [INFO] [ENGINE] Bot engine stopped cleanly.
+2026-09-14 18:10:20,849 [INFO] [ENGINE] Bot engine started.
+2026-09-14 18:10:20,861 [INFO] [ENGINE] Starting round with 20 pending accounts across 4 parallel browser(s)...
+2026-09-14 18:10:21,701 [INFO] [BROWSER] Starting Firefox normally for AutoHotkey-only login.
+2026-09-14 18:10:22,593 [INFO] [BROWSER] Starting AutoHotkey-only login for 4 account(s). Firefox has no remote-control port or BiDi session.
+2026-09-14 18:10:47,024 [ERROR] [ENGINE] Unhandled exception in run loop: Tumblr login did not open in container 1. Current address:
+2026-09-14 18:10:47,024 [INFO] [ENGINE] Bot engine stopped cleanly.
+2026-09-14 18:20:59,635 [INFO] [BROWSER] Python control attached after native login for user@example.test (5d948c5573e1d347).
+2026-09-14 18:21:00,035 [INFO] [BROWSER] Starting AutoHotkey-only login for 1 account(s). No Python/BiDi session exists yet.
+2026-09-14 18:21:00,035 [INFO] [BROWSER] Every native login finished; attaching Python to the same open container tabs now.
+2026-09-14 18:21:43,211 [INFO] [ENGINE] Bot engine started.
+2026-09-14 18:21:43,220 [INFO] [ENGINE] Starting round with 20 pending accounts across 4 parallel browser(s)...
+2026-09-14 18:21:43,987 [INFO] [BIDI] Starting the user's normal Firefox profile.
+2026-09-14 18:21:44,660 [INFO] [BROWSER] Starting AutoHotkey-only login for 4 account(s). No Python/BiDi session exists yet.
+2026-09-14 18:22:04,438 [INFO] [ENGINE] Stop requested. Waiting for current action to wrap up...
+2026-09-14 18:22:10,874 [INFO] [ENGINE] Stop requested. Waiting for current action to wrap up...
+2026-09-14 18:22:13,770 [INFO] [ENGINE] Stop requested. Waiting for current action to wrap up...
+2026-09-14 18:42:56,974 [INFO] [BROWSER] Python control attached after native login for user@example.test (5d948c5573e1d347).
+2026-09-14 18:42:57,312 [INFO] [BROWSER] Starting AutoHotkey-only login for 1 account(s). No Python/BiDi session exists yet.
+2026-09-14 18:42:57,313 [INFO] [BROWSER] Every native login finished; attaching Python to the same open container tabs now.
+2026-09-14 18:43:32,181 [INFO] [BROWSER] Python control attached after native login for user@example.test (5d948c5573e1d347).
+2026-09-14 18:43:47,587 [INFO] [BROWSER] Starting AutoHotkey-only login for 1 account(s). No Python/BiDi session exists yet.
+2026-09-14 18:43:47,587 [INFO] [BROWSER] Every native login finished; attaching Python to the same open container tabs now.
+2026-09-14 18:44:36,479 [INFO] [NATIVE] Starting ordinary Firefox with no automation flags.
+2026-09-14 18:45:29,067 [INFO] [NATIVE] 1 account(s) logged in. Starting UIA message actions without browser-control mode.
+2026-09-14 18:53:58,158 [INFO] [BROWSER] Python control attached after native login for user@example.test (5d948c5573e1d347).
+2026-09-14 18:53:58,433 [INFO] [BROWSER] Starting AutoHotkey-only login for 1 account(s). Firefox has no remote-control option.
+2026-09-14 18:53:58,434 [INFO] [BROWSER] Captured 1 Tumblr container cookies before closing the normal browser.
+2026-09-14 18:53:58,434 [INFO] [BROWSER] Restored 1 Tumblr cookies to the same Firefox profile after the clean shutdown.
+2026-09-14 18:53:58,434 [INFO] [BROWSER] Reopened the saved container sessions; attaching Python after login without submitting credentials again.
+2026-09-14 18:54:31,883 [INFO] [BROWSER] Starting Firefox normally for AutoHotkey-only login.
+2026-09-14 18:54:32,313 [INFO] [BROWSER] Starting AutoHotkey-only login for 1 account(s). Firefox has no remote-control option.
+2026-09-14 18:55:10,589 [INFO] [BROWSER] Captured 104 Tumblr container cookies before closing the normal browser.
+2026-09-14 18:55:12,574 [INFO] [BROWSER] Restored 104 Tumblr cookies to the same Firefox profile after the clean shutdown.
+2026-09-14 18:55:13,247 [INFO] [BIDI] Starting the user's normal Firefox profile.
+2026-09-14 18:55:36,190 [INFO] [BROWSER] Reopened the saved container sessions; attaching Python after login without submitting credentials again.
+2026-09-14 18:55:36,209 [INFO] [BIDI] Connected directly to Firefox 155.0.1.
+2026-09-14 18:55:36,240 [INFO] [BIDI] Mapped native login slot 1 to context 5a82bf8c-a3c7-4f8c-af0a-bee14f021e34 (userContext=af505d3e-74db-4d2e-8557-2eb89b3ffd6a).
+2026-09-14 18:55:36,240 [INFO] [BROWSER] Python control attached after native login for alymanyaljdyd79@gmail.com (42fac269272f2f08).
+2026-09-14 18:55:36,268 [INFO] [AUTH] Desktop login SUCCESSFUL: alymanyaljdyd79@gmail.com (0.0s)
+2026-09-14 18:58:36,048 [INFO] [ENGINE] Bot engine started.
+2026-09-14 18:58:36,056 [INFO] [ENGINE] Starting round with 20 pending accounts across 4 parallel browser(s)...
+2026-09-14 18:58:36,862 [INFO] [BROWSER] Starting Firefox normally for AutoHotkey-only login.
+2026-09-14 18:58:37,438 [INFO] [BROWSER] Starting AutoHotkey-only login for 4 account(s). Firefox has no remote-control option.
+2026-09-14 18:59:02,008 [ERROR] [ENGINE] Unhandled exception in run loop: Tumblr login did not open in container 1. Current address: https://www.tumblr.com/
+2026-09-14 18:59:02,009 [INFO] [ENGINE] Bot engine stopped cleanly.
+2026-09-14 18:59:22,946 [INFO] [ENGINE] Bot engine started.
+2026-09-14 18:59:22,953 [INFO] [ENGINE] Starting round with 20 pending accounts across 4 parallel browser(s)...
+2026-09-14 18:59:23,666 [INFO] [BROWSER] Starting Firefox normally for AutoHotkey-only login.
+2026-09-14 18:59:24,278 [INFO] [BROWSER] Starting AutoHotkey-only login for 4 account(s). Firefox has no remote-control option.
+2026-09-14 19:00:29,287 [ERROR] [ENGINE] Unhandled exception in run loop: Tumblr login did not open in container 2. Current address: https://www.tumblr.com/
+2026-09-14 19:00:29,287 [INFO] [ENGINE] Bot engine stopped cleanly.
+2026-09-14 19:01:44,162 [INFO] [ENGINE] Bot engine started.
+2026-09-14 19:01:44,171 [INFO] [ENGINE] Starting round with 20 pending accounts across 4 parallel browser(s)...
+2026-09-14 19:01:44,912 [INFO] [BROWSER] Starting Firefox normally for AutoHotkey-only login.
+2026-09-14 19:01:45,517 [INFO] [BROWSER] Starting AutoHotkey-only login for 4 account(s). Firefox has no remote-control option.
+2026-09-14 19:04:47,880 [ERROR] [ENGINE] Unhandled exception in run loop: Login was not confirmed for account 4. Current address: https://www.tumblr.com/login?redirect_to=%2Fdashboard%3F__tumblr_bot_slot%3D4&source=login_register_required#tumblr-bot-slot-4
+2026-09-14 19:04:47,880 [INFO] [ENGINE] Bot engine stopped cleanly.
+2026-09-14 19:06:16,531 [INFO] [ENGINE] Bot engine started.
+2026-09-14 19:06:16,539 [INFO] [ENGINE] Starting round with 20 pending accounts across 3 parallel browser(s)...
+2026-09-14 19:06:17,246 [INFO] [BROWSER] Starting Firefox normally for AutoHotkey-only login.
+2026-09-14 19:06:17,776 [INFO] [BROWSER] Starting AutoHotkey-only login for 3 account(s). Firefox has no remote-control option.
+2026-09-14 19:08:36,485 [INFO] [BROWSER] Captured 110 Tumblr container cookies before closing the normal browser.
+2026-09-14 19:08:38,782 [INFO] [BROWSER] Restored 110 Tumblr cookies to the same Firefox profile after the clean shutdown.
+2026-09-14 19:08:39,453 [INFO] [BIDI] Starting the user's normal Firefox profile.
+2026-09-14 19:09:28,761 [INFO] [BROWSER] Reopened the saved container sessions; attaching Python after login without submitting credentials again.
+2026-09-14 19:09:28,817 [INFO] [BIDI] Connected directly to Firefox 155.0.1.
+2026-09-14 19:09:28,853 [INFO] [BIDI] Mapped native login slot 1 to context f61f6a8c-d132-46e6-9688-a30a40248862 (userContext=67c180b4-4a54-4a2a-953a-57a144d1700e).
+2026-09-14 19:09:28,854 [INFO] [BIDI] Mapped native login slot 2 to context 1b9551fc-969b-46d0-9f65-5bb7b5cf0b89 (userContext=3fcc2ac7-e6f2-4268-ab0a-ed05b1ce7445).
+2026-09-14 19:09:28,854 [INFO] [BIDI] Mapped native login slot 3 to context 58b2bb99-6c90-4cf2-a095-91599be906f1 (userContext=00830a9f-b2bc-4d4c-8a1e-b62128258fdb).
+2026-09-14 19:09:28,856 [INFO] [BROWSER] Python control attached after native login for alymanyaljdyd79@gmail.com (42fac269272f2f08).
+2026-09-14 19:09:28,857 [INFO] [BROWSER] Python control attached after native login for a.lymanyaljdyd79@gmail.com (0022db02f3535ca9).
+2026-09-14 19:09:28,858 [INFO] [BROWSER] Python control attached after native login for norman.dmavaughanbn@gmail.com (fa4751d2c21caa5a).
+2026-09-14 19:09:28,888 [INFO] [AUTH] Desktop login SUCCESSFUL: alymanyaljdyd79@gmail.com (0.0s)
+2026-09-14 19:09:28,894 [INFO] [alymanyaljdyd79@gmail.com] Ready! Processing up to 15 users in this session...
+2026-09-14 19:09:28,918 [INFO] [AUTH] Desktop login SUCCESSFUL: a.lymanyaljdyd79@gmail.com (0.1s)
+2026-09-14 19:09:28,934 [INFO] [a.lymanyaljdyd79@gmail.com] Ready! Processing up to 15 users in this session...
+2026-09-14 19:09:29,199 [INFO] [AUTH] Desktop login SUCCESSFUL: norman.dmavaughanbn@gmail.com (0.3s)
+2026-09-14 19:09:29,204 [INFO] [norman.dmavaughanbn@gmail.com] Ready! Processing up to 15 users in this session...
+2026-09-14 19:11:44,453 [INFO] alymanyaljdyd79@gmail.com | Sent:1 | Failed:0 | sent_ok | user=flyingredrobin | session=1/15 | total=1/30
+2026-09-14 19:11:47,175 [INFO] a.lymanyaljdyd79@gmail.com | Sent:1 | Failed:0 | sent_ok | user=iama-potato | session=1/15 | total=1/30
+2026-09-14 19:12:08,485 [INFO] norman.dmavaughanbn@gmail.com | Sent:1 | Failed:0 | sent_ok | user=flippertygender | session=1/15 | total=1/30
+2026-09-14 19:12:58,719 [INFO] [ENGINE] Skipping previously attempted recipient: flippertygender
+2026-09-14 19:13:25,236 [INFO] [ENGINE] Skipping previously attempted recipient: mari13606
+2026-09-14 19:13:41,025 [INFO] [ENGINE] Skipping previously attempted recipient: iama-potato
+2026-09-14 19:13:41,029 [INFO] [ENGINE] Skipping previously attempted recipient: flippertygender
+2026-09-14 19:13:41,035 [INFO] [ENGINE] Skipping previously attempted recipient: mari13606
+2026-09-14 19:13:41,039 [INFO] [ENGINE] Skipping previously attempted recipient: aarix
+2026-09-14 19:15:06,855 [INFO] a.lymanyaljdyd79@gmail.com | Sent:2 | Failed:0 | sent_ok | user=mari13606 | session=2/15 | total=2/30
+2026-09-14 19:15:40,541 [INFO] norman.dmavaughanbn@gmail.com | Sent:2 | Failed:0 | sent_ok | user=aarix | session=2/15 | total=2/30
+2026-09-14 19:15:53,023 [INFO] alymanyaljdyd79@gmail.com | Sent:2 | Failed:0 | sent_ok | user=vintagefrog | session=2/15 | total=2/30
+2026-09-14 19:16:31,389 [INFO] [ENGINE] Skipping previously attempted recipient: aarix
+2026-09-14 19:16:31,393 [INFO] [ENGINE] Skipping previously attempted recipient: vintagefrog
+2026-09-14 19:16:31,533 [WARNING] [SEND] Error messaging informal-cabbage (https://www.tumblr.com/informal-cabbage): browsingContext.navigate: unknown error - Error: Browsing context got discarded
+2026-09-14 19:16:31,674 [WARNING] [SCREENSHOT] Failed to capture screenshot: browsingContext.captureScreenshot: no such frame - Browsing Context with id 1b9551fc-969b-46d0-9f65-5bb7b5cf0b89 not found
+2026-09-14 19:16:31,675 [INFO] a.lymanyaljdyd79@gmail.com | Sent:2 | Failed:1 | send_failed | user=informal-cabbage
+2026-09-14 19:16:38,225 [INFO] [ENGINE] Stop requested. Waiting for current action to wrap up...
+2026-09-14 19:16:38,304 [INFO] alymanyaljdyd79@gmail.com | ===SUMMARY=== | Sent:2 | Failed:0 | completed
+2026-09-14 19:16:38,307 [WARNING] [AUTH] Logout did not complete cleanly (received 1000 (OK); then sent 1000 (OK)).
+2026-09-14 19:16:38,345 [INFO] norman.dmavaughanbn@gmail.com | ===SUMMARY=== | Sent:2 | Failed:0 | completed
+2026-09-14 19:16:38,347 [WARNING] [AUTH] Logout did not complete cleanly (received 1000 (OK); then sent 1000 (OK)).
+2026-09-14 19:16:38,719 [INFO] a.lymanyaljdyd79@gmail.com | ===SUMMARY=== | Sent:2 | Failed:1 | completed
+2026-09-14 19:16:38,720 [WARNING] [AUTH] Logout did not complete cleanly (received 1000 (OK); then sent 1000 (OK)).
+2026-09-14 19:16:41,023 [INFO] [ENGINE] Bot engine stopped cleanly.

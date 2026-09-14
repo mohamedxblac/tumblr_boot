@@ -191,7 +191,7 @@ class BotEngine:
             tab_type = settings.get("tab_type", "likes").strip().lower()
             max_per_account = int(settings.get("max_success_per_account", 30))
             session_cap = int(settings.get("session_success_cap", 15))
-            parallel_accounts = max(1, min(10, int(settings.get("parallel_accounts", 1))))
+            parallel_accounts = max(1, min(9, int(settings.get("parallel_accounts", 1))))
             no_msg_limit = int(settings.get("no_message_limit", 10))
             action_delay = float(settings.get("action_delay", 0.5))
             typing_min_delay = max(0.01, float(settings.get("typing_min_delay", 0.05)))
@@ -269,51 +269,68 @@ class BotEngine:
                     f"across {worker_count} parallel browser(s)..."
                 )
 
-                with ThreadPoolExecutor(
-                    max_workers=worker_count,
-                    thread_name_prefix="TumblrAccount",
-                ) as executor:
-                    futures = []
-                    for _, acc in pending_accounts:
-                        futures.append(executor.submit(
-                            self._run_account_worker,
-                            total_accounts=len(pending_accounts),
-                            acc=acc,
-                            post_url=post_url,
-                            tab_type=tab_type,
-                            target_queue=target_queue,
-                            sent_users=sent_users,
-                            progress=progress,
-                            messages=distinct_messages,
-                            greetings=distinct_greetings,
-                            max_per_account=max_per_account,
-                            session_cap=session_cap,
-                            no_msg_limit=no_msg_limit,
-                            action_delay=action_delay,
-                            line_delay=line_delay,
-                            after_send_delay=after_send_delay,
-                            after_success_delay=after_success_delay,
-                            min_between=min_between,
-                            max_between=max_between,
-                            notes_max=notes_max,
-                            follow_every=follow_every,
-                            scrape_threshold=scrape_threshold,
-                            scrape_timeout=scrape_timeout,
-                            enable_fp_rotation=enable_fp_rotation,
-                            typing_min_delay=typing_min_delay,
-                            typing_max_delay=typing_max_delay,
-                            message_rotator=message_rotator,
-                            greeting_rotator=greeting_rotator,
-                        ))
+                # Login is deliberately separated from browser automation.
+                # Each batch signs in natively first; only then does Python
+                # create one BiDi session and operate its container tabs.
+                for batch_start in range(0, len(pending_accounts), worker_count):
+                    if self._stop_event.is_set():
+                        break
+                    batch = pending_accounts[batch_start:batch_start + worker_count]
+                    self.post_gui_update("status_info", {
+                        "status": "Native Firefox Login",
+                        "detail": f"Signing in {len(batch)} account(s) before Python control starts"
+                    })
+                    BrowserFactory.prepare_accounts([acc for _, acc in batch])
+                    try:
+                        with ThreadPoolExecutor(
+                            max_workers=len(batch),
+                            thread_name_prefix="TumblrAccount",
+                        ) as executor:
+                            futures = []
+                            for _, acc in batch:
+                                futures.append(executor.submit(
+                                    self._run_account_worker,
+                                    total_accounts=len(pending_accounts),
+                                    acc=acc,
+                                    post_url=post_url,
+                                    tab_type=tab_type,
+                                    target_queue=target_queue,
+                                    sent_users=sent_users,
+                                    progress=progress,
+                                    messages=distinct_messages,
+                                    greetings=distinct_greetings,
+                                    max_per_account=max_per_account,
+                                    session_cap=session_cap,
+                                    no_msg_limit=no_msg_limit,
+                                    action_delay=action_delay,
+                                    line_delay=line_delay,
+                                    after_send_delay=after_send_delay,
+                                    after_success_delay=after_success_delay,
+                                    min_between=min_between,
+                                    max_between=max_between,
+                                    notes_max=notes_max,
+                                    follow_every=follow_every,
+                                    scrape_threshold=scrape_threshold,
+                                    scrape_timeout=scrape_timeout,
+                                    enable_fp_rotation=enable_fp_rotation,
+                                    typing_min_delay=typing_min_delay,
+                                    typing_max_delay=typing_max_delay,
+                                    message_rotator=message_rotator,
+                                    greeting_rotator=greeting_rotator,
+                                ))
 
-                    for future in as_completed(futures):
-                        try:
-                            future.result()
-                        except ContactHistoryError:
-                            self._stop_event.set()
-                            for pending in futures:
-                                pending.cancel()
-                            raise
+                            for future in as_completed(futures):
+                                try:
+                                    future.result()
+                                except ContactHistoryError:
+                                    self._stop_event.set()
+                                    for pending in futures:
+                                        pending.cancel()
+                                    raise
+                    finally:
+                        # End the automation session before a later batch needs
+                        # to type another set of credentials through Firefox UI.
+                        BrowserFactory.finish_batch()
 
                 start_acc_idx = 0
 
@@ -341,6 +358,253 @@ class BotEngine:
             self.post_gui_update("state_changed", {"running": False, "paused": False})
             self.post_gui_update("status_info", {"status": "Idle", "detail": "Bot stopped"})
             logger.info("[ENGINE] Bot engine stopped cleanly.")
+
+    def _run_native_ui_mode(
+        self,
+        *,
+        accounts: List[dict],
+        start_acc_idx: int,
+        parallel_accounts: int,
+        target_queue: List[str],
+        sent_users: set,
+        progress: dict,
+        messages: List[str],
+        greetings: List[str],
+        max_per_account: int,
+        session_cap: int,
+        no_msg_limit: int,
+        line_delay: float,
+        after_send_delay: float,
+        after_success_delay: float,
+        min_between: float,
+        max_between: float,
+        follow_every: int,
+        typing_min_delay: float,
+        typing_max_delay: float,
+        message_rotator: NonRepeatingTemplateRotator,
+        greeting_rotator: NonRepeatingTemplateRotator,
+        scrape_threshold: int,
+    ) -> None:
+        """Run normal Firefox through foreground UIA actions only.
+
+        UI Automation has one foreground target, so accounts are interleaved
+        rather than controlled concurrently. The configured parallel count is
+        used as the number of container tabs in this native batch.
+        """
+        selected = accounts[start_acc_idx:start_acc_idx + min(9, parallel_accounts)]
+        if not selected:
+            selected = accounts[:min(9, parallel_accounts)]
+        logger.info(
+            f"[NATIVE] Using {len(selected)} account tab(s) in round-robin UIA mode. "
+            "Firefox remote control is disabled."
+        )
+
+        while not self._stop_event.is_set():
+            batch = [
+                account for account in selected
+                if int(progress.get(account["email"], 0)) < max_per_account
+            ]
+            if not batch:
+                self.post_gui_update("status_info", {
+                    "status": "Complete",
+                    "detail": "Selected accounts reached their message limits",
+                })
+                return
+
+            controller = NativeUIController()
+            session_sent = {account["email"]: 0 for account in batch}
+            failures = {account["email"]: 0 for account in batch}
+            no_message_streak = {account["email"]: 0 for account in batch}
+            users_seen = {account["email"]: 0 for account in batch}
+            next_ready = {account["email"]: 0.0 for account in batch}
+            disabled = set()
+            queue_exhausted = False
+
+            try:
+                self.post_gui_update("status_info", {
+                    "status": "Native Firefox Login",
+                    "detail": f"Signing in {len(batch)} account(s) with AutoHotkey only",
+                })
+                controller.prepare_accounts(batch)
+                for account in batch:
+                    email = account["email"]
+                    self._record_login_result(email, success=True)
+                    self._set_account_active(email, True, len(batch))
+
+                if len(target_queue) < scrape_threshold:
+                    logger.warning(
+                        f"[NATIVE] Target queue is low ({len(target_queue)}). "
+                        "Native scraping is disabled; saved targets will be used first."
+                    )
+
+                while not self._stop_event.is_set():
+                    eligible = [
+                        account for account in batch
+                        if account["email"] not in disabled
+                        and session_sent[account["email"]] < session_cap
+                        and int(progress.get(account["email"], 0)) < max_per_account
+                    ]
+                    if not eligible:
+                        break
+
+                    acted = False
+                    for tab_index, account in enumerate(batch, start=1):
+                        email = account["email"]
+                        if account not in eligible or time.monotonic() < next_ready[email]:
+                            continue
+                        if self._stop_event.is_set():
+                            break
+                        while self._pause_event.is_set() and not self._stop_event.is_set():
+                            self.post_gui_update("status_info", {
+                                "status": "Paused", "detail": "Paused by user"
+                            })
+                            time.sleep(0.5)
+
+                        username = None
+                        with self._state_lock:
+                            contacted = persistence.load_contacted_users() | set(sent_users)
+                            while target_queue:
+                                candidate = normalize_recipient(target_queue[0])
+                                target_queue.pop(0)
+                                persistence.save_target_queue(target_queue)
+                                if not candidate or candidate in contacted:
+                                    continue
+                                if not persistence.claim_recipient(candidate):
+                                    contacted.add(candidate)
+                                    continue
+                                username = candidate
+                                break
+
+                        if not username:
+                            queue_exhausted = True
+                            break
+
+                        users_seen[email] += 1
+                        do_follow = bool(
+                            follow_every > 0 and users_seen[email] % follow_every == 0
+                        )
+                        base_message, message_index = message_rotator.next_template()
+                        greeting, _ = greeting_rotator.next_template()
+                        parts = compose_message_parts(
+                            username, base_message, greeting, message_index
+                        )
+                        self.post_gui_update("status_info", {
+                            "status": "Native Messaging",
+                            "detail": f"{email} → @{username}",
+                        })
+                        result, followed = controller.send_message(
+                            tab_index,
+                            username,
+                            parts,
+                            do_follow=do_follow,
+                            line_delay=line_delay,
+                            after_send_delay=after_send_delay,
+                            typing_min_delay=typing_min_delay,
+                            typing_max_delay=typing_max_delay,
+                        )
+                        acted = True
+
+                        if do_follow:
+                            logger.log_event(
+                                email,
+                                int(progress.get(email, 0)),
+                                failures[email],
+                                note=f"native_follow | user={username} | ok={followed}",
+                            )
+
+                        if result is True:
+                            with self._state_lock:
+                                persistence.save_sent_user(username)
+                                sent_users.add(username)
+                                progress[email] = int(progress.get(email, 0)) + 1
+                                persistence.save_progress(progress)
+                            session_sent[email] += 1
+                            no_message_streak[email] = 0
+                            self.post_gui_update("progress_update", {
+                                "email": email,
+                                "total_ok": progress[email],
+                                "session_ok": session_sent[email],
+                                "total_sent": len(sent_users),
+                            })
+                            logger.log_event(
+                                email,
+                                progress[email],
+                                failures[email],
+                                note=f"native_sent_ok | user={username}",
+                            )
+                            if not self._sleep_with_checks(
+                                after_success_delay,
+                                label=f"Sent to @{username}",
+                            ):
+                                break
+                        else:
+                            failures[email] += 1
+                            if result == "no_message_button":
+                                no_message_streak[email] += 1
+                                if no_message_streak[email] >= no_msg_limit:
+                                    disabled.add(email)
+                            elif result == "could_not_send":
+                                disabled.add(email)
+                            logger.log_event(
+                                email,
+                                int(progress.get(email, 0)),
+                                failures[email],
+                                note=f"native_send_failed | user={username} | result={result}",
+                            )
+
+                        next_ready[email] = time.monotonic() + random.uniform(
+                            min_between, max_between
+                        )
+
+                    if queue_exhausted:
+                        break
+                    if not acted and eligible:
+                        wait_for = min(
+                            max(0.2, next_ready[account["email"]] - time.monotonic())
+                            for account in eligible
+                        )
+                        if not self._sleep_with_checks(
+                            min(wait_for, 2.0), label="Next native account action"
+                        ):
+                            break
+
+                for account in batch:
+                    email = account["email"]
+                    note = "native_queue_empty" if queue_exhausted else "native_session_complete"
+                    logger.log_summary(
+                        email,
+                        int(progress.get(email, 0)),
+                        failures[email],
+                        note=note,
+                    )
+            except Exception as error:
+                logger.error(f"[NATIVE] Native UI round stopped: {error}")
+                self.post_gui_update("error", {"message": str(error)})
+                for account in batch:
+                    self._record_login_result(account["email"], success=False)
+                return
+            finally:
+                for account in batch:
+                    self._set_account_active(account["email"], False, len(batch))
+                controller.close()
+
+            if queue_exhausted:
+                self.post_gui_update("status_info", {
+                    "status": "Complete",
+                    "detail": "Saved target queue is empty",
+                })
+                return
+            if self._stop_event.is_set():
+                return
+
+            sleep_hours = float(
+                self.settings_mgr.get_settings().get("sleep_between_rounds_hrs", 12)
+            )
+            if not self._sleep_with_checks(
+                sleep_hours * 3600,
+                label=f"Next native round in ({sleep_hours}h)",
+            ):
+                return
 
     def _process_single_account(
         self,
@@ -391,9 +655,7 @@ class BotEngine:
             })
 
             fp = generate_stealth_fingerprint() if enable_fp_rotation else None
-            # AutoHotkey relies on the active desktop. Keep the entire login and
-            # dashboard verification inside one global slot so a second RDP
-            # window cannot steal focus before the first login has completed.
+            # The batch already completed native login before BiDi was created.
             with BrowserFactory.desktop_login_slot():
                 driver, profile_dir, used_fp = BrowserFactory.create_browser(
                     fingerprint=fp,
@@ -411,10 +673,6 @@ class BotEngine:
 
                 self._record_login_result(email, success=True)
                 login_result_recorded = True
-
-                # Only the native login needs the foreground. Move this exact
-                # instance away before the next account acquires the RDP slot.
-                BrowserFactory.move_browser_to_background(driver, email)
 
             self.post_gui_update("status_info", {
                 "status": "Logged In",

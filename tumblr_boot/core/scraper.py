@@ -3,9 +3,7 @@ import re
 import time
 from typing import List, Set, Optional, Callable
 
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
+from core.compat import By, WebDriverWait, EC
 
 from core.auth import dismiss_consent_screen_if_present
 from utils.helpers import extract_blog_from_href, is_valid_blog
@@ -19,7 +17,7 @@ def parse_post_info(url: str):
 
 
 # فتح تبويب التفاعلات (الإعجابات أو إعادة التدوين) داخل صفحة المنشور
-def open_notes_in_selenium(driver, want_tab: str = "likes") -> bool:
+def open_notes_in_browser(driver, want_tab: str = "likes") -> bool:
     want = want_tab.lower()
     dismiss_consent_screen_if_present(driver)
 
@@ -111,7 +109,7 @@ def scrape_post_master_queue(
     except Exception:
         pass
 
-    open_notes_in_selenium(driver, tab_type)
+    open_notes_in_browser(driver, tab_type)
     time.sleep(1.5)
 
     found: List[str] = []

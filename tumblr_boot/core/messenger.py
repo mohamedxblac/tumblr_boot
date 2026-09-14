@@ -4,10 +4,7 @@ import threading
 import time
 from typing import List, Tuple, Union
 
-from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
+from core.compat import By, Keys, WebDriverWait, EC
 
 from core.auth import dismiss_consent_screen_if_present
 from core.browser import BrowserFactory

@@ -18,9 +18,9 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 
 def clean_build_artifacts():
-    """Removes previous build artifacts to ensure a fresh compilation."""
+    """Remove compiler intermediates without touching runtime data in dist/."""
     print("[1/3] Cleaning previous build artifacts...")
-    for folder in ["build", "dist"]:
+    for folder in ["build"]:
         path = os.path.join(BASE_DIR, folder)
         if os.path.exists(path):
             try:
@@ -31,9 +31,10 @@ def clean_build_artifacts():
 
 
 def run_pyinstaller(console: bool = False):
-    """Executes PyInstaller with the project spec file."""
+    """Build in staging, then replace only the executable in dist/."""
     print("[2/3] Compiling TumblrBot.exe with PyInstaller...")
     spec_path = os.path.join(BASE_DIR, "tumblr_bot.spec")
+    staging_dir = os.path.join(BASE_DIR, "build", "staged_dist")
 
     # If user wants console mode, adjust spec parameter or pass CLI flags
     cmd = [
@@ -41,6 +42,8 @@ def run_pyinstaller(console: bool = False):
         "-m",
         "PyInstaller",
         "--noconfirm",
+        "--distpath",
+        staging_dir,
         spec_path,
     ]
 
@@ -49,6 +52,16 @@ def run_pyinstaller(console: bool = False):
     if result.returncode != 0:
         print(f"\n[ERROR] PyInstaller build failed with exit code {result.returncode}")
         sys.exit(result.returncode)
+
+    staged_exe = os.path.join(staging_dir, "TumblrBot.exe")
+    if not os.path.isfile(staged_exe):
+        print(f"\n[ERROR] Staged executable was not found at: {staged_exe}")
+        sys.exit(1)
+
+    output_dir = os.path.join(BASE_DIR, "dist")
+    os.makedirs(output_dir, exist_ok=True)
+    shutil.copy2(staged_exe, os.path.join(output_dir, "TumblrBot.exe"))
+    shutil.rmtree(staging_dir, ignore_errors=True)
 
 
 def verify_output():
@@ -71,7 +84,7 @@ def verify_output():
 def main():
     parser = argparse.ArgumentParser(description="Build TumblrBot Windows Executable")
     parser.add_argument("--console", action="store_true", help="Enable terminal console window")
-    parser.add_argument("--no-clean", action="store_true", help="Skip cleaning build/ and dist/ folders")
+    parser.add_argument("--no-clean", action="store_true", help="Skip cleaning compiler files in build/")
     args = parser.parse_args()
 
     if not args.no_clean:
