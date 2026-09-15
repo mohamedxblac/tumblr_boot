@@ -113,6 +113,7 @@ class FirefoxBidiManager:
         self._command_lock = threading.RLock()
         self._startup_lock = threading.RLock()
         self._slot_lock = threading.RLock()
+        self._abort_event = threading.Event()
         self._free_slots = list(range(1, MAX_CONTAINER_SLOTS + 1))
         self._active_contexts = set()
         self._context_user_contexts = {}
@@ -122,6 +123,8 @@ class FirefoxBidiManager:
     ) -> None:
         """Start normal Firefox with the local port, without creating a BiDi session."""
         with self._startup_lock:
+            if self._abort_event.is_set():
+                raise BidiError("Firefox startup was cancelled by the user.")
             if not _port_is_open():
                 if _firefox_is_running():
                     raise BidiError(
@@ -142,6 +145,8 @@ class FirefoxBidiManager:
                 )
                 deadline = time.monotonic() + 35
                 while time.monotonic() < deadline and not _port_is_open():
+                    if self._abort_event.is_set():
+                        raise BidiError("Firefox startup was cancelled by the user.")
                     time.sleep(0.25)
                 if not _port_is_open():
                     raise BidiError(
@@ -153,6 +158,8 @@ class FirefoxBidiManager:
     ) -> None:
         """Start Firefox normally, with no remote-control command-line option."""
         with self._startup_lock:
+            if self._abort_event.is_set():
+                raise BidiError("Firefox startup was cancelled by the user.")
             if _port_is_open():
                 raise BidiError(
                     "Firefox is still running in remote-control mode. Exit Firefox "
@@ -174,6 +181,8 @@ class FirefoxBidiManager:
             )
             deadline = time.monotonic() + 30
             while time.monotonic() < deadline and not _firefox_is_running():
+                if self._abort_event.is_set():
+                    raise BidiError("Firefox startup was cancelled by the user.")
                 time.sleep(0.25)
             if not _firefox_is_running():
                 raise BidiError("Firefox did not start for the native login phase.")
@@ -182,6 +191,8 @@ class FirefoxBidiManager:
         """Wait for a graceful profile-unlocking shutdown between the two phases."""
         deadline = time.monotonic() + timeout
         while time.monotonic() < deadline:
+            if self._abort_event.is_set():
+                return
             if not _firefox_is_running() and not _port_is_open():
                 return
             time.sleep(0.35)
@@ -193,6 +204,8 @@ class FirefoxBidiManager:
     def connect_session(self) -> None:
         """Create the automation session only after native desktop login finishes."""
         with self._startup_lock:
+            if self._abort_event.is_set():
+                raise BidiError("Firefox connection was cancelled by the user.")
             if self._connection is not None:
                 return
             if not _port_is_open():
@@ -220,6 +233,8 @@ class FirefoxBidiManager:
 
     def command(self, method: str, params: Optional[dict] = None, timeout: float = 40) -> dict:
         with self._command_lock:
+            if self._abort_event.is_set():
+                raise BidiError("Firefox action was cancelled by the user.")
             if self._connection is None:
                 raise BidiError("Firefox BiDi is not connected.")
             self._request_id += 1
@@ -231,6 +246,8 @@ class FirefoxBidiManager:
             }))
             deadline = time.monotonic() + timeout
             while time.monotonic() < deadline:
+                if self._abort_event.is_set():
+                    raise BidiError("Firefox action was cancelled by the user.")
                 remaining = max(0.1, deadline - time.monotonic())
                 message = json.loads(self._connection.recv(timeout=remaining))
                 if message.get("id") != request_id:
@@ -436,6 +453,17 @@ ExitApp(0)
             self._active_contexts.clear()
             self._context_user_contexts.clear()
             self._free_slots = list(range(1, MAX_CONTAINER_SLOTS + 1))
+
+    def reset_abort(self) -> None:
+        self._abort_event.clear()
+
+    def abort(self) -> None:
+        """Break pending browser operations without waiting for their timeouts."""
+        self._abort_event.set()
+        self._close_connection()
+        self._active_contexts.clear()
+        self._context_user_contexts.clear()
+        self._free_slots = list(range(1, MAX_CONTAINER_SLOTS + 1))
 
     def shutdown(self) -> None:
         self.disconnect_session()

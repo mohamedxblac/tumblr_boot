@@ -59,6 +59,7 @@ class TumblrBotApp(tk.Tk):
 
         # Initialize Bot Engine
         self.engine = BotEngine(settings_mgr=self.settings_mgr, gui_queue=self.gui_queue)
+        self._closing = False
 
         # ── 2. Configure Modern Dark Styles ──
         self._apply_dark_theme()
@@ -289,18 +290,29 @@ class TumblrBotApp(tk.Tk):
             self.after(100, self._poll_queue)
 
     def on_closing(self):
-        """Safely stops the engine and auto-saves message templates before exiting."""
+        """Cancel all work and close Firefox before the GUI process exits."""
+        if self._closing:
+            return
         try:
             self.tab_messages.save_data(silent=True)
         except Exception:
             pass
 
         if self.engine.is_running:
-            if messagebox.askyesno(
+            if not messagebox.askyesno(
                 "Bot Running",
-                "The bot is currently running. Stopping it now will finish the active action safely.\n\nExit anyway?"
+                "The bot is currently running. It will stop immediately and all Firefox tabs will close.\n\nExit now?"
             ):
-                self.engine.stop()
-                self.destroy()
-        else:
+                return
+
+        self._closing = True
+        try:
+            self.withdraw()
+            self.update_idletasks()
+        except Exception:
+            pass
+        try:
+            self.engine.shutdown(timeout=2.0)
+        finally:
+            self.quit()
             self.destroy()

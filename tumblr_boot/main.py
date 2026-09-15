@@ -97,7 +97,14 @@ def main():
     bootstrap_data()
 
     app = TumblrBotApp()
-    app.mainloop()
+    try:
+        app.mainloop()
+    finally:
+        # Covers normal X-close, Windows shutdown, and unexpected Tk exits.
+        # The engine shutdown path cancels helpers and force-closes Firefox.
+        stopped = app.engine.shutdown(timeout=1.0)
+        if getattr(sys, "frozen", False) and not stopped:
+            os._exit(0)
 
 
 if __name__ == "__main__":

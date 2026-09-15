@@ -38,7 +38,7 @@ class DesktopLoginTests(unittest.TestCase):
         ensure_started.assert_not_called()
         fake_driver.get.assert_not_called()
 
-    def test_native_script_uses_uia_and_marks_each_container(self):
+    def test_native_script_uses_uia_and_trusts_each_submitted_login(self):
         script = browser._build_native_login_script(
             [{"email": "user@example.test", "password": 's`e"cret'}],
             r"C:\Project\vendor\UIA-v2\Lib\UIA.ahk",
@@ -48,7 +48,9 @@ class DesktopLoginTests(unittest.TestCase):
         self.assertIn('UIA.ElementFromHandle', script)
         self.assertIn('SendText(Account.Email)', script)
         self.assertIn('SendText(Account.Password)', script)
-        self.assertIn('__tumblr_bot_slot=', script)
+        self.assertIn('Fields.Submit.Click()', script)
+        self.assertIn('StatusText .= "SUCCESS|"', script)
+        self.assertNotIn('WaitForSuccessfulLogin', script)
         self.assertIn('{Ctrl down}{Shift down}', script)
         self.assertNotIn('remote-debugging-port', script)
         self.assertNotIn('session.new', script)
@@ -93,6 +95,7 @@ class DesktopLoginTests(unittest.TestCase):
             patch.object(browser, "_clear_container_sessions_before_login", side_effect=lambda *_: calls.append("clear")),
             patch.object(browser, "_run_native_logins", side_effect=lambda *_: calls.append("native")),
             patch.object(browser, "snapshot_tumblr_cookies", side_effect=lambda _: (['id'], [(1,)])),
+            patch.object(browser, "force_close_all_firefox", side_effect=lambda: calls.append("force_close")),
             patch.object(browser, "_close_firefox_after_login", side_effect=lambda *_: calls.append("close")),
             patch.object(browser.manager, "wait_until_firefox_stops", side_effect=lambda: calls.append("stopped")),
             patch.object(browser, "restore_tumblr_cookies", side_effect=lambda *_: 1),
@@ -109,7 +112,7 @@ class DesktopLoginTests(unittest.TestCase):
         self.assertEqual(
             calls,
             [
-                "finish", "plain", "close", "stopped", "clear", "plain",
+                "finish", "plain", "force_close", "stopped", "clear", "plain",
                 "native", "close", "stopped", "remote", "reopen", "connect",
             ],
         )

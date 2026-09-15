@@ -10,7 +10,7 @@ from typing import List, Dict, Optional, Any
 from config.settings import SettingsManager
 from config.fingerprints import generate_stealth_fingerprint
 from core.browser import BrowserFactory
-from core.auth import login, logout, dismiss_consent_screen_if_present
+from core.auth import logout, dismiss_consent_screen_if_present
 from core.scraper import scrape_post_master_queue, parse_post_info
 from core.messenger import (
     NonRepeatingTemplateRotator,
@@ -103,6 +103,7 @@ class BotEngine:
             logger.warning("[ENGINE] Bot is already running.")
             return
 
+        BrowserFactory.reset_abort()
         self._stop_event.clear()
         self._pause_event.clear()
         self._is_running = True
@@ -128,11 +129,23 @@ class BotEngine:
         logger.info("[ENGINE] Resumed from pause.")
 
     def stop(self):
-        if not self._is_running:
-            return
         self._stop_event.set()
         self._pause_event.clear()
-        logger.info("[ENGINE] Stop requested. Waiting for current action to wrap up...")
+        self.post_gui_update("status_info", {
+            "status": "Stopping",
+            "detail": "Cancelling browser actions and closing all Firefox tabs",
+        })
+        BrowserFactory.abort_all()
+        logger.info("[ENGINE] Stop requested. Browser actions cancelled and Firefox closed.")
+
+    def shutdown(self, timeout: float = 6.0) -> bool:
+        """Stop the worker and wait briefly so a frozen EXE cannot stay behind."""
+        self.stop()
+        worker = self._thread
+        if worker and worker.is_alive() and worker is not threading.current_thread():
+            worker.join(timeout=max(0.0, float(timeout)))
+        BrowserFactory.abort_all()
+        return not worker or not worker.is_alive()
 
     def _sleep_with_checks(self, seconds: float, label: str = "Waiting") -> bool:
         remaining = float(seconds)
@@ -249,6 +262,7 @@ class BotEngine:
             sent_users = persistence.load_sent_users()
             progress = persistence.load_progress()
             target_queue = persistence.load_target_queue()
+            container_cleanup_pending = True
 
             while not self._stop_event.is_set():
                 pending_accounts = [
@@ -272,9 +286,8 @@ class BotEngine:
                     f"across {worker_count} parallel browser(s)..."
                 )
 
-                # Feed all pending candidates to native login, but stop opening
-                # container tabs as soon as the requested number has signed in.
-                # A failed candidate is replaced in the same slot by the next.
+                # Feed candidates to native login and stop as soon as the
+                # requested number of credential submissions is complete.
                 candidate_accounts = [acc for _, acc in pending_accounts]
                 prepared_accounts = []
                 failed_accounts = []
@@ -288,13 +301,20 @@ class BotEngine:
                         )
                     })
                     try:
+                        clear_sessions = container_cleanup_pending
+                        # Cleanup is an initial Start-only phase. Never erase
+                        # sessions again because login/control setup is retried.
+                        container_cleanup_pending = False
                         prepared_accounts, failed_accounts = BrowserFactory.prepare_accounts(
                             candidate_accounts,
                             max_successes=worker_count,
+                            clear_sessions=clear_sessions,
                         )
                         break
                     except Exception as error:
                         BrowserFactory.finish_batch()
+                        if self._stop_event.is_set():
+                            break
                         logger.error(
                             f"[ENGINE] Login preparation attempt {attempt}/"
                             f"{preparation_attempts} failed: {error}"
@@ -404,7 +424,10 @@ class BotEngine:
             logger.error(f"[ENGINE] {e}")
             self.post_gui_update("error", {"message": str(e)})
         except Exception as e:
-            logger.error(f"[ENGINE] Unhandled exception in run loop: {e}")
+            if self._stop_event.is_set():
+                logger.info(f"[ENGINE] Active operation cancelled during shutdown: {e}")
+            else:
+                logger.error(f"[ENGINE] Unhandled exception in run loop: {e}")
         finally:
             self._is_running = False
             self.post_gui_update("state_changed", {"running": False, "paused": False})
@@ -715,14 +738,8 @@ class BotEngine:
                     password=password,
                 )
 
-                if not login(driver, email, password):
-                    self._record_login_result(email, success=False)
-                    login_result_recorded = True
-                    account_note = "login_failed"
-                    logger.log_event(email, total_ok, fail_count, note=account_note)
-                    logger.log_summary(email, total_ok, fail_count, note=account_note)
-                    return
-
+                # Native Firefox already submitted these credentials. Continue
+                # without judging the redirect or re-checking the login result.
                 self._record_login_result(email, success=True)
                 login_result_recorded = True
 
@@ -936,6 +953,9 @@ class BotEngine:
         except ContactHistoryError:
             raise
         except Exception as e:
+            if self._stop_event.is_set():
+                logger.info(f"[ENGINE] Session for {email} was cancelled by Stop.")
+                return
             if not login_result_recorded:
                 self._record_login_result(email, success=False)
                 login_result_recorded = True
@@ -944,7 +964,7 @@ class BotEngine:
             if driver:
                 BrowserFactory.capture_screenshot(driver, prefix=f"crash_{email.split('@')[0]}")
         finally:
-            if driver:
+            if driver and not self._stop_event.is_set():
                 try:
                     logout(driver)
                 except Exception as error:

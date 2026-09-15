@@ -1,6 +1,7 @@
 """Tests for portable Firefox profile discovery and cookie preservation."""
 
 import os
+import json
 import sqlite3
 import sys
 import tempfile
@@ -11,6 +12,7 @@ from unittest.mock import patch
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from core.firefox_profile import (
+    clear_container_sessions_offline,
     find_default_profile,
     restore_tumblr_cookies,
     snapshot_tumblr_cookies,
@@ -18,6 +20,65 @@ from core.firefox_profile import (
 
 
 class FirefoxProfileTests(unittest.TestCase):
+    def test_offline_cleanup_clears_every_requested_container(self):
+        with tempfile.TemporaryDirectory() as folder:
+            profile = Path(folder)
+            (profile / "containers.json").write_text(
+                json.dumps({
+                    "identities": [
+                        {"userContextId": 1, "public": True},
+                        {"userContextId": 2, "public": True},
+                        {"userContextId": 3, "public": True},
+                        {"userContextId": 4, "public": True},
+                    ]
+                }),
+                encoding="utf-8",
+            )
+            database = profile / "cookies.sqlite"
+            connection = sqlite3.connect(database)
+            try:
+                connection.execute(
+                    "CREATE TABLE moz_cookies ("
+                    "id INTEGER PRIMARY KEY, originAttributes TEXT, host TEXT)"
+                )
+                connection.executemany(
+                    "INSERT INTO moz_cookies VALUES (?, ?, ?)",
+                    [
+                        (1, "^userContextId=1", ".tumblr.com"),
+                        (2, "^userContextId=2", ".example.com"),
+                        (3, "^userContextId=3&partitionKey=test", ".tumblr.com"),
+                        (4, "^userContextId=4", ".tumblr.com"),
+                        (5, "", ".tumblr.com"),
+                    ],
+                )
+                connection.commit()
+            finally:
+                connection.close()
+            storage = profile / "storage" / "default"
+            for context_id in (1, 2, 3, 4):
+                (storage / f"https+++www.tumblr.com^userContextId={context_id}").mkdir(
+                    parents=True
+                )
+
+            context_ids, deleted, deleted_storage = clear_container_sessions_offline(
+                str(profile), 3
+            )
+
+            self.assertEqual(context_ids, [1, 2, 3])
+            self.assertEqual(deleted, {1: 1, 2: 1, 3: 1})
+            self.assertEqual(deleted_storage, 3)
+            connection = sqlite3.connect(database)
+            try:
+                remaining = connection.execute(
+                    "SELECT id FROM moz_cookies ORDER BY id"
+                ).fetchall()
+            finally:
+                connection.close()
+            self.assertEqual(remaining, [(4,), (5,)])
+            self.assertTrue(
+                (storage / "https+++www.tumblr.com^userContextId=4").is_dir()
+            )
+
     def test_discovers_current_users_profile_without_a_hardcoded_username(self):
         with tempfile.TemporaryDirectory() as folder:
             appdata = Path(folder)

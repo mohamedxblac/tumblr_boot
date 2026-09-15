@@ -2,8 +2,8 @@
 """Two-phase control of normal Firefox Multi-Account Container tabs.
 
 Credentials are entered through Firefox's native accessibility UI before a
-WebDriver BiDi session exists. Failed candidates are replaced until the desired
-number of container sessions is ready, then Python connects to those tabs.
+WebDriver BiDi session exists. Each submitted login is trusted, then Python
+connects to exactly the requested number of container tabs.
 """
 
 import hashlib
@@ -21,11 +21,84 @@ from typing import Optional, Tuple
 from config.settings import SCREENSHOTS_DIR
 from core.bidi import BidiDriver, BidiError, MAX_CONTAINER_SLOTS, manager
 from core.firefox_profile import (
+    clear_container_sessions_offline,
     find_default_profile,
     restore_tumblr_cookies,
     snapshot_tumblr_cookies,
 )
 from utils.logger import logger
+
+
+_helper_process_lock = threading.RLock()
+_active_helper_processes: set[subprocess.Popen] = set()
+_helper_abort_event = threading.Event()
+
+
+def _run_tracked_helper(command: list[str], timeout: float) -> int:
+    """Run a native helper that the Stop button can interrupt immediately."""
+    process = subprocess.Popen(
+        command,
+        stdin=subprocess.DEVNULL,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+        creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0),
+    )
+    with _helper_process_lock:
+        if _helper_abort_event.is_set():
+            try:
+                process.terminate()
+                process.wait(timeout=0.6)
+            except Exception:
+                try:
+                    process.kill()
+                except Exception:
+                    pass
+            raise BidiError("Native browser helper was cancelled by the user.")
+        _active_helper_processes.add(process)
+    try:
+        return process.wait(timeout=timeout)
+    except subprocess.TimeoutExpired:
+        try:
+            process.kill()
+        except Exception:
+            pass
+        raise
+    finally:
+        with _helper_process_lock:
+            _active_helper_processes.discard(process)
+
+
+def _terminate_active_helpers() -> None:
+    with _helper_process_lock:
+        processes = list(_active_helper_processes)
+    for process in processes:
+        if process.poll() is not None:
+            continue
+        try:
+            process.terminate()
+            process.wait(timeout=0.6)
+        except Exception:
+            try:
+                process.kill()
+            except Exception:
+                pass
+
+
+def force_close_all_firefox() -> None:
+    """Force-close every Firefox process and therefore every visible tab."""
+    if os.name != "nt":
+        return
+    try:
+        subprocess.run(
+            ["taskkill.exe", "/F", "/T", "/IM", "firefox.exe"],
+            stdin=subprocess.DEVNULL,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            timeout=8,
+            creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0),
+        )
+    except Exception as error:
+        logger.debug(f"[BROWSER] Firefox force-close returned: {error}")
 
 
 def _first_existing_path(candidates) -> Optional[str]:
@@ -199,8 +272,6 @@ try {{
             throw Error("Firefox was minimized or lost focus before email entry.")
         Fields.Email.SetFocus()
         Sleep(180)
-        if !UIA.CompareElements(UIA.GetFocusedElement(), Fields.Email)
-            throw Error("The email field did not receive focus for account " Index ".")
         SendEvent("^a")
         SendText(Account.Email)
         Sleep(180)
@@ -214,26 +285,18 @@ try {{
             throw Error("Firefox was minimized or lost focus before password entry.")
         Fields.Password.SetFocus()
         Sleep(180)
-        if !UIA.CompareElements(UIA.GetFocusedElement(), Fields.Password)
-            throw Error("The password field did not receive focus for account " Index ".")
         SendEvent("^a")
         SendText(Account.Password)
         Sleep(180)
         if !ActivateFirefox()
             throw Error("Firefox was minimized or lost focus before login submission.")
         Fields.Submit.Click()
-        Sleep(7000)
-
-        CurrentUrl := ReadAddressBar()
-        if !RegExMatch(CurrentUrl, "i)^https://(www\\.)?tumblr\\.com/dashboard(?:[/?#]|$)") {{
-            StatusText .= "FAILED|" Index "|login_not_confirmed`n"
-            continue
-        }}
-
-        MarkerUrl := "https://www.tumblr.com/dashboard?__tumblr_bot_slot=" CurrentSlot
-            . "#tumblr-bot-slot-" CurrentSlot
-        NavigateExact(MarkerUrl)
-        Sleep(4200)
+        ; Trust the submitted credentials. Do not inspect the redirect or
+        ; classify the login as successful/failed; continue immediately.
+        ; Keep the tab alive briefly so the submitted request can finish, but
+        ; do not navigate it or read its result. Markers are added only when
+        ; the saved container sessions are reopened for Python control.
+        Sleep(3000)
         StatusText .= "SUCCESS|" Index "|" CurrentSlot "`n"
         Successful += 1
         OpenSlot := 0
@@ -247,13 +310,6 @@ try {{
         }}
     }}
 
-    for Index in Range(Successful) {{
-        SendEvent("^" Index)
-        Sleep(500)
-        CurrentUrl := ReadAddressBar()
-        if !RegExMatch(CurrentUrl, "i)^https://(www\\.)?tumblr\\.com/dashboard(?:[/?#]|$)")
-            throw Error("Login was not confirmed for account " Index ". Current address: " CurrentUrl)
-    }}
     FileAppend(StatusText, StatusFile, "UTF-8")
     ExitApp(0)
 }}
@@ -340,13 +396,6 @@ LogoutCurrentAccount() {{
     }}
 }}
 
-Range(Count) {{
-    Values := []
-    Loop Count
-        Values.Push(A_Index)
-    return Values
-}}
-
 NavigateExact(Url) {{
     if !ActivateFirefox()
         throw Error("Firefox lost focus before navigation.")
@@ -422,20 +471,16 @@ def _run_native_logins(
             max_successes=max_successes,
         )
         Path(script_path).write_text(script, encoding="utf-8-sig")
-        result = subprocess.run(
+        returncode = _run_tracked_helper(
             [ahk_executable, script_path],
-            stdin=subprocess.DEVNULL,
-            stdout=subprocess.DEVNULL,
-            stderr=subprocess.DEVNULL,
             timeout=max(90, 55 * len(accounts)),
-            creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0),
         )
         detail = ""
         if os.path.isfile(status_path):
             detail = Path(status_path).read_text(encoding="utf-8-sig", errors="replace").strip()
         lines = [line.strip() for line in detail.splitlines() if line.strip()]
-        if result.returncode != 0 or not lines or lines[0] != "OK":
-            raise BidiError(detail or f"Native Firefox login stopped (exit code {result.returncode}).")
+        if returncode != 0 or not lines or lines[0] != "OK":
+            raise BidiError(detail or f"Native Firefox login stopped (exit code {returncode}).")
         successes: dict[int, int] = {}
         failures: set[int] = set()
         for line in lines[1:]:
@@ -473,19 +518,12 @@ def _run_simple_ahk(script: str, ahk_executable: str, prefix: str, timeout: floa
         os.unlink(status_path)
         script = script.replace("__STATUS__", _ahk_string(status_path))
         Path(script_path).write_text(script, encoding="utf-8-sig")
-        result = subprocess.run(
-            [ahk_executable, script_path],
-            stdin=subprocess.DEVNULL,
-            stdout=subprocess.DEVNULL,
-            stderr=subprocess.DEVNULL,
-            timeout=timeout,
-            creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0),
-        )
+        returncode = _run_tracked_helper([ahk_executable, script_path], timeout=timeout)
         detail = Path(status_path).read_text(
             encoding="utf-8-sig", errors="replace"
         ).strip() if os.path.isfile(status_path) else ""
-        if result.returncode != 0 or detail != "OK":
-            raise BidiError(detail or f"AutoHotkey stopped (exit code {result.returncode}).")
+        if returncode != 0 or detail != "OK":
+            raise BidiError(detail or f"AutoHotkey stopped (exit code {returncode}).")
     finally:
         for path in (script_path, status_path):
             try:
@@ -567,65 +605,53 @@ def _clear_container_sessions_before_login(
     profile_dir: str,
     ahk_executable: str,
 ) -> None:
-    """Clear cookies and Tumblr web storage in the requested containers.
-
-    This remote-control phase ends before any credentials are entered. Firefox
-    is then restarted normally for the native AutoHotkey login phase.
-    """
-    drivers: list[BidiDriver] = []
-    try:
-        manager.ensure_firefox_running(firefox_executable, profile_dir)
-        manager.connect_session()
-        for slot in range(1, slot_count + 1):
-            context = manager.open_container_tab(ahk_executable, slot)
-            driver = BidiDriver(manager, context, slot)
-            drivers.append(driver)
-
-            manager.clear_container_cookies(context)
-            driver.get("https://www.tumblr.com/login")
-            if "/login" not in driver.current_url.lower():
-                raise BidiError(
-                    f"Container slot {slot} still redirects away from Login after cleanup."
-                )
-
-            # Now that Login is open on the logged-out Tumblr origin, clear
-            # any remaining local/session/cache storage for that container.
-            try:
-                driver.execute_script("""
-                    try { localStorage.clear(); } catch (error) {}
-                    try { sessionStorage.clear(); } catch (error) {}
-                    if (typeof caches !== 'undefined') {
-                        return caches.keys().then(keys =>
-                            Promise.all(keys.map(key => caches.delete(key)))
-                        );
-                    }
-                    return true;
-                """)
-            except Exception as error:
-                logger.warning(
-                    f"[BROWSER] Could not clear Tumblr web storage in slot {slot}: {error}"
-                )
-
-            logger.info(f"[BROWSER] Container slot {slot} session was cleared and verified.")
-    finally:
-        for driver in drivers:
-            try:
-                driver.quit()
-            except Exception:
-                pass
-        manager.disconnect_session()
-        try:
-            _close_firefox_after_login(ahk_executable)
-            manager.wait_until_firefox_stops()
-        except Exception as error:
-            logger.warning(f"[BROWSER] Firefox cleanup phase did not close cleanly: {error}")
+    """Clear requested containers without desktop input or visible tabs."""
+    del firefox_executable, ahk_executable
+    context_ids, deleted_by_context, storage_count = clear_container_sessions_offline(
+        profile_dir,
+        slot_count,
+    )
+    for slot, context_id in enumerate(context_ids, start=1):
+        logger.info(
+            f"[BROWSER] Container slot {slot} (userContextId={context_id}) "
+            f"was cleared directly: {deleted_by_context[context_id]} cookie(s)."
+        )
+    logger.info(
+        f"[BROWSER] Offline container cleanup finished for all {slot_count} slot(s); "
+        f"removed {storage_count} container storage folder(s)."
+    )
 
 
 class BrowserFactory:
     """Prepare native logins, then expose their tabs through one BiDi session."""
 
     _launch_lock = threading.RLock()
+    _shutdown_lock = threading.RLock()
+    _abort_event = threading.Event()
     _prepared_drivers: dict[str, BidiDriver] = {}
+
+    @classmethod
+    def reset_abort(cls) -> None:
+        """Allow a fresh Start after a previous stop request."""
+        cls._abort_event.clear()
+        _helper_abort_event.clear()
+        manager.reset_abort()
+
+    @classmethod
+    def _raise_if_aborted(cls) -> None:
+        if cls._abort_event.is_set():
+            raise BidiError("Browser preparation was cancelled by the user.")
+
+    @classmethod
+    def abort_all(cls) -> None:
+        """Immediately cancel helpers, detach BiDi, and close every Firefox tab."""
+        with cls._shutdown_lock:
+            cls._abort_event.set()
+            _helper_abort_event.set()
+            _terminate_active_helpers()
+            force_close_all_firefox()
+            manager.abort()
+            cls._prepared_drivers.clear()
 
     @classmethod
     @contextmanager
@@ -638,11 +664,12 @@ class BrowserFactory:
         cls,
         accounts: list[dict],
         max_successes: Optional[int] = None,
+        clear_sessions: bool = True,
     ) -> tuple[list[dict], list[dict]]:
         """Prepare only the requested number of successful container sessions.
 
-        Failed credentials are replaced by later candidates in the same slot, so
-        no extra container tabs are opened after the requested count is reached.
+        Submitted credentials are trusted without checking Tumblr's redirect,
+        and no extra tabs are opened after the requested count is reached.
         """
         if not accounts:
             return [], []
@@ -654,23 +681,36 @@ class BrowserFactory:
             raise ValueError("Every Firefox account requires a password.")
 
         with cls._launch_lock:
+            cls._raise_if_aborted()
             cls.finish_batch()
             firefox = find_firefox_executable()
             autohotkey = find_autohotkey_executable()
             profile_dir = find_default_profile()
             manager.ensure_plain_firefox_running(firefox, profile_dir)
-            logger.info(
-                f"[BROWSER] Clearing previous sessions from {requested} container slot(s)."
-            )
-            _close_firefox_after_login(autohotkey)
-            manager.wait_until_firefox_stops()
-            _clear_container_sessions_before_login(
-                requested,
-                firefox,
-                profile_dir,
-                autohotkey,
-            )
-            manager.ensure_plain_firefox_running(firefox, profile_dir)
+            cls._raise_if_aborted()
+            if clear_sessions:
+                logger.info(
+                    f"[BROWSER] Clearing previous sessions from "
+                    f"{requested} container slot(s) once at startup."
+                )
+                # Do not use foreground window activation here. RDP can drop
+                # those UI events when minimized/disconnected, leaving only
+                # the first container cleaned.
+                force_close_all_firefox()
+                manager.wait_until_firefox_stops()
+                cls._raise_if_aborted()
+                _clear_container_sessions_before_login(
+                    requested,
+                    firefox,
+                    profile_dir,
+                    autohotkey,
+                )
+                cls._raise_if_aborted()
+                manager.ensure_plain_firefox_running(firefox, profile_dir)
+            else:
+                logger.info(
+                    "[BROWSER] Skipping container cleanup; it already ran for this Start."
+                )
             logger.info(
                 f"[BROWSER] Starting AutoHotkey-only login for {len(accounts)} account(s). "
                 "Firefox has no remote-control option."
@@ -682,6 +722,7 @@ class BrowserFactory:
                     find_uia_library(),
                     requested,
                 )
+                cls._raise_if_aborted()
                 # Backward-compatible fallback for mocked/legacy callers.
                 if login_result is None:
                     successful_slots = {
@@ -716,13 +757,16 @@ class BrowserFactory:
                 )
                 _close_firefox_after_login(autohotkey)
                 manager.wait_until_firefox_stops()
+                cls._raise_if_aborted()
                 restored = restore_tumblr_cookies(profile_dir, cookie_snapshot)
                 logger.info(
                     f"[BROWSER] Restored {restored} Tumblr cookies to the same "
                     "Firefox profile after the clean shutdown."
                 )
                 manager.ensure_firefox_running(firefox, profile_dir)
+                cls._raise_if_aborted()
                 _reopen_logged_container_tabs(len(prepared_accounts), autohotkey)
+                cls._raise_if_aborted()
                 logger.info(
                     "[BROWSER] Reopened the saved container sessions; attaching "
                     "Python after login without submitting credentials again."
@@ -731,15 +775,22 @@ class BrowserFactory:
                 contexts = manager.map_marked_container_tabs(
                     list(range(1, len(prepared_accounts) + 1))
                 )
-                cls._prepared_drivers = {
-                    str(account.get("email", "")).strip().lower(): BidiDriver(
-                        manager, contexts[slot], slot
-                    )
-                    for slot, account in enumerate(prepared_accounts, start=1)
-                }
+                cls._raise_if_aborted()
+                with cls._shutdown_lock:
+                    cls._raise_if_aborted()
+                    cls._prepared_drivers = {
+                        str(account.get("email", "")).strip().lower(): BidiDriver(
+                            manager, contexts[slot], slot
+                        )
+                        for slot, account in enumerate(prepared_accounts, start=1)
+                    }
                 return prepared_accounts, failed_accounts
             except Exception:
                 cls._prepared_drivers.clear()
+                if cls._abort_event.is_set():
+                    force_close_all_firefox()
+                    manager.abort()
+                    raise
                 manager.disconnect_session()
                 try:
                     _close_firefox_after_login(autohotkey)
@@ -763,6 +814,7 @@ class BrowserFactory:
         del password
         if headless:
             raise RuntimeError("The normal Firefox container workflow must be visible.")
+        cls._raise_if_aborted()
         key = str(email or "").strip().lower()
         with cls._launch_lock:
             driver = cls._prepared_drivers.pop(key, None)
@@ -793,6 +845,9 @@ class BrowserFactory:
         with cls._launch_lock:
             leftovers = list(cls._prepared_drivers.values())
             cls._prepared_drivers.clear()
+            if cls._abort_event.is_set():
+                manager.abort()
+                return
             for driver in leftovers:
                 try:
                     driver.quit()
@@ -803,7 +858,7 @@ class BrowserFactory:
     @staticmethod
     def close_browser(driver: Optional[BidiDriver], profile_dir: Optional[str] = None):
         del profile_dir
-        if driver:
+        if driver and not BrowserFactory._abort_event.is_set():
             try:
                 driver.quit()
             except Exception as error:

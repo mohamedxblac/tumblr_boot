@@ -797,3 +797,250 @@ Stacktrace:
 2026-09-15 02:35:03,773 [INFO] [BROWSER] Starting Firefox normally for AutoHotkey-only login.
 2026-09-15 02:35:04,313 [INFO] [BROWSER] Starting AutoHotkey-only login for 20 account(s). Firefox has no remote-control option.
 2026-09-15 02:35:54,606 [INFO] [ENGINE] Stop requested. Waiting for current action to wrap up...
+2026-09-15 02:39:10,023 [INFO] [ENGINE] Bot engine started.
+2026-09-15 02:39:10,034 [INFO] [ENGINE] Starting round with 20 pending accounts across 3 parallel browser(s)...
+2026-09-15 02:39:10,839 [INFO] [BROWSER] Starting Firefox normally for AutoHotkey-only login.
+2026-09-15 02:39:11,413 [INFO] [BROWSER] Clearing previous sessions from 3 container slot(s).
+2026-09-15 02:39:15,132 [INFO] [BIDI] Starting the user's normal Firefox profile.
+2026-09-15 02:39:18,650 [INFO] [BIDI] Connected directly to Firefox 155.0.1.
+2026-09-15 02:39:24,996 [INFO] [BIDI] Container shortcut 1 opened in context 0a97f3ff-818b-43fb-a207-d933382a928b (userContext=8e867432-7a27-40c9-b055-f6ecf0f94b34).
+2026-09-15 02:39:25,009 [INFO] [BIDI] Cleared all cookies from the selected Firefox container.
+2026-09-15 02:39:27,598 [ERROR] [ENGINE] Login preparation attempt 1/3 failed: Container slot 1 still redirects away from Login after cleanup.
+2026-09-15 02:39:33,290 [INFO] [BROWSER] Starting Firefox normally for AutoHotkey-only login.
+2026-09-15 02:39:33,863 [INFO] [BROWSER] Clearing previous sessions from 3 container slot(s).
+2026-09-15 02:39:37,704 [INFO] [BIDI] Starting the user's normal Firefox profile.
+2026-09-15 02:39:41,137 [INFO] [BIDI] Connected directly to Firefox 155.0.1.
+2026-09-15 02:39:47,559 [INFO] [BIDI] Container shortcut 1 opened in context 4c58384d-9782-47d3-9c4f-9cef10727008 (userContext=75f0ebad-a384-479b-b3a8-31cf7eeadaca).
+2026-09-15 02:39:47,564 [INFO] [BIDI] Cleared all cookies from the selected Firefox container.
+2026-09-15 02:39:48,026 [INFO] [BROWSER] Container slot 1 session was cleared and verified.
+2026-09-15 02:39:54,334 [INFO] [BIDI] Container shortcut 2 opened in context 76fa0656-1a83-4aea-9cd7-9d6f4c9e6472 (userContext=d10ab901-80e8-49ac-b49a-8c3a5300925e).
+2026-09-15 02:39:54,337 [INFO] [BIDI] Cleared all cookies from the selected Firefox container.
+2026-09-15 02:39:54,808 [INFO] [BROWSER] Container slot 2 session was cleared and verified.
+2026-09-15 02:40:01,134 [INFO] [BIDI] Container shortcut 3 opened in context 79ed5c5c-53ad-45a1-bedd-8596d96fb41e (userContext=9295c7c9-ca04-4816-9993-be2b3cc269ee).
+2026-09-15 02:40:01,137 [INFO] [BIDI] Cleared all cookies from the selected Firefox container.
+2026-09-15 02:40:01,782 [INFO] [BROWSER] Container slot 3 session was cleared and verified.
+2026-09-15 02:40:04,466 [INFO] [BROWSER] Starting Firefox normally for AutoHotkey-only login.
+2026-09-15 02:40:05,004 [INFO] [BROWSER] Starting AutoHotkey-only login for 20 account(s). Firefox has no remote-control option.
+2026-09-15 02:41:41,147 [ERROR] [ENGINE] Login preparation attempt 2/3 failed: Login was not confirmed for account 1. Current address: https://www.tumblr.com/explore/trending
+2026-09-15 02:41:46,854 [INFO] [BROWSER] Starting Firefox normally for AutoHotkey-only login.
+2026-09-15 02:41:47,375 [INFO] [BROWSER] Clearing previous sessions from 3 container slot(s).
+2026-09-15 02:41:50,619 [INFO] [BIDI] Starting the user's normal Firefox profile.
+2026-09-15 02:41:53,629 [INFO] [BIDI] Connected directly to Firefox 155.0.1.
+2026-09-15 02:42:00,047 [INFO] [BIDI] Container shortcut 1 opened in context d13eb517-d70f-42b9-b1be-4bbcfcadba04 (userContext=61599592-90e4-4154-92cf-bc9a809dda4f).
+2026-09-15 02:42:00,093 [INFO] [BIDI] Cleared all cookies from the selected Firefox container.
+2026-09-15 02:42:03,186 [ERROR] [ENGINE] Login preparation attempt 3/3 failed: Container slot 1 still redirects away from Login after cleanup.
+2026-09-15 02:42:03,187 [WARNING] [ENGINE] No account was available for message processing.
+2026-09-15 02:42:03,187 [INFO] [ENGINE] Bot engine stopped cleanly.
+2026-09-15 02:46:12,044 [INFO] [ENGINE] Bot engine started.
+2026-09-15 02:46:12,054 [INFO] [ENGINE] Starting round with 20 pending accounts across 3 parallel browser(s)...
+2026-09-15 02:46:12,767 [INFO] [BROWSER] Starting Firefox normally for AutoHotkey-only login.
+2026-09-15 02:46:13,277 [INFO] [BROWSER] Clearing previous sessions from 3 container slot(s).
+2026-09-15 02:46:17,217 [INFO] [BIDI] Starting the user's normal Firefox profile.
+2026-09-15 02:46:20,637 [INFO] [BIDI] Connected directly to Firefox 155.0.1.
+2026-09-15 02:46:26,997 [INFO] [BIDI] Container shortcut 1 opened in context 856b9bd9-c961-4338-9085-31912ec899c2 (userContext=ca76c87d-cc0c-4122-b012-e29e1e5819be).
+2026-09-15 02:46:27,002 [INFO] [BIDI] Cleared all cookies from the selected Firefox container.
+2026-09-15 02:46:27,471 [INFO] [BROWSER] Container slot 1 session was cleared and verified.
+2026-09-15 02:46:33,827 [INFO] [BIDI] Container shortcut 2 opened in context 02f95120-648a-45ff-81bb-bf1a16143763 (userContext=6a65f708-0815-4659-8383-1fba58f5640d).
+2026-09-15 02:46:33,837 [INFO] [BIDI] Cleared all cookies from the selected Firefox container.
+2026-09-15 02:46:35,223 [INFO] [BROWSER] Container slot 2 session was cleared and verified.
+2026-09-15 02:46:41,547 [INFO] [BIDI] Container shortcut 3 opened in context 4ad5a948-ab57-4027-9f53-d109c594777c (userContext=8aa2af82-abc5-4348-99b9-04de788d4502).
+2026-09-15 02:46:41,552 [INFO] [BIDI] Cleared all cookies from the selected Firefox container.
+2026-09-15 02:46:44,576 [ERROR] [ENGINE] Login preparation attempt 1/3 failed: Container slot 3 still redirects away from Login after cleanup.
+2026-09-15 02:46:50,272 [INFO] [BROWSER] Starting Firefox normally for AutoHotkey-only login.
+2026-09-15 02:46:50,810 [INFO] [BROWSER] Clearing previous sessions from 3 container slot(s).
+2026-09-15 02:46:54,759 [INFO] [BIDI] Starting the user's normal Firefox profile.
+2026-09-15 02:46:58,387 [INFO] [BIDI] Connected directly to Firefox 155.0.1.
+2026-09-15 02:47:04,780 [INFO] [BIDI] Container shortcut 1 opened in context 57c4c6c4-4b11-4e99-a310-f7bb064d67cd (userContext=55492b20-9b88-4cda-a9ec-78e7c5cbd59c).
+2026-09-15 02:47:04,794 [INFO] [BIDI] Cleared all cookies from the selected Firefox container.
+2026-09-15 02:47:05,274 [INFO] [BROWSER] Container slot 1 session was cleared and verified.
+2026-09-15 02:47:11,613 [INFO] [BIDI] Container shortcut 2 opened in context d6e38a74-c52c-4c02-a842-11d73778ca0a (userContext=556e2368-f894-4895-a0af-5ea3ebc08f0a).
+2026-09-15 02:47:11,618 [INFO] [BIDI] Cleared all cookies from the selected Firefox container.
+2026-09-15 02:47:12,087 [INFO] [BROWSER] Container slot 2 session was cleared and verified.
+2026-09-15 02:47:18,407 [INFO] [BIDI] Container shortcut 3 opened in context af294b15-aafe-4d06-bba1-183f8d30e77a (userContext=fdb02e42-1e02-40cf-9861-0e5f23fbc07d).
+2026-09-15 02:47:18,410 [INFO] [BIDI] Cleared all cookies from the selected Firefox container.
+2026-09-15 02:47:18,918 [INFO] [BROWSER] Container slot 3 session was cleared and verified.
+2026-09-15 02:47:21,598 [INFO] [BROWSER] Starting Firefox normally for AutoHotkey-only login.
+2026-09-15 02:47:22,131 [INFO] [BROWSER] Starting AutoHotkey-only login for 20 account(s). Firefox has no remote-control option.
+2026-09-15 02:48:30,665 [ERROR] [ENGINE] Login preparation attempt 2/3 failed: The password field did not receive focus for account 3.
+2026-09-15 02:48:36,353 [INFO] [BROWSER] Starting Firefox normally for AutoHotkey-only login.
+2026-09-15 02:48:36,867 [INFO] [BROWSER] Clearing previous sessions from 3 container slot(s).
+2026-09-15 02:48:40,750 [INFO] [BIDI] Starting the user's normal Firefox profile.
+2026-09-15 02:48:44,303 [INFO] [BIDI] Connected directly to Firefox 155.0.1.
+2026-09-15 02:48:50,663 [INFO] [BIDI] Container shortcut 1 opened in context 0ca42a5f-2f73-41ed-8cdf-4e6543d3a839 (userContext=402bd544-e558-46da-a652-b923ebf92e13).
+2026-09-15 02:48:50,675 [INFO] [BIDI] Cleared all cookies from the selected Firefox container.
+2026-09-15 02:48:53,571 [ERROR] [ENGINE] Login preparation attempt 3/3 failed: Container slot 1 still redirects away from Login after cleanup.
+2026-09-15 02:48:53,572 [WARNING] [ENGINE] No account was available for message processing.
+2026-09-15 02:48:53,572 [INFO] [ENGINE] Bot engine stopped cleanly.
+2026-09-15 02:52:26,252 [INFO] [ENGINE] Bot engine started.
+2026-09-15 02:52:26,263 [INFO] [ENGINE] Starting round with 20 pending accounts across 3 parallel browser(s)...
+2026-09-15 02:52:27,045 [INFO] [BROWSER] Starting Firefox normally for AutoHotkey-only login.
+2026-09-15 02:52:27,619 [INFO] [BROWSER] Clearing previous sessions from 3 container slot(s) once at startup.
+2026-09-15 02:52:31,518 [INFO] [BIDI] Starting the user's normal Firefox profile.
+2026-09-15 02:52:35,220 [INFO] [BIDI] Connected directly to Firefox 155.0.1.
+2026-09-15 02:52:41,575 [INFO] [BIDI] Container shortcut 1 opened in context a3d41781-c01a-41d3-91c8-161047c14824 (userContext=58493ece-cd98-4d16-bbdf-5fa4c471579f).
+2026-09-15 02:52:41,581 [INFO] [BIDI] Cleared all cookies from the selected Firefox container.
+2026-09-15 02:52:42,011 [INFO] [BROWSER] Container slot 1 session was cleared and verified.
+2026-09-15 02:52:48,349 [INFO] [BIDI] Container shortcut 2 opened in context 98727766-0700-4479-939d-4512ac965db2 (userContext=85470865-0973-4993-bd17-e7fdfd962ccf).
+2026-09-15 02:52:48,359 [INFO] [BIDI] Cleared all cookies from the selected Firefox container.
+2026-09-15 02:52:51,214 [ERROR] [ENGINE] Login preparation attempt 1/3 failed: Container slot 2 still redirects away from Login after cleanup.
+2026-09-15 02:52:56,915 [INFO] [BROWSER] Starting Firefox normally for AutoHotkey-only login.
+2026-09-15 02:52:57,445 [INFO] [BROWSER] Skipping container cleanup; it already ran for this Start.
+2026-09-15 02:52:57,445 [INFO] [BROWSER] Starting AutoHotkey-only login for 20 account(s). Firefox has no remote-control option.
+2026-09-15 02:54:05,878 [INFO] [BROWSER] Captured 87 Tumblr container cookies before closing the normal browser.
+2026-09-15 02:54:11,495 [INFO] [BROWSER] Restored 87 Tumblr cookies to the same Firefox profile after the clean shutdown.
+2026-09-15 02:54:12,128 [INFO] [BIDI] Starting the user's normal Firefox profile.
+2026-09-15 02:55:01,300 [INFO] [BROWSER] Reopened the saved container sessions; attaching Python after login without submitting credentials again.
+2026-09-15 02:55:01,338 [INFO] [BIDI] Connected directly to Firefox 155.0.1.
+2026-09-15 02:55:01,369 [INFO] [BIDI] Mapped native login slot 1 to context 79d0d0df-0249-48f0-9349-a2d315e850fb (userContext=08fea7c6-c664-4e72-a110-446fdb628382).
+2026-09-15 02:55:01,370 [INFO] [BIDI] Mapped native login slot 2 to context 2663d287-ee27-4003-922e-eece175ba1d3 (userContext=d1e7523d-7880-4ab5-999a-f32375b0c4f8).
+2026-09-15 02:55:01,370 [INFO] [BIDI] Mapped native login slot 3 to context 4fb2b300-bfee-4337-9807-7b8b7f4c95b7 (userContext=82ff6a93-7694-4ecf-9cde-5de468fe1026).
+2026-09-15 02:55:01,372 [INFO] [BROWSER] Python control attached after native login for alymanyaljdyd79@gmail.com (42fac269272f2f08).
+2026-09-15 02:55:01,373 [INFO] [BROWSER] Python control attached after native login for a.lymanyaljdyd79@gmail.com (0022db02f3535ca9).
+2026-09-15 02:55:01,374 [INFO] [BROWSER] Python control attached after native login for norman.dmavaughanbn@gmail.com (fa4751d2c21caa5a).
+2026-09-15 02:55:01,379 [INFO] [alymanyaljdyd79@gmail.com] Ready! Processing up to 15 users in this session...
+2026-09-15 02:55:01,383 [INFO] [a.lymanyaljdyd79@gmail.com] Ready! Processing up to 15 users in this session...
+2026-09-15 02:55:01,389 [INFO] [norman.dmavaughanbn@gmail.com] Ready! Processing up to 15 users in this session...
+2026-09-15 02:55:01,414 [INFO] [ENGINE] Skipping previously attempted recipient: sarielleglow
+2026-09-15 02:55:01,420 [INFO] [ENGINE] Skipping previously attempted recipient: sarielleglow
+2026-09-15 02:55:01,450 [INFO] [ENGINE] Skipping previously attempted recipient: bloodybarrythebabysitter
+2026-09-15 02:55:51,599 [INFO] alymanyaljdyd79@gmail.com | Sent:3 | Failed:0 | sent_ok | user=sarielleglow | session=1/15 | total=3/30
+2026-09-15 02:55:52,384 [INFO] norman.dmavaughanbn@gmail.com | Sent:3 | Failed:0 | sent_ok | user=foreverhockeytrash | session=1/15 | total=3/30
+2026-09-15 02:55:52,918 [INFO] a.lymanyaljdyd79@gmail.com | Sent:3 | Failed:0 | sent_ok | user=bloodybarrythebabysitter | session=1/15 | total=3/30
+2026-09-15 02:55:55,044 [INFO] [ENGINE] Skipping previously attempted recipient: bloodybarrythebabysitter
+2026-09-15 02:55:55,047 [INFO] [ENGINE] Skipping previously attempted recipient: foreverhockeytrash
+2026-09-15 02:55:56,747 [INFO] [ENGINE] Skipping previously attempted recipient: foreverhockeytrash
+2026-09-15 02:55:56,753 [INFO] [ENGINE] Skipping previously attempted recipient: wolfugumu
+2026-09-15 02:55:56,789 [INFO] [ENGINE] Skipping previously attempted recipient: wolfugumu
+2026-09-15 02:55:56,792 [INFO] [ENGINE] Skipping previously attempted recipient: percontaion-points
+2026-09-15 02:56:33,277 [INFO] alymanyaljdyd79@gmail.com | Sent:3 | Failed:0 | follow | user=wolfugumu | ok=True
+2026-09-15 02:56:33,309 [INFO] alymanyaljdyd79@gmail.com | Sent:4 | Failed:0 | sent_ok | user=wolfugumu | session=2/15 | total=4/30
+2026-09-15 02:56:35,736 [INFO] [ENGINE] Skipping previously attempted recipient: percontaion-points
+2026-09-15 02:56:35,743 [INFO] [ENGINE] Skipping previously attempted recipient: ultra-soda
+2026-09-15 02:56:42,357 [INFO] norman.dmavaughanbn@gmail.com | Sent:4 | Failed:0 | sent_ok | user=ultra-soda | session=2/15 | total=4/30
+2026-09-15 02:56:44,668 [INFO] [ENGINE] Skipping previously attempted recipient: zerodarkwolf
+2026-09-15 02:56:45,896 [INFO] a.lymanyaljdyd79@gmail.com | Sent:4 | Failed:0 | sent_ok | user=percontaion-points | session=2/15 | total=4/30
+2026-09-15 02:56:50,251 [INFO] [ENGINE] Skipping previously attempted recipient: ultra-soda
+2026-09-15 02:56:50,258 [INFO] [ENGINE] Skipping previously attempted recipient: zerodarkwolf
+2026-09-15 02:56:50,262 [INFO] [ENGINE] Skipping previously attempted recipient: elisellefierceangel
+2026-09-15 02:57:17,529 [INFO] alymanyaljdyd79@gmail.com | Sent:5 | Failed:0 | sent_ok | user=zerodarkwolf | session=3/15 | total=5/30
+2026-09-15 02:57:19,453 [INFO] norman.dmavaughanbn@gmail.com | Sent:4 | Failed:0 | follow | user=elisellefierceangel | ok=True
+2026-09-15 02:57:19,483 [INFO] norman.dmavaughanbn@gmail.com | Sent:5 | Failed:0 | sent_ok | user=elisellefierceangel | session=3/15 | total=5/30
+2026-09-15 02:57:21,050 [INFO] [ENGINE] Skipping previously attempted recipient: elisellefierceangel
+2026-09-15 02:57:21,054 [INFO] [ENGINE] Skipping previously attempted recipient: recycledrap
+2026-09-15 02:57:22,555 [INFO] [ENGINE] Skipping previously attempted recipient: recycledrap
+2026-09-15 02:57:22,558 [INFO] [ENGINE] Skipping previously attempted recipient: wholelottanope503
+2026-09-15 02:57:32,937 [INFO] norman.dmavaughanbn@gmail.com | Sent:5 | Failed:1 | no_msg_button streak=1/10 user=kr1spbacon
+2026-09-15 02:57:34,499 [INFO] a.lymanyaljdyd79@gmail.com | Sent:5 | Failed:0 | sent_ok | user=recycledrap | session=3/15 | total=5/30
+2026-09-15 02:57:39,361 [INFO] [ENGINE] Skipping previously attempted recipient: wholelottanope503
+2026-09-15 02:57:39,379 [INFO] [ENGINE] Skipping previously attempted recipient: kr1spbacon
+2026-09-15 02:57:39,393 [INFO] [ENGINE] Skipping previously attempted recipient: gxphivoid
+2026-09-15 02:58:09,821 [INFO] alymanyaljdyd79@gmail.com | Sent:6 | Failed:0 | sent_ok | user=wholelottanope503 | session=4/15 | total=6/30
+2026-09-15 02:58:12,573 [INFO] [ENGINE] Skipping previously attempted recipient: kr1spbacon
+2026-09-15 02:58:12,576 [INFO] [ENGINE] Skipping previously attempted recipient: gxphivoid
+2026-09-15 02:58:12,582 [INFO] [ENGINE] Skipping previously attempted recipient: anxiety-isnt-bad-babes
+2026-09-15 02:58:21,437 [INFO] norman.dmavaughanbn@gmail.com | Sent:5 | Failed:1 | follow | user=gxphivoid | ok=True
+2026-09-15 02:58:21,457 [INFO] norman.dmavaughanbn@gmail.com | Sent:6 | Failed:1 | sent_ok | user=gxphivoid | session=4/15 | total=6/30
+2026-09-15 02:58:25,490 [INFO] [ENGINE] Skipping previously attempted recipient: anxiety-isnt-bad-babes
+2026-09-15 02:58:25,496 [INFO] [ENGINE] Skipping previously attempted recipient: mothmans-pillowy-soft-bulge
+2026-09-15 02:58:33,927 [INFO] a.lymanyaljdyd79@gmail.com | Sent:6 | Failed:0 | sent_ok | user=anxiety-isnt-bad-babes | session=4/15 | total=6/30
+2026-09-15 02:58:36,365 [INFO] [ENGINE] Skipping previously attempted recipient: mothmans-pillowy-soft-bulge
+2026-09-15 02:58:36,369 [INFO] [ENGINE] Skipping previously attempted recipient: violetbaudelaire-quagmire
+2026-09-15 02:59:02,187 [INFO] alymanyaljdyd79@gmail.com | Sent:7 | Failed:0 | sent_ok | user=mothmans-pillowy-soft-bulge | session=5/15 | total=7/30
+2026-09-15 02:59:05,409 [INFO] [ENGINE] Skipping previously attempted recipient: violetbaudelaire-quagmire
+2026-09-15 02:59:05,414 [INFO] [ENGINE] Skipping previously attempted recipient: epicpieberserker
+2026-09-15 02:59:06,308 [INFO] norman.dmavaughanbn@gmail.com | Sent:7 | Failed:1 | sent_ok | user=violetbaudelaire-quagmire | session=5/15 | total=7/30
+2026-09-15 02:59:09,179 [INFO] [ENGINE] Skipping previously attempted recipient: epicpieberserker
+2026-09-15 02:59:09,183 [INFO] [ENGINE] Skipping previously attempted recipient: milanibuttercup
+2026-09-15 02:59:17,750 [INFO] a.lymanyaljdyd79@gmail.com | Sent:6 | Failed:0 | follow | user=epicpieberserker | ok=True
+2026-09-15 02:59:17,769 [INFO] a.lymanyaljdyd79@gmail.com | Sent:7 | Failed:0 | sent_ok | user=epicpieberserker | session=5/15 | total=7/30
+2026-09-15 02:59:18,005 [INFO] norman.dmavaughanbn@gmail.com | Sent:7 | Failed:2 | no_msg_button streak=1/10 user=ratsiiii
+2026-09-15 02:59:20,119 [INFO] [ENGINE] Skipping previously attempted recipient: milanibuttercup
+2026-09-15 02:59:20,124 [INFO] [ENGINE] Skipping previously attempted recipient: ratsiiii
+2026-09-15 02:59:21,053 [INFO] [ENGINE] Skipping previously attempted recipient: inthenowandforever
+2026-09-15 02:59:28,211 [INFO] a.lymanyaljdyd79@gmail.com | Sent:7 | Failed:1 | no_msg_button streak=1/10 user=inthenowandforever
+2026-09-15 02:59:32,774 [INFO] [ENGINE] Skipping previously attempted recipient: theodoralavenderluv
+2026-09-15 02:59:45,165 [INFO] alymanyaljdyd79@gmail.com | Sent:8 | Failed:0 | sent_ok | user=milanibuttercup | session=6/15 | total=8/30
+2026-09-15 02:59:49,676 [INFO] [ENGINE] Skipping previously attempted recipient: ratsiiii
+2026-09-15 02:59:49,680 [INFO] [ENGINE] Skipping previously attempted recipient: inthenowandforever
+2026-09-15 02:59:49,684 [INFO] [ENGINE] Skipping previously attempted recipient: theodoralavenderluv
+2026-09-15 02:59:49,688 [INFO] [ENGINE] Skipping previously attempted recipient: xic4-4
+2026-09-15 03:00:01,307 [INFO] norman.dmavaughanbn@gmail.com | Sent:7 | Failed:2 | follow | user=theodoralavenderluv | ok=True
+2026-09-15 03:00:01,339 [INFO] norman.dmavaughanbn@gmail.com | Sent:8 | Failed:2 | sent_ok | user=theodoralavenderluv | session=6/15 | total=8/30
+2026-09-15 03:00:05,300 [INFO] [ENGINE] Skipping previously attempted recipient: xic4-4
+2026-09-15 03:00:05,303 [INFO] [ENGINE] Skipping previously attempted recipient: void-occupation
+2026-09-15 03:00:15,070 [INFO] a.lymanyaljdyd79@gmail.com | Sent:8 | Failed:1 | sent_ok | user=xic4-4 | session=6/15 | total=8/30
+2026-09-15 03:00:15,404 [INFO] norman.dmavaughanbn@gmail.com | Sent:8 | Failed:3 | no_msg_button streak=1/10 user=travelsizedbits
+2026-09-15 03:00:19,713 [INFO] [ENGINE] Skipping previously attempted recipient: void-occupation
+2026-09-15 03:00:19,717 [INFO] [ENGINE] Skipping previously attempted recipient: travelsizedbits
+2026-09-15 03:00:19,722 [INFO] [ENGINE] Skipping previously attempted recipient: sundermunder
+2026-09-15 03:00:40,674 [INFO] alymanyaljdyd79@gmail.com | Sent:9 | Failed:0 | sent_ok | user=void-occupation | session=7/15 | total=9/30
+2026-09-15 03:00:44,911 [INFO] [ENGINE] Skipping previously attempted recipient: travelsizedbits
+2026-09-15 03:00:44,916 [INFO] [ENGINE] Skipping previously attempted recipient: sundermunder
+2026-09-15 03:00:44,921 [INFO] [ENGINE] Skipping previously attempted recipient: honeybeebutch
+2026-09-15 03:01:04,159 [INFO] a.lymanyaljdyd79@gmail.com | Sent:9 | Failed:1 | sent_ok | user=honeybeebutch | session=7/15 | total=9/30
+2026-09-15 03:01:06,774 [INFO] [ENGINE] Skipping previously attempted recipient: hanamiyama-basketball-club
+2026-09-15 03:01:17,340 [INFO] a.lymanyaljdyd79@gmail.com | Sent:9 | Failed:2 | no_msg_button streak=1/10 user=cleftones
+2026-09-15 03:01:17,596 [INFO] norman.dmavaughanbn@gmail.com | Sent:8 | Failed:3 | follow | user=sundermunder | ok=True
+2026-09-15 03:01:17,624 [INFO] norman.dmavaughanbn@gmail.com | Sent:9 | Failed:3 | sent_ok | user=sundermunder | session=7/15 | total=9/30
+2026-09-15 03:01:20,500 [INFO] [ENGINE] Skipping previously attempted recipient: honeybeebutch
+2026-09-15 03:01:20,507 [INFO] [ENGINE] Skipping previously attempted recipient: hanamiyama-basketball-club
+2026-09-15 03:01:20,512 [INFO] [ENGINE] Skipping previously attempted recipient: cleftones
+2026-09-15 03:01:20,931 [INFO] [ENGINE] Skipping previously attempted recipient: wormthatwalks
+2026-09-15 03:01:32,723 [INFO] norman.dmavaughanbn@gmail.com | Sent:9 | Failed:3 | follow | user=wormthatwalks | ok=True
+2026-09-15 03:01:32,724 [INFO] norman.dmavaughanbn@gmail.com | Sent:9 | Failed:4 | no_msg_button streak=1/10 user=wormthatwalks
+2026-09-15 03:01:35,659 [INFO] alymanyaljdyd79@gmail.com | Sent:10 | Failed:0 | sent_ok | user=hanamiyama-basketball-club | session=8/15 | total=10/30
+2026-09-15 03:01:37,105 [INFO] [ENGINE] Skipping previously attempted recipient: wieldablebook
+2026-09-15 03:01:40,693 [INFO] [ENGINE] Skipping previously attempted recipient: cleftones
+2026-09-15 03:01:40,697 [INFO] [ENGINE] Skipping previously attempted recipient: wormthatwalks
+2026-09-15 03:01:40,701 [INFO] [ENGINE] Skipping previously attempted recipient: wieldablebook
+2026-09-15 03:01:40,705 [INFO] [ENGINE] Skipping previously attempted recipient: lori-lite
+2026-09-15 03:02:15,045 [INFO] a.lymanyaljdyd79@gmail.com | Sent:10 | Failed:2 | sent_ok | user=wieldablebook | session=8/15 | total=10/30
+2026-09-15 03:02:18,774 [INFO] [ENGINE] Skipping previously attempted recipient: lori-lite
+2026-09-15 03:02:18,778 [INFO] [ENGINE] Skipping previously attempted recipient: devilcano
+2026-09-15 03:02:22,123 [INFO] norman.dmavaughanbn@gmail.com | Sent:10 | Failed:4 | sent_ok | user=lori-lite | session=8/15 | total=10/30
+2026-09-15 03:02:22,180 [INFO] alymanyaljdyd79@gmail.com | Sent:11 | Failed:0 | sent_ok | user=devilcano | session=9/15 | total=11/30
+2026-09-15 03:02:24,507 [INFO] [ENGINE] Skipping previously attempted recipient: kmartradiodj
+2026-09-15 03:02:26,291 [INFO] [ENGINE] Skipping previously attempted recipient: devilcano
+2026-09-15 03:02:26,302 [INFO] [ENGINE] Skipping previously attempted recipient: kmartradiodj
+2026-09-15 03:02:26,310 [INFO] [ENGINE] Skipping previously attempted recipient: just-some-bees-33
+2026-09-15 03:02:30,095 [INFO] a.lymanyaljdyd79@gmail.com | Sent:10 | Failed:2 | follow | user=kmartradiodj | ok=False
+2026-09-15 03:02:30,096 [INFO] a.lymanyaljdyd79@gmail.com | Sent:10 | Failed:3 | no_msg_button streak=1/10 user=kmartradiodj
+2026-09-15 03:02:34,497 [INFO] [ENGINE] Skipping previously attempted recipient: just-some-bees-33
+2026-09-15 03:02:34,502 [INFO] [ENGINE] Skipping previously attempted recipient: cecilias-cool-stuff
+2026-09-15 03:03:13,656 [INFO] norman.dmavaughanbn@gmail.com | Sent:11 | Failed:4 | sent_ok | user=cecilias-cool-stuff | session=9/15 | total=11/30
+2026-09-15 03:03:14,330 [INFO] alymanyaljdyd79@gmail.com | Sent:12 | Failed:0 | sent_ok | user=just-some-bees-33 | session=10/15 | total=12/30
+2026-09-15 03:03:16,392 [INFO] a.lymanyaljdyd79@gmail.com | Sent:11 | Failed:3 | sent_ok | user=cyberknyfe | session=9/15 | total=11/30
+2026-09-15 03:03:17,169 [INFO] [ENGINE] Skipping previously attempted recipient: cyberknyfe
+2026-09-15 03:03:18,818 [INFO] [ENGINE] Skipping previously attempted recipient: cecilias-cool-stuff
+2026-09-15 03:03:18,822 [INFO] [ENGINE] Skipping previously attempted recipient: cyberknyfe
+2026-09-15 03:03:18,825 [INFO] [ENGINE] Skipping previously attempted recipient: literallygoose-deactivated20260
+2026-09-15 03:03:19,691 [INFO] [ENGINE] Skipping previously attempted recipient: literallygoose-deactivated20260
+2026-09-15 03:03:19,695 [INFO] [ENGINE] Skipping previously attempted recipient: kingadahipsters
+2026-09-15 03:03:29,546 [INFO] norman.dmavaughanbn@gmail.com | Sent:11 | Failed:4 | follow | user=literallygoose-deactivated20260 | ok=False
+2026-09-15 03:03:29,547 [INFO] norman.dmavaughanbn@gmail.com | Sent:11 | Failed:5 | no_msg_button streak=1/10 user=literallygoose-deactivated20260
+2026-09-15 03:03:29,605 [INFO] alymanyaljdyd79@gmail.com | Sent:12 | Failed:1 | no_msg_button streak=1/10 user=kingadahipsters
+2026-09-15 03:03:32,418 [INFO] [ENGINE] Skipping previously attempted recipient: kingadahipsters
+2026-09-15 03:03:32,423 [INFO] [ENGINE] Skipping previously attempted recipient: sasodei
+2026-09-15 03:03:32,794 [INFO] [ENGINE] Skipping previously attempted recipient: sasodei
+2026-09-15 03:03:32,799 [INFO] [ENGINE] Skipping previously attempted recipient: doctorhypetrain
+2026-09-15 03:03:49,717 [WARNING] [SEND] Error messaging doctorhypetrain (https://www.tumblr.com/doctorhypetrain): Firefox BiDi is not connected.
+2026-09-15 03:03:49,717 [WARNING] [SEND] Error messaging sasodei (https://www.tumblr.com/sasodei): Firefox BiDi is not connected.
+2026-09-15 03:03:49,719 [WARNING] [SCREENSHOT] Failed to capture screenshot: Firefox BiDi is not connected.
+2026-09-15 03:03:49,719 [WARNING] [SCREENSHOT] Failed to capture screenshot: Firefox BiDi is not connected.
+2026-09-15 03:03:49,720 [INFO] a.lymanyaljdyd79@gmail.com | Sent:11 | Failed:4 | send_failed | user=sasodei
+2026-09-15 03:03:49,720 [INFO] norman.dmavaughanbn@gmail.com | Sent:11 | Failed:6 | send_failed | user=doctorhypetrain
+2026-09-15 03:29:12,991 [INFO] [ENGINE] Bot engine started.
+2026-09-15 03:29:13,001 [INFO] [ENGINE] Starting round with 20 pending accounts across 3 parallel browser(s)...
+2026-09-15 03:29:13,753 [INFO] [BROWSER] Starting Firefox normally for AutoHotkey-only login.
+2026-09-15 03:29:14,261 [INFO] [BROWSER] Clearing previous sessions from 3 container slot(s) once at startup.
+2026-09-15 03:29:15,358 [INFO] [BROWSER] Container slot 1 (userContextId=1) was cleared directly: 361 cookie(s).
+2026-09-15 03:29:15,359 [INFO] [BROWSER] Container slot 2 (userContextId=2) was cleared directly: 398 cookie(s).
+2026-09-15 03:29:15,359 [INFO] [BROWSER] Container slot 3 (userContextId=3) was cleared directly: 419 cookie(s).
+2026-09-15 03:29:15,359 [INFO] [BROWSER] Offline container cleanup finished for all 3 slot(s); removed 30 container storage folder(s).
+2026-09-15 03:29:15,968 [INFO] [BROWSER] Starting Firefox normally for AutoHotkey-only login.
+2026-09-15 03:29:16,431 [INFO] [BROWSER] Starting AutoHotkey-only login for 20 account(s). Firefox has no remote-control option.
+2026-09-15 03:29:54,294 [WARNING] [ENGINE] No account was available for message processing.
+2026-09-15 03:29:54,294 [INFO] [ENGINE] Stop requested. Browser actions cancelled and Firefox closed.
+2026-09-15 03:29:54,294 [INFO] [ENGINE] Bot engine stopped cleanly.
+2026-09-15 03:30:04,647 [INFO] [ENGINE] Stop requested. Browser actions cancelled and Firefox closed.
+2026-09-15 03:30:05,352 [INFO] [ENGINE] Stop requested. Browser actions cancelled and Firefox closed.
