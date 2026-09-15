@@ -13,7 +13,7 @@ from tkinter.scrolledtext import ScrolledText
 from typing import Optional, Callable
 
 from core.engine import BotEngine
-from config.settings import LOG_FILE
+from config.settings import LOG_FILE, MAX_PARALLEL_ACCOUNTS
 
 
 class RunnerTab(ttk.Frame):
@@ -48,7 +48,7 @@ class RunnerTab(ttk.Frame):
         self.parallel_spinbox = ttk.Spinbox(
             ctrl_frame,
             from_=1,
-            to=9,
+            to=MAX_PARALLEL_ACCOUNTS,
             increment=1,
             textvariable=self.parallel_var,
             width=5,
@@ -57,7 +57,7 @@ class RunnerTab(ttk.Frame):
         self.parallel_spinbox.pack(side="left", padx=(0, 5))
         ttk.Label(
             ctrl_frame,
-            text="(1–10; logins are safely queued)",
+            text=f"(1–{MAX_PARALLEL_ACCOUNTS}; logins are safely queued)",
             foreground="#6c7086",
         ).pack(side="left")
 
@@ -180,8 +180,11 @@ class RunnerTab(ttk.Frame):
         except ValueError:
             messagebox.showerror("Invalid Parallel Count", "Parallel tabs/accounts must be a whole number.")
             return
-        if not 1 <= parallel_accounts <= 9:
-            messagebox.showerror("Invalid Parallel Count", "Choose a number from 1 to 9.")
+        if not 1 <= parallel_accounts <= MAX_PARALLEL_ACCOUNTS:
+            messagebox.showerror(
+                "Invalid Parallel Count",
+                f"Choose a number from 1 to {MAX_PARALLEL_ACCOUNTS}.",
+            )
             return
         self.engine.settings_mgr.update_settings({"parallel_accounts": parallel_accounts})
         self.engine.start()

@@ -7,9 +7,10 @@ import queue
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from typing import List, Dict, Optional, Any
 
-from config.settings import SettingsManager
+from config.settings import SettingsManager, MAX_PARALLEL_ACCOUNTS
 from config.fingerprints import generate_stealth_fingerprint
 from core.browser import BrowserFactory
+from core.bidi import MAX_CONTAINER_SLOTS
 from core.auth import logout, dismiss_consent_screen_if_present
 from core.scraper import scrape_post_master_queue, parse_post_info
 from core.messenger import (
@@ -204,7 +205,13 @@ class BotEngine:
             tab_type = settings.get("tab_type", "likes").strip().lower()
             max_per_account = int(settings.get("max_success_per_account", 30))
             session_cap = int(settings.get("session_success_cap", 15))
-            parallel_accounts = max(1, min(9, int(settings.get("parallel_accounts", 1))))
+            parallel_accounts = max(
+                1,
+                min(
+                    MAX_PARALLEL_ACCOUNTS,
+                    int(settings.get("parallel_accounts", 1)),
+                ),
+            )
             no_msg_limit = int(settings.get("no_message_limit", 10))
             action_delay = float(settings.get("action_delay", 0.15))
             typing_min_delay = max(0.0, float(settings.get("typing_min_delay", 0.01)))
@@ -263,24 +270,79 @@ class BotEngine:
             progress = persistence.load_progress()
             target_queue = persistence.load_target_queue()
             container_cleanup_pending = True
+            cycle_start_progress = {
+                str(account.get("email", "")): int(
+                    progress.get(str(account.get("email", "")), 0)
+                )
+                for account in accounts
+            }
+            cycle_stalls = {
+                str(account.get("email", "")): 0 for account in accounts
+            }
 
             while not self._stop_event.is_set():
                 pending_accounts = [
                     (i, accounts[i])
                     for i in range(start_acc_idx, len(accounts))
                     if int(progress.get(accounts[i]["email"], 0)) < max_per_account
-                    and accounts[i]["email"].strip().lower() not in self._session_login_failed_accounts
+                    and (
+                        int(progress.get(accounts[i]["email"], 0))
+                        - cycle_start_progress.get(accounts[i]["email"], 0)
+                    ) < session_cap
+                    and cycle_stalls.get(accounts[i]["email"], 0) < max_retries
                 ]
 
                 if not pending_accounts:
                     if start_acc_idx > 0:
                         start_acc_idx = 0
                         continue
-                    logger.info("[ENGINE] All accounts have reached their target message limit!")
-                    self.post_gui_update("status_info", {"status": "Complete", "detail": "All accounts finished"})
-                    break
+                    lifetime_pending = [
+                        account for account in accounts
+                        if int(progress.get(account["email"], 0)) < max_per_account
+                    ]
+                    if not lifetime_pending:
+                        logger.info("[ENGINE] All accounts have reached their target message limit!")
+                        self.post_gui_update(
+                            "status_info",
+                            {"status": "Complete", "detail": "All accounts finished"},
+                        )
+                        break
 
-                worker_count = min(parallel_accounts, len(pending_accounts))
+                    # A round is complete only after every configured account
+                    # has either delivered its session quota or exhausted its
+                    # recovery attempts.  Batches inside the same round move on
+                    # immediately instead of sleeping after the first tabs.
+                    sleep_hrs = float(settings.get("sleep_between_rounds_hrs", 12))
+                    sleep_seconds = sleep_hrs * 3600
+                    logger.info(
+                        f"[ENGINE] Full account round finished. Sleeping "
+                        f"{sleep_hrs} hours before the next cycle..."
+                    )
+                    if not self._sleep_with_checks(
+                        sleep_seconds, label=f"Next Round in ({sleep_hrs}h)"
+                    ):
+                        break
+                    cycle_start_progress = {
+                        str(account.get("email", "")): int(
+                            progress.get(str(account.get("email", "")), 0)
+                        )
+                        for account in accounts
+                    }
+                    cycle_stalls = {
+                        str(account.get("email", "")): 0 for account in accounts
+                    }
+                    with self._login_stats_lock:
+                        self._session_login_failed_accounts.clear()
+                    continue
+
+                # Firefox Multi-Account Containers exposes nine keyboard slots.
+                # A setting up to 20 is therefore processed as consecutive
+                # waves (for example 9 + 9 + 2), without pausing between them.
+                worker_count = min(
+                    parallel_accounts,
+                    MAX_CONTAINER_SLOTS,
+                    len(pending_accounts),
+                )
                 logger.info(
                     f"[ENGINE] Starting round with {len(pending_accounts)} pending accounts "
                     f"across {worker_count} parallel browser(s)..."
@@ -326,6 +388,9 @@ class BotEngine:
                                     f"{error}"
                                 )
                             })
+                            for account in candidate_accounts[:worker_count]:
+                                email = str(account.get("email", ""))
+                                cycle_stalls[email] = max_retries
                             break
                         if not self._sleep_with_checks(
                             retry_delay,
@@ -336,6 +401,7 @@ class BotEngine:
                 for account in failed_accounts:
                     email = str(account.get("email", "")).strip()
                     if email:
+                        cycle_stalls[email] = cycle_stalls.get(email, 0) + 1
                         self._record_login_result(email, success=False)
                         total_ok = int(progress.get(email, 0))
                         logger.log_summary(email, total_ok, 0, note="native_login_failed")
@@ -344,8 +410,20 @@ class BotEngine:
                     BrowserFactory.finish_batch()
                     if not prepared_accounts:
                         logger.warning("[ENGINE] No account was available for message processing.")
-                    break
+                    if self._stop_event.is_set():
+                        break
+                    if not failed_accounts:
+                        for account in candidate_accounts[:worker_count]:
+                            email = str(account.get("email", ""))
+                            cycle_stalls[email] = max_retries
+                    continue
 
+                batch_progress_before = {
+                    str(account.get("email", "")): int(
+                        progress.get(str(account.get("email", "")), 0)
+                    )
+                    for account in prepared_accounts
+                }
                 try:
                     with ThreadPoolExecutor(
                         max_workers=len(prepared_accounts),
@@ -364,7 +442,16 @@ class BotEngine:
                                     messages=distinct_messages,
                                     greetings=distinct_greetings,
                                     max_per_account=max_per_account,
-                                    session_cap=session_cap,
+                                    session_cap=min(
+                                        session_cap
+                                        - max(
+                                            0,
+                                            int(progress.get(acc["email"], 0))
+                                            - cycle_start_progress.get(acc["email"], 0),
+                                        ),
+                                        max_per_account
+                                        - int(progress.get(acc["email"], 0)),
+                                    ),
                                     no_msg_limit=no_msg_limit,
                                     action_delay=action_delay,
                                     line_delay=line_delay,
@@ -374,7 +461,10 @@ class BotEngine:
                                     max_between=max_between,
                                     notes_max=notes_max,
                                     follow_every=follow_every,
-                                    scrape_threshold=scrape_threshold,
+                                    scrape_threshold=max(
+                                        scrape_threshold,
+                                        session_cap * len(prepared_accounts) * 2,
+                                    ),
                                     scrape_timeout=scrape_timeout,
                                     enable_fp_rotation=enable_fp_rotation,
                                     typing_min_delay=typing_min_delay,
@@ -387,6 +477,7 @@ class BotEngine:
 
                         for future in as_completed(futures):
                             account = futures[future]
+                            email = str(account.get("email", ""))
                             try:
                                 future.result()
                             except ContactHistoryError:
@@ -401,24 +492,15 @@ class BotEngine:
                                     f"[ENGINE] Worker exception for "
                                     f"{account.get('email', '')}: {error}"
                                 )
+                            finally:
+                                if int(progress.get(email, 0)) > batch_progress_before[email]:
+                                    cycle_stalls[email] = 0
+                                else:
+                                    cycle_stalls[email] = cycle_stalls.get(email, 0) + 1
                 finally:
-                    BrowserFactory.finish_batch()
+                    BrowserFactory.finish_batch(close_firefox=True)
 
                 start_acc_idx = 0
-
-                still_pending = [
-                    a for a in accounts
-                    if int(progress.get(a["email"], 0)) < max_per_account
-                    and a["email"].strip().lower() not in self._session_login_failed_accounts
-                ]
-                if not still_pending or self._stop_event.is_set():
-                    break
-
-                sleep_hrs = float(settings.get("sleep_between_rounds_hrs", 12))
-                sleep_seconds = sleep_hrs * 3600
-                logger.info(f"[ENGINE] Round finished. Sleeping {sleep_hrs} hours before next cycle...")
-                if not self._sleep_with_checks(sleep_seconds, label=f"Next Round in ({sleep_hrs}h)"):
-                    break
 
         except ContactHistoryError as e:
             logger.error(f"[ENGINE] {e}")
@@ -617,8 +699,8 @@ class BotEngine:
                             if result == "no_message_button":
                                 no_message_streak[email] += 1
                                 if no_message_streak[email] >= no_msg_limit:
-                                    disabled.add(email)
-                            elif result == "could_not_send":
+                                    no_message_streak[email] = 0
+                            elif result == "browser_unavailable":
                                 disabled.add(email)
                             logger.log_event(
                                 email,
@@ -888,9 +970,15 @@ class BotEngine:
                 if do_follow:
                     logger.log_event(email, total_ok, fail_count, note=f"follow | user={username} | ok={ok_follow}")
 
-                if result == "could_not_send":
-                    account_note = "could_not_send"
-                    logger.log_event(email, total_ok, fail_count, note=account_note)
+                if result == "browser_unavailable":
+                    account_note = "browser_unavailable_retry_session"
+                    fail_count += 1
+                    logger.log_event(
+                        email,
+                        total_ok,
+                        fail_count,
+                        note=f"{account_note} | user={username}",
+                    )
                     break
 
                 if result == "no_message_button":
@@ -901,9 +989,16 @@ class BotEngine:
                         note=f"no_msg_button streak={no_msg_streak}/{no_msg_limit} user={username}"
                     )
                     if no_msg_streak >= no_msg_limit:
-                        account_note = f"{no_msg_limit}x_no_msg_button_logout"
-                        logger.log_event(email, total_ok, fail_count, note=account_note)
-                        break
+                        logger.log_event(
+                            email,
+                            total_ok,
+                            fail_count,
+                            note=(
+                                f"{no_msg_limit}x_no_msg_button_continue | "
+                                f"user={username}"
+                            ),
+                        )
+                        no_msg_streak = 0
 
                     delay = random.uniform(min_between, max_between)
                     if not self._sleep_with_checks(delay, label=f"Next user (@{username})"):

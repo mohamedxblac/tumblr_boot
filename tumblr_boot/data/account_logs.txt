@@ -1044,3 +1044,38 @@ Stacktrace:
 2026-09-15 03:29:54,294 [INFO] [ENGINE] Bot engine stopped cleanly.
 2026-09-15 03:30:04,647 [INFO] [ENGINE] Stop requested. Browser actions cancelled and Firefox closed.
 2026-09-15 03:30:05,352 [INFO] [ENGINE] Stop requested. Browser actions cancelled and Firefox closed.
+2026-09-15 11:48:31,923 [INFO] [ENGINE] Bot engine started.
+2026-09-15 11:48:31,932 [INFO] [ENGINE] Starting round with 20 pending accounts across 9 parallel browser(s)...
+2026-09-15 11:48:32,720 [INFO] [BROWSER] Starting Firefox normally for AutoHotkey-only login.
+2026-09-15 11:48:33,304 [INFO] [BROWSER] Clearing previous sessions from 9 container slot(s) once at startup.
+2026-09-15 11:48:34,336 [ERROR] [ENGINE] Login preparation attempt 1/3 failed: Firefox has only 4 usable container(s), but 9 login slot(s) were requested.
+2026-09-15 11:48:40,042 [INFO] [BROWSER] Starting Firefox normally for AutoHotkey-only login.
+2026-09-15 11:48:40,555 [INFO] [BROWSER] Skipping container cleanup; it already ran for this Start.
+2026-09-15 11:48:40,555 [INFO] [BROWSER] Starting AutoHotkey-only login for 20 account(s). Firefox has no remote-control option.
+2026-09-15 11:50:51,895 [INFO] [BROWSER] Captured 115 Tumblr container cookies before closing the normal browser.
+2026-09-15 11:50:56,479 [INFO] [ENGINE] Stop requested. Browser actions cancelled and Firefox closed.
+2026-09-15 11:50:57,266 [WARNING] [ENGINE] No account was available for message processing.
+2026-09-15 11:50:57,266 [INFO] [ENGINE] Bot engine stopped cleanly.
+2026-09-15 11:52:54,937 [INFO] [ENGINE] Bot engine started.
+2026-09-15 11:52:54,947 [INFO] [ENGINE] Starting round with 20 pending accounts across 9 parallel browser(s)...
+2026-09-15 11:52:55,661 [INFO] [BROWSER] Starting Firefox normally for AutoHotkey-only login.
+2026-09-15 11:52:56,258 [INFO] [BROWSER] Clearing previous sessions from 9 container slot(s) once at startup.
+2026-09-15 11:52:57,324 [INFO] [BROWSER] Container slot 1 (userContextId=1) was cleared directly: 271 cookie(s).
+2026-09-15 11:52:57,325 [INFO] [BROWSER] Container slot 2 (userContextId=2) was cleared directly: 288 cookie(s).
+2026-09-15 11:52:57,325 [INFO] [BROWSER] Container slot 3 (userContextId=3) was cleared directly: 10 cookie(s).
+2026-09-15 11:52:57,325 [INFO] [BROWSER] Container slot 4 (userContextId=4) was cleared directly: 314 cookie(s).
+2026-09-15 11:52:57,326 [INFO] [BROWSER] Container slot 5 (userContextId=6) was cleared directly: 0 cookie(s).
+2026-09-15 11:52:57,326 [INFO] [BROWSER] Container slot 6 (userContextId=7) was cleared directly: 0 cookie(s).
+2026-09-15 11:52:57,326 [INFO] [BROWSER] Container slot 7 (userContextId=8) was cleared directly: 0 cookie(s).
+2026-09-15 11:52:57,326 [INFO] [BROWSER] Container slot 8 (userContextId=9) was cleared directly: 0 cookie(s).
+2026-09-15 11:52:57,327 [INFO] [BROWSER] Container slot 9 (userContextId=10) was cleared directly: 0 cookie(s).
+2026-09-15 11:52:57,327 [INFO] [BROWSER] Offline container cleanup finished for all 9 slot(s); removed 28 container storage folder(s).
+2026-09-15 11:52:57,947 [INFO] [BROWSER] Starting Firefox normally for AutoHotkey-only login.
+2026-09-15 11:52:58,392 [INFO] [BROWSER] Starting AutoHotkey-only login for 20 account(s). Firefox has no remote-control option.
+2026-09-15 11:56:10,239 [INFO] [BROWSER] Captured 161 Tumblr container cookies before closing the normal browser.
+2026-09-15 11:56:15,771 [INFO] [BROWSER] Restored 161 Tumblr cookies to the same Firefox profile after the clean shutdown.
+2026-09-15 11:56:16,415 [INFO] [BIDI] Starting the user's normal Firefox profile.
+2026-09-15 11:56:43,267 [INFO] [ENGINE] Stop requested. Browser actions cancelled and Firefox closed.
+2026-09-15 11:56:43,267 [WARNING] [ENGINE] No account was available for message processing.
+2026-09-15 11:56:43,268 [INFO] [ENGINE] Bot engine stopped cleanly.
+2026-09-15 11:56:53,573 [INFO] [ENGINE] Stop requested. Browser actions cancelled and Firefox closed.

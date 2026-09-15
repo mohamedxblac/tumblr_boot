@@ -236,9 +236,8 @@ class MessagesTab(ttk.Frame):
         parts = compose_message_parts(username="sample_user", base_message=base_msg, greeting=greeting, index=0)
 
         preview_content = (
-            f"[Line 1 — Salutation]:\n{parts[0]}\n\n"
-            f"[Line 2 — Personalized Greeting]:\n{parts[1]}\n\n"
-            f"[Line 3 — Message Body]:\n{parts[2]}"
+            f"[Line 1 — Personalized Greeting]:\n{parts[0]}\n\n"
+            f"[Line 2 — Message Body]:\n{parts[1]}"
         )
 
         self.preview_text.configure(state="normal")

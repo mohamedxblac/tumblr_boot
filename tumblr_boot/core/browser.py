@@ -841,7 +841,7 @@ class BrowserFactory:
         return driver, None, native_profile
 
     @classmethod
-    def finish_batch(cls) -> None:
+    def finish_batch(cls, close_firefox: bool = False) -> None:
         with cls._launch_lock:
             leftovers = list(cls._prepared_drivers.values())
             cls._prepared_drivers.clear()
@@ -854,6 +854,24 @@ class BrowserFactory:
                 except Exception:
                     pass
             manager.disconnect_session()
+            if close_firefox:
+                # Every following account wave must start in normal (non-BiDi)
+                # Firefox so AutoHotkey can submit the next credentials.  Most
+                # batches close naturally with their final tab; close the
+                # remaining window gracefully only when it is still alive.
+                try:
+                    manager.wait_until_firefox_stops(timeout=1.0)
+                except BidiError:
+                    try:
+                        autohotkey = find_autohotkey_executable()
+                        _close_firefox_after_login(autohotkey)
+                        manager.wait_until_firefox_stops()
+                    except Exception as error:
+                        logger.warning(
+                            f"[BROWSER] Graceful close between account waves failed: {error}. "
+                            "Closing the remaining Firefox process so the next wave can start."
+                        )
+                        force_close_all_firefox()
 
     @staticmethod
     def close_browser(driver: Optional[BidiDriver], profile_dir: Optional[str] = None):

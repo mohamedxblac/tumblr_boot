@@ -7,6 +7,7 @@ from typing import List, Tuple, Union
 from core.compat import By, Keys, WebDriverWait, EC
 
 from core.auth import dismiss_consent_screen_if_present
+from core.bidi import BidiError
 from core.browser import BrowserFactory
 from utils.logger import logger
 
@@ -120,16 +121,16 @@ def type_message_safely(
             time.sleep(max(action_delay, random.uniform(0.05, 0.12)))
 
 
-# تجهيز أجزاء الرسالة الثلاثة: التحية البسيطة، التحية باسم المستخدم، ونص الرسالة
+# تجهيز جزأي الرسالة: التحية باسم المستخدم، ثم نص الرسالة
 def compose_message_parts(
     username: str,
     base_message: str,
     greeting: str,
     index: int
 ) -> List[str]:
-    salute = "hello" if (index % 2 == 1) else "hi"
+    del index
     greeting_line = f"{greeting}, {username}"
-    return [salute, greeting_line, base_message]
+    return [greeting_line, base_message]
 
 
 # الانتقال لحساب المستخدم في نفس التبويب وإرسال الرسائل واكتشاف أخطاء الحظر أو الإغلاق
@@ -240,7 +241,19 @@ def send_message_to_user(
 
         return (True, followed)
 
+    except BidiError as e:
+        logger.warning(f"[SEND] Browser connection unavailable for {username}: {e}")
+        return ("browser_unavailable", False)
     except Exception as e:
+        error_text = str(e).lower()
+        if (
+            "bidi is not connected" in error_text
+            or "connectionclosed" in error_text
+            or "connection is closed" in error_text
+            or "socket is closed" in error_text
+        ):
+            logger.warning(f"[SEND] Browser connection unavailable for {username}: {e}")
+            return ("browser_unavailable", False)
         logger.warning(f"[SEND] Error messaging {username} ({user_url}): {e}")
         BrowserFactory.capture_screenshot(driver, prefix=f"send_err_{username}")
         return (False, False)

@@ -9,7 +9,7 @@ import tkinter as tk
 from tkinter import ttk, messagebox
 from typing import Callable
 
-from config.settings import SettingsManager, DEFAULT_SETTINGS
+from config.settings import SettingsManager, DEFAULT_SETTINGS, MAX_PARALLEL_ACCOUNTS
 
 
 class SettingsTab(ttk.Frame):
@@ -77,7 +77,13 @@ class SettingsTab(ttk.Frame):
 
         self._add_row(card2, "max_success_per_account", "Max Success Per Account (Lifetime):", "30", is_int=True)
         self._add_row(card2, "session_success_cap", "Session Cap (Messages per login):", "15", is_int=True)
-        self._add_row(card2, "parallel_accounts", "Parallel Accounts (1-9):", "1", is_int=True)
+        self._add_row(
+            card2,
+            "parallel_accounts",
+            f"Parallel Accounts (1-{MAX_PARALLEL_ACCOUNTS}):",
+            "1",
+            is_int=True,
+        )
         self._add_row(card2, "no_message_limit", "Streak Limit (Closed DMs before skip):", "10", is_int=True)
         self._add_row(card2, "start_account_index", "Start From Account # (1-indexed):", "1", is_int=True)
 
@@ -175,8 +181,11 @@ class SettingsTab(ttk.Frame):
                 messagebox.showerror("Validation Error", "Typing min delay cannot be greater than typing max delay.")
                 return
 
-            if not 1 <= updates["parallel_accounts"] <= 9:
-                messagebox.showerror("Validation Error", "Parallel accounts must be between 1 and 9.")
+            if not 1 <= updates["parallel_accounts"] <= MAX_PARALLEL_ACCOUNTS:
+                messagebox.showerror(
+                    "Validation Error",
+                    f"Parallel accounts must be between 1 and {MAX_PARALLEL_ACCOUNTS}.",
+                )
                 return
 
             delay_keys = (
